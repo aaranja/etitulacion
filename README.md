@@ -11,7 +11,6 @@ virtualenv env .
 env/bin/activate
 pip install -r required_apps
 ```
-#### Ejecución
 **Crear un esquema de base de datos en mysql server**
 #### En la terminal ejecuta los comandos:
 ```
@@ -20,9 +19,10 @@ mysql -h localhost -u root -p
 # Crear base de datos
 CREATE DATABASE etitulacion_db;
 ```
-### Configurar Django para la conexión hacia la base de datos
+#### Configurar Django para la conexión hacia la base de datos
 Editar con la configuración de mysql el archivo settings.py encontrado en el directorio backend/src/etitulacion/
 ```
+...
 WSGI_APPLICATION = 'etitulacion.wsgi.application'
 
 # Database
@@ -40,9 +40,10 @@ DATABASES = {
 
 
 # Password validation
+...
 ```
 
-#### Ejecución
+### Ejecución
 ```
 # Ejecución del servidor
 python manage.py makemigrations
