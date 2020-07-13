@@ -1,4 +1,4 @@
-rest-auth/from rest_framework import serializers
+from rest_framework import serializers
 from users.models import Account
 from django.utils.translation import ugettext_lazy as _
 from allauth.account import app_settings as allauth_settings
