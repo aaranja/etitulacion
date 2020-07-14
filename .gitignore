@@ -1,5 +1,7 @@
 # backend dependencies
 /backend/env
+/backend/src/secrets.json
+/backend/src/db.sqlite3
 
 # frontend dependencies
 /frontend/gui/node_modules

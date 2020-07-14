@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import json 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +21,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'c-r_xdl^+f*3r!2+5is+9mco4+3l-f!2svve@f59mg#hj&2r#w'
+if os.path.exists('secrets.json'):
+   f = open('secrets.json',)
+   data = json.load(f)
+   SECRET_KEY =  data['DJANGO_SECRET_KEY']
+   f.close()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
