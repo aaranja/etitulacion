@@ -182,6 +182,7 @@ REST_FRAMEWORK = {
 
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'users.api.serializers.AccountSerializer',
+    'TOKEN_SERIALIZER': 'users.api.serializers.TokenSerializer',
 }
 
 REST_AUTH_REGISTER_SERIALIZERS = {

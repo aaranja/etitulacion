@@ -7,9 +7,6 @@ import BaseRouter from "./routes";
 import Layout from "./containers/Layout";
 import * as actions from "./store/actions/auth";
 
-
-let self;
-
 export class App extends Component {
   componentDidMount() {
     this.props.onTryAutoSignup();
@@ -29,14 +26,12 @@ export class App extends Component {
 }
 
 function mapStateToProps (state,ownProps ={} ){
-  console.log(state);
+  //console.log(state);
   //console.log(ownProps) // {}
   return {
     isAuthenticated: state.token !== null,
   };
 };
-
-
 
 const mapDispatchToProps = (dispatch) => {
   return {

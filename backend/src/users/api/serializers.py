@@ -5,11 +5,17 @@ from allauth.account import app_settings as allauth_settings
 from allauth.utils import email_address_exists
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
+from rest_framework.authtoken.models import Token
 
 class AccountSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Account
 		fields = ['id','email','first_name','last_name','type_user']
+
+class TokenSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Token
+		fields = ['key', 'user']
 
 class RegisterSerializer(serializers.Serializer):
 	email = serializers.EmailField(required=allauth_settings.EMAIL_REQUIRED)

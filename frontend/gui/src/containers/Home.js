@@ -1,16 +1,43 @@
 import React from "react";
-
+import {connect } from 'react-redux';
+import axios from "axios";
+import "antd/dist/antd.css";
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
-import styles from "../css/home.css"
+import "../css/home.css"
 
 const { SubMenu } = Menu;
-const { Header, Content, Footer, Sider } = Layout;
+const {  Content,  Sider } = Layout;
 
 class Home extends React.Component {
 
-render(){ return(
+  // load data from server if toke is in storage
+  constructor(props) {
+  super(props);
+  var token = localStorage.getItem('token')
+  //console.log(token)
+  if(localStorage.getItem('token')===null) {
+    this.props.history.push('/login/');
+  }else {
+    axios.defaults.headers = {
+      "Content-Type":"application/json",
+      "Authorization": `Token ${token}`
+      }
+    axios.get("http://127.0.0.1:8000/api/").then((rest) => {
+        this.setState({
+          accounts: rest.data,
+        });
+        console.log(rest.data);
+      });
+  }
+}
   
+  // redirect to Login if props.token is changed
+  UNSAFE_componentWillReceiveProps(newProps){
+    if(newProps.token===null) this.props.history.push('/login/');
+  }
+
+render(){ return(
     <Content style={{ padding: '0 0px' }}>
       <Breadcrumb style={{ margin: '16px 0' }}>
         <Breadcrumb.Item>Home</Breadcrumb.Item>
@@ -48,11 +75,14 @@ render(){ return(
         <Content style={{ padding: '0 24px', minHeight: 280 }}>Content</Content>
       </Layout>
     </Content>
-   
 );
-
 };
-
 }
 
-export default Home;
+const mapStateToProps = state =>{
+  return {
+    token: state.token
+  } 
+}
+
+export default connect(mapStateToProps)(Home);

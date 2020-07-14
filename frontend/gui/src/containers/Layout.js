@@ -1,31 +1,30 @@
 import React from "react";
-import { Layout, Breadcrumb, Menu, message} from "antd";
-import { UserOutlined } from '@ant-design/icons';
-import { Link, withRouter, useHistory } from "react-router-dom";
+import { Layout, Menu} from "antd";
+import { Link, withRouter } from "react-router-dom";
 import * as action from "../store/actions/auth";
 import { connect } from "react-redux";
-import styles from '../css/layout.css'; 
+import '../css/layout.css'; 
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 
 
-function handleButtonClick(e) {
+/*function handleButtonClick(e) {
   message.info('Click on left button.');
   console.log('click left button', e);
 }
-
-function handleMenuClick(e) {
+*/
+/*function handleMenuClick(e) {
   message.info('Click on menu item.');
   console.log('click', e);
-}
+}*/
 
-const menu = (
+/*const menu = (
   <Menu onClick={handleMenuClick}>
     <Menu.Item key="1" icon={<UserOutlined />}>
       Cerrar sesión
     </Menu.Item>
   </Menu>
-);
+);*/
 
 
 class SiderDemo extends React.Component {

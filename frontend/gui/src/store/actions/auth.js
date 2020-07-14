@@ -49,7 +49,7 @@ export const authLogin = (email, password) => {
       .then((res) => {
         const token = res.data.key;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-        console.log("login aceptado: ".concat(expirationDate, token));
+        console.log("login aceptado: ".concat(expirationDate));
         localStorage.setItem("token", token);
         localStorage.setItem("expirationDate", expirationDate);
         dispatch(authSuccess(token));

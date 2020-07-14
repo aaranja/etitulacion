@@ -1,29 +1,29 @@
 import React from "react";
-import { Form, Input, Button, Spin, Dropdown, Menu} from "antd";
+import { Form, Input, Button, Spin} from "antd";
 import { UserOutlined, LockOutlined, LoadingOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import * as action from "../store/actions/auth";
-import styles from '../css/login.css'; 
+import '../css/login.css'; 
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
-let errorMessage = null;
-/* if (this.props.error) {
-    errorMessage = <p>{this.props.error.message}</p>;
-  }*/
+//let errorMessage = null;
 
 class NormalLoginForm extends React.Component {
   
   onFinish = (values) => {
     this.props.onAuth(values.email, values.password);
-    this.props.history.push('/home/');
-
   };
+
+  UNSAFE_componentWillReceiveProps(newProps){
+    //console.log(localStorage.getItem('token'))
+    if (!newProps.loading) if(newProps.token!==null) this.props.history.push('/home/');
+  }
 
   render(){return (
     <div>
-      {errorMessage}
+      {this.props.error !== null? <p> {this.props.error}</p> : null}
       {this.props.loading ? (
         <Spin indicator={antIcon} />
       ) : (
