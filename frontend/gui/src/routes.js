@@ -2,7 +2,7 @@ import React from "react";
 import { Route } from "react-router-dom";
 //import PrivateRoute from "./private.js";
 import Cover from "./components/Cover";
-//import AccountDetail from "./containers/AccountDetail";
+import Account from "./components/Account";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import Home from "./containers/Home";
@@ -13,8 +13,8 @@ const BaseRouter = () => (
     <Route exact path="/login/" component={Login} />
     <Route exact path="/signup/" component={Signup} />
     <Route exact path="/home/" component={Home} />
+    <Route exact path="/account/" component={Account} />
   </div>
 );
 
-//<Route exact path="/home/" component={Home} />
 export default BaseRouter;

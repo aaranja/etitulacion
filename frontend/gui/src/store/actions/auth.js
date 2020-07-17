@@ -62,9 +62,13 @@ export const authLogin = (email, password) => {
   };
 };
 
-export const authSignUp = (email, first_name, last_name, password1, password2) => {
+export const authSignUp = (email, first_name, last_name, password1, password2, enrollment, career, gender) => {
+  console.log(email, first_name, last_name, password1, password2, enrollment, career, gender);
   return (dispatch) => {
     dispatch(authStart());
+    axios.defaults.headers = {
+      "Content-Type":"application/json",
+      }
     axios
       .post("http://127.0.0.1:8000/rest-auth/registration/", {
         email: email,
@@ -73,8 +77,12 @@ export const authSignUp = (email, first_name, last_name, password1, password2) =
         type_user: "egresado",
         password1: password1,
         password2: password2,
+        enrollment: enrollment,
+        career: career,
+        gender: gender
       })
       .then((res) => {
+        console.log(res.data)
         const token = res.data.key;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
         localStorage.setItem("token", token);

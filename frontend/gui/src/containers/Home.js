@@ -27,7 +27,8 @@ class Home extends React.Component {
         this.setState({
           accounts: rest.data,
         });
-        //console.log(rest.data[0]['first_name']);
+        //console.log(rest.data[0]);
+        // save name in localstorage to display on header
         localStorage.setItem('all_name', rest.data[0]['first_name']+" "+ rest.data[0]['last_name'])
       });
   }

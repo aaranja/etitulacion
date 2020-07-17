@@ -1,5 +1,5 @@
-import React from "react";
-import { Form, Input, /*Tooltip,*/ Button } from "antd";
+import React, { useState } from 'react';
+import { Form, Input, /*Tooltip,*/ Button, Select, Radio } from "antd";
 //import { QuestionCircleOutlined } from "@ant-design/icons";
 import * as action from "../store/actions/auth";
 
@@ -16,7 +16,8 @@ const formItemLayout = {
   },
   wrapperCol: {
     xs: {
-      span: 24,
+      span: 14,
+
     },
     sm: {
       span: 16,
@@ -44,7 +45,10 @@ const Signup = (props) => {
       values.first_name,
       values.last_name,
       values.password1,
-      values.password2
+      values.password2,
+      values.enrollment,
+      values.career,
+      values.gender,
     );
     props.history.push("/");
   };
@@ -53,12 +57,10 @@ const Signup = (props) => {
     <Form
       {...formItemLayout}
       name="register"
-      initialValues={{}}
+      initialValues={{layout: useState('horizontal')}}
       scrollToFirstError
       onFinish={(values) => onFinish(values)}
     >
-
-
     <Form.Item 
       name="first_name"
       label="Nombre"
@@ -84,6 +86,49 @@ const Signup = (props) => {
       >
           <Input placeholder="Apellidos"/>
       </Form.Item>
+
+      <Form.Item 
+      name="enrollment"
+      label="Matrícula"
+      rules={[
+          {
+            required: true,
+            message: "Por favor introduce tu matrícula!",
+          },
+        ]}
+      >
+          <Input placeholder="No. control"/>
+      </Form.Item>
+      <Form.Item 
+      label="Carrera" 
+      name='career' 
+      rules={[
+          {
+            required: true,
+            message: "Por favor seleccione su carrera!",
+          },
+        ]}>
+          <Select>
+            <Select.Option value="sistemas">Ing. Sistemas</Select.Option>
+            <Select.Option value="mecatronica">Ing. Mecatrónica</Select.Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item 
+        label="Género" 
+        name="gender"
+        rules={[
+          {
+            required: true,
+            message: "Por favor seleccione una opción!",
+          },
+        ]} >
+          <Radio.Group >
+            <Radio.Button value="MAS">M</Radio.Button>
+            <Radio.Button value="FEM">F</Radio.Button>
+            <Radio.Button value="INDF">Otro</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
 
       <Form.Item
         name="email"
@@ -158,8 +203,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (email, first_name, last_name ,password1, password2) =>
-      dispatch(action.authSignUp(email, first_name, last_name, password1, password2)),
+    onAuth: (email, first_name, last_name ,password1, password2, enrollment, career, gender) =>
+      dispatch(action.authSignUp(email, first_name, last_name, password1, password2, enrollment, career, gender)),
   };
 };
 

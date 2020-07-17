@@ -36,7 +36,7 @@ render() {
       <Menu theme="dark" mode="horizontal"className='rightMenu'>
     {this.props.isAuthenticated ? (
           <SubMenu style={{float: 'right'}} key="1" title={<span><UserOutlined/>{localStorage.getItem('all_name')}</span>}>
-            <Menu.Item key="setting:1"><span><ProfileOutlined />Ver información</span></Menu.Item>
+            <Menu.Item key="setting:1"><span><ProfileOutlined /><Link to="/account/">Datos personales</Link></span></Menu.Item>
             <Menu.Item key="setting:2" onClick={this.props.logout} ><span><LogoutOutlined />Cerrar sesión</span></Menu.Item>
         </SubMenu>
             ) : (
