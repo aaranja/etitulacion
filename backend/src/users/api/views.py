@@ -10,7 +10,6 @@ class AccountViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)  
     serializer_class = AccountSerializer
     queryset = Account.objects.all()
-
     # return all data for authenticated user
     # superuser true get all data
     # superuser false get own data
@@ -28,7 +27,7 @@ class AccountViewSet(viewsets.ModelViewSet):
         return obj
 
 class GraduateProfileViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    #permission_classes = (IsAuthenticated,)
     serializer_class = ProfileSerializer
     queryset = GraduateProfile.objects.all()
 
@@ -42,6 +41,8 @@ class GraduateProfileViewSet(viewsets.ModelViewSet):
 
     # don't needed, only for reference
     def update(self, request, *args, **kwargs):
+
+        print("entrando a update")
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)

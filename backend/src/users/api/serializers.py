@@ -13,6 +13,7 @@ class AccountSerializer(serializers.ModelSerializer):
 		fields = ['id','email','first_name','last_name','type_user',]
 		extra_kwargs = {
 			'email': {'read_only': True},
+			'type_user': {'read_only': True}
 		}
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -20,6 +21,11 @@ class ProfileSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = GraduateProfile
 		fields = ['enrollment', 'career', 'gender', 'titulation_type', 'status', 'accurate_docs','account']
+		extra_kwargs = {
+			'status': {'read_only': True},
+			'accurate_docs': {'read_only': True},
+			'enrollment': {'read_only':True},
+		}
 
 	def update(self, instance, validated_data):
 		account_data = validated_data.pop('account')
