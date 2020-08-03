@@ -58,7 +58,10 @@ class Account extends React.Component{
 
 	UNSAFE_componentWillReceiveProps(newProps){
 		//console.log(this.state.account)
+		console.log('sin token')
 		if(newProps.token===null) this.props.history.push('/login/');
+		console.log(newProps)
+
 	}
 	onFinish = (values) => {
 		console.log(values);
@@ -137,7 +140,7 @@ class Account extends React.Component{
 					  	<Form.Item
 					  		key={updateIndex()}
 							name='enrollment'
-							label="Matrícula"
+							label="Matrícula" 
 							rules={[
 							  {
 								type: 'number',
@@ -212,6 +215,7 @@ class Account extends React.Component{
 
 const mapStateToProps = state =>{
   return {
+  	token: state.token,
 	name: state.name
   } 
 }
