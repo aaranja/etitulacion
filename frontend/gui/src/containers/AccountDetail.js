@@ -32,7 +32,10 @@ class AccountDetail extends React.Component {
         <Divider orientation="left">Cuenta</Divider>
         <Card title={`ID: ${this.state.account.id}`}>
           <p>Correo: {this.state.account.email}</p>
-          <p>Nombre: {this.state.account.first_name} {this.state.account.last_name}</p>
+          <p>
+            Nombre: {this.state.account.first_name}{" "}
+            {this.state.account.last_name}
+          </p>
         </Card>
 
         <br />

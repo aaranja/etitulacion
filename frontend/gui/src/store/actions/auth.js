@@ -1,7 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
 
-
 export const authStart = () => {
   return {
     type: actionTypes.AUTH_START,
@@ -62,13 +61,31 @@ export const authLogin = (email, password) => {
   };
 };
 
-export const authSignUp = (email, first_name, last_name, password1, password2, enrollment, career, gender) => {
-  console.log(email, first_name, last_name, password1, password2, enrollment, career, gender);
+export const authSignUp = (
+  email,
+  first_name,
+  last_name,
+  password1,
+  password2,
+  enrollment,
+  career,
+  gender
+) => {
+  console.log(
+    email,
+    first_name,
+    last_name,
+    password1,
+    password2,
+    enrollment,
+    career,
+    gender
+  );
   return (dispatch) => {
     dispatch(authStart());
     axios.defaults.headers = {
-      "Content-Type":"application/json",
-      }
+      "Content-Type": "application/json",
+    };
     axios
       .post("http://127.0.0.1:8000/rest-auth/registration/", {
         email: email,
@@ -79,10 +96,10 @@ export const authSignUp = (email, first_name, last_name, password1, password2, e
         password2: password2,
         enrollment: enrollment,
         career: career,
-        gender: gender
+        gender: gender,
       })
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         const token = res.data.key;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
         localStorage.setItem("token", token);
@@ -108,13 +125,9 @@ export const authCheckState = () => {
         dispatch(logout());
       } else {
         const expirationTime = expirationDate.getTime() - new Date().getTime();
-        const newDate = expirationTime/1000;
+        const newDate = expirationTime / 1000;
         dispatch(authSuccess(token));
-        dispatch(
-          checkAuthTimeout(
-            newDate
-          )
-        );
+        dispatch(checkAuthTimeout(newDate));
       }
     }
   };

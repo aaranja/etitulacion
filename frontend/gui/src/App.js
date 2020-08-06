@@ -10,7 +10,7 @@ import * as actions from "./store/actions/auth";
 export class App extends Component {
   componentDidMount() {
     this.props.onTryAutoSignup();
-      }
+  }
 
   render() {
     return (
@@ -25,13 +25,13 @@ export class App extends Component {
   }
 }
 
-function mapStateToProps (state,ownProps ={} ){
+function mapStateToProps(state, ownProps = {}) {
   //console.log(state);
   //console.log(ownProps) // {}
   return {
     isAuthenticated: state.token !== null,
   };
-};
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
