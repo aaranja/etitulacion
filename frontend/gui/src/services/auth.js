@@ -1,4 +1,5 @@
-﻿
+﻿import axios from "axios";
+
 const baseURL = 'http://127.0.0.1:8000';
 const tokenKey = "token";
 
@@ -91,23 +92,14 @@ export const saveGoogleToken = (token) => {
 export function authLogin(data) {
     const options = {
         method: "POST",
-        headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
-            'Access-Control-Allow-Origin': "*",
-        },
-        body: JSON.stringify(data)
+        body: data
     };
 
     return new Promise((resolve, reject) => {
-        fetch(`${baseURL}/rest-auth/login/`, options)
+        axios.post(`${baseURL}/rest-auth/login/`, data)
             .then(response => {
-                if (response.ok)
-                    return response.json();
-                else
-                    reject(response.json());
-            })
-            .then(data => {
-                const token = data.key;
+                console.log(response);
+                const token = response.data.key;
                 if (saveAuthToken(token)) {
                     resolve({code: 200, message: `Welcome!`});
                 } else

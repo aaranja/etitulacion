@@ -6,9 +6,24 @@ import {connect} from 'react-redux';
 import * as actionTypes from './../../redux/actions';
 
 class Sidbar extends Component {
-    constructor(arg) {
-        super(arg);
-        
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: {},
+            loading: true,
+            user_name: ""
+        }
+    }
+    static getDerivedStateFromProps(props, state) {
+        if (props.user !== state.user) {
+            return {
+                user: props.user,
+                loading: false,
+                user_name: (`${props.user.first_name} ${props.user.last_name}`)
+            };
+        }
+        // Return null if the state hasn't changed
+        return null;
     }
     render() {
         return (
@@ -24,64 +39,63 @@ class Sidbar extends Component {
                                 <img src="dist/img/avatar5.png" className="img-rounded elevation-2" alt="User Image" />
                             </div>
                             <div className="info">
-                                <Link to="/profile" className="d-block">{this.props.user.all_name}</Link>
+                                <Link to="/profile" className="d-block">{!this.state.loading ? this.state.user_name : "cargando"}</Link>
                             </div>
                         </div>
-                        
                         <nav className="mt-2">
-                            <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                                
-                                <li className="nav-item"/>
+                            { !this.state.loading ?
+                                <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                                    <li className="nav-item"/>
+                                    {/* -- Estudiantes Egresados--*/}
+                                    {this.props.user.type_user === ('egresado') ? (
+                                        <>
+                                            <li className="nav-header">EGRESADOS</li>
+                                            <li className="nav-item">
+                                                <Link to="/subir-documentos" className="nav-link">
+                                                    <i className="nav-icon fas fa-file-import" />
+                                                    <p>
+                                                        Subir Documentos
+                                                    </p>
+                                                </Link>
+                                            </li>
+                                            <li className="nav-item">
+                                                <Link to="/progreso" className="nav-link">
+                                                    <i className="nav-icon fas fa-history" />
+                                                    <p>
+                                                        Progreso
+                                                    </p>
+                                                </Link>
+                                            </li>
+                                        </>
+                                    ) : (<li/>)}
+                                    {/* -- Servicios Escolares--*/}
+                                    {
+                                        this.props.user.type_user === ('servicios') ? (
+                                        <>
+                                            <li className="nav-header">SERVICIOS ESCOLARES</li>
+                                        </>
+                                    ) : (<li/>)}
 
-
-                                {/* -- Estudiantes Egresados--*/}
-                                {this.props.user.roles.includes("ESTUDIANTE") ? (
-                                    <>
-                                        <li className="nav-header">EGRESADOS</li>
-                                        <li className="nav-item">
-                                            <Link to="/subir-documentos" className="nav-link">
-                                                <i className="nav-icon fas fa-file-import" />
-                                                <p>
-                                                    Subir Documentos
-                                                </p>
-                                            </Link>
-                                        </li>
-                                        <li className="nav-item">
-                                            <Link to="/progreso" className="nav-link">
-                                                <i className="nav-icon fas fa-history" />
-                                                <p>
-                                                    Progreso
-                                                </p>
-                                            </Link>
-                                        </li>
-                                    </>
-                                ) : (<li/>)}
-
-                                {/* -- Servicios Escolares--*/}
-                                {this.props.user.roles.includes("ESCOLARES") ? (
-                                    <>
-                                        <li className="nav-header">SERVICIOS ESCOLARES</li>
-                                    </>
-                                ) : (<li/>)}
-
-                                {/* -- Coordinacion de Titulacion--*/}
-                                {this.props.user.roles.includes("COORDINACION") ? (
-                                    <>
-                                        <li className="nav-header">COORDIANCION DE TITULACION</li>
-                                        <li className="nav-item">
-                                            <Link to="/lista" className="nav-link">
-                                                <i className="nav-icon fas fa-list-ul" />
-                                                <p>
-                                                    Lista
-                                                </p>
-                                            </Link>
-                                        </li>
-                                    </>
-                                ) : (<li/>)}
-                            </ul>
+                                    {/* -- Coordinacion de Titulacion--*/}
+                                    {this.props.user.type_user === ('coordinacion')? (
+                                        <>
+                                            <li className="nav-header">COORDIANCION DE TITULACION</li>
+                                            <li className="nav-item">
+                                                <Link to="/lista" className="nav-link">
+                                                    <i className="nav-icon fas fa-list-ul" />
+                                                    <p>
+                                                        Lista
+                                                    </p>
+                                                </Link>
+                                            </li>
+                                        </>
+                                    ) : (<li/>)}
+                                </ul>
+                                :
+                                <a>Cargando</a>
+                            }
                         </nav>
                     </div>
-                    
                 </aside>
             </div>
         );
@@ -89,10 +103,15 @@ class Sidbar extends Component {
 }
 
 const mapStateToProps = state => {
-    return {
-        user: state.user
-    };
+    if(state.user[0] !== undefined){
+        return {
+            user: state.user[0]
+        };
+    }else{
+        return {
+            user: {}
+        }
+    }
 };
-
 
 export default connect(mapStateToProps)(Sidbar);

@@ -22,6 +22,7 @@ class Canvas extends Component {
         super(props);
         getCurrentUser()
             .then(data => {
+                console.log(data);
                 this.props.registerUser(data);
             })
     }
@@ -29,7 +30,7 @@ class Canvas extends Component {
     render() {
         return (
             <div>
-                <Sidebar/>
+                <Sidebar />
                 <Header/>
                 <div className="content-wrapper">
                     <Breadcrumb/>
@@ -51,6 +52,7 @@ class Canvas extends Component {
         );
     }
 }
+
 
 const mapDispatchToProps = dispatch => {
     return {

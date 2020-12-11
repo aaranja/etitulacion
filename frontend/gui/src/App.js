@@ -3,8 +3,6 @@ import React, {Component} from "react";
 import {BrowserRouter as Router} from "react-router-dom";
 import {connect} from "react-redux";
 import BaseRouter from "./routes";
-
-import Layout from "./containers/Layout";
 import * as actions from "./store/actions/auth";
 
 export class App extends Component {

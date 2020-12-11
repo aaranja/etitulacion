@@ -1,4 +1,4 @@
-﻿
+﻿import axios from 'axios';
 const baseURL = 'http://127.0.0.1:8000';
 const tokenKey = "token";
 
@@ -59,5 +59,22 @@ function postPromise(endPoint, data) {
 // ---------------
 
 export function getCurrentUser() {
-    return getPromise('/api/');
+    axios.defaults.headers = {
+        "Content-Type": "application/json",
+        Authorization: `Token ${getToken()}`,
+    };
+    return new Promise((resolve, reject) => {
+        axios.get(`${baseURL}/api/`)
+            .then(response => {
+                if (response.status === 401)
+                    localStorage.removeItem(tokenKey);
+                if (response.status===200)
+                    resolve(response.data);
+                else
+                    return response.json();
+            })
+            .catch(e => {
+                reject({message: 'Something went wrong. Please reload the page.'});
+            })
+    });
 }
