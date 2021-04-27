@@ -6,6 +6,15 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 
+class UploadDocumentsView(generics.UpdateAPIView):
+    serializer_class = DocumentsSerializer
+    def patch(self, request, *args, **kwargs):
+        print("entrando a la actualizacion")
+
+    @classmethod
+    def get_extra_actions(cls):
+        return []
+
 class AccountViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)  
     serializer_class = AccountSerializer
@@ -36,12 +45,12 @@ class GraduateProfileViewSet(viewsets.ModelViewSet):
         user = self.request.user
         if user.is_superuser:
             return GraduateProfile.objects.all()
-        profile = GraduateProfile.objects.filter(account__id=user.id)
+        ### CHANGE TO account__id = user.id ===========================================
+        profile = GraduateProfile.objects.filter(account_id=user.id)#self.kwargs["pk"])#user.id)
         return profile
 
     # don't needed, only for reference
     def update(self, request, *args, **kwargs):
-
         print("entrando a update")
         partial = kwargs.pop('partial', False)
         instance = self.get_object()

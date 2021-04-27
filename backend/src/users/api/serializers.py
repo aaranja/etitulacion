@@ -16,16 +16,37 @@ class AccountSerializer(serializers.ModelSerializer):
 			'type_user': {'read_only': True}
 		}
 
+class DocumentsSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = GraduateProfile
+		fields = ['documents']
+
 class ProfileSerializer(serializers.ModelSerializer):
 	account = AccountSerializer()
 	class Meta:
 		model = GraduateProfile
-		fields = ['enrollment', 'career', 'gender', 'titulation_type', 'status', 'accurate_docs','account']
+
+		fields = [
+			'enrollment', 
+			'career', 
+			'gender', 
+			'titulation_type', 
+			'status', 
+			'accurate_docs',
+			'account', 
+			'documents'
+		]
+
 		extra_kwargs = {
 			'status': {'read_only': True},
 			'accurate_docs': {'read_only': True},
 			'enrollment': {'read_only':True},
 		}
+
+	# validate all documents propierties
+	def validate_documents(self, documents, *args, **kwargs):
+		print(self._args[0].documents)
+		return documents
 
 	def update(self, instance, validated_data):
 		account_data = validated_data.pop('account')
@@ -37,6 +58,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 		instance.titulation_type = validated_data.get('titulation_type', instance.titulation_type)
 		instance.status = validated_data.get('status', instance.status)
 		instance.accurate_docs = validated_data.get('accurate_docs', instance.accurate_docs)
+		instance.documents = validated_data.get('documents', instance.documents)
 		instance.account = validated_data.get('account', instance.account)
 		instance.save()
 
@@ -47,7 +69,6 @@ class ProfileSerializer(serializers.ModelSerializer):
 		account.save()
 
 		return instance	
-
 
 class TokenSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -111,6 +132,15 @@ class RegisterSerializer(serializers.Serializer):
 			'gender': self.validated_data.get('gender',''),
 		}
 
+	def attrsDocs(self, name):
+		attrs = dict()
+		attrs['fullName'] 	=  name
+		attrs['fileName'] 	= ""
+		attrs['status']		= 'empty'
+		attrs['path']		= 'none'
+		attrs['url']		= 'none'
+		return attrs
+
 	def save(self, request):
 		# create and save account
 		new_account = Account(
@@ -122,12 +152,23 @@ class RegisterSerializer(serializers.Serializer):
 		new_account.set_password(request.data['password1'])
 		new_account.save()
 
-		# create and save profile
+		# create a new profile
 		new_profile = GraduateProfile(
 			enrollment=request.data['enrollment'],
 			career=request.data['career'],
 			gender=request.data['gender'],
 			)
+
+		# make a default documents properties
+		documents = dict()
+		documents["acta"]		= self.attrsDocs('Acta de Nacimimento')
+		documents["curp"]		= self.attrsDocs('C.U.R.P.')
+		documents["titulo_bach"]= self.attrsDocs('Título de bachillerato')
+		documents["ingles"]		= self.attrsDocs('Constancia de inglés')
+		documents["cni"]		= self.attrsDocs('Constancia de no inconvenientes')
+
+		# save documents and account on new profile
+		new_profile.documents = documents
 		new_profile.account = new_account
 		new_profile.save()
 

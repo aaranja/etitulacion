@@ -121,15 +121,15 @@ WSGI_APPLICATION = 'etitulacion.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+# set yours own database settings
+if os.path.exists('database.json'):
+    db = open('database.json',)
+    data = json.load(db)
+    SETTINGS_DB =  data['default']
+    db.close()
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test_etitulacion',
-        'USER': 'root',
-        'PASSWORD': 'oasis',    # set own database password
-        'HOST': '127.0.0.1',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
-    }
+    'default': SETTINGS_DB
 }
 
 
