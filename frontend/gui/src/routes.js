@@ -1,17 +1,18 @@
 import React from "react";
-import { Switch } from "react-router-dom";
-import PublicRoute from "./components/Router/public";
-import PrivateRoute from "./components/Router/private";
-import Login from './pages/Login'
-import Canvas from './containers/Canvas'
-
-
+import { Route } from "react-router-dom";
+//import PrivateRoute from "./private.js";
+//import Account from "./components/Account";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Home from "./pages/Home";
 
 const BaseRouter = () => (
-  <Switch>
-      <PublicRoute path="/login" component={Login} />
-      <PrivateRoute paht="/" component={Canvas} />
-  </Switch>
+	<div>
+		<Route exact path="/login/" component={Login} />
+		<Route exact path="/signup/" component={Register} />
+		<Route exact path="/home/" render={(props) => <Home {...props} />} />
+		{/*<Route exact path="/account/" component={Account} />*/}
+	</div>
 );
 
 export default BaseRouter;

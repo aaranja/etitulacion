@@ -1,4 +1,10 @@
 @import "~antd/dist/antd.css";
+.ant-layout-content {
+  justify-content: center;
+}
+.layout {
+  display: flex;
+}
 .menuBar {
   padding: 0 20px;
   border-bottom: solid 1px #e8e8e8;

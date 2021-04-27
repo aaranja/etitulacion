@@ -1,27 +1,31 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
-import {BrowserRouter as Router} from "react-router-dom";
-import {connect} from "react-redux";
+import { BrowserRouter as Router } from "react-router-dom";
+import { connect } from "react-redux";
 import BaseRouter from "./routes";
+
+import NormalLayout from "./containers/Layout";
 import * as actions from "./store/actions/auth";
 
 export class App extends Component {
   componentDidMount() {
-    //this.props.onTryAutoSignup();
+    this.props.onTryAutoSignup();
   }
 
   render() {
     return (
-      <Router>
-          <BaseRouter/>
-      </Router>
+      <div>
+        <Router>
+          <NormalLayout {...this.props}>
+            <BaseRouter />
+          </NormalLayout>
+        </Router>
+      </div>
     );
   }
 }
 
 function mapStateToProps(state, ownProps = {}) {
-  //console.log(state);
-  //console.log(ownProps) // {}
   return {
     isAuthenticated: state.token !== null,
   };
