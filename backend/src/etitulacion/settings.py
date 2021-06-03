@@ -96,6 +96,7 @@ TEMPLATES = [
 ]
 
 # explanations of this are here : https://django-allauth.readthedocs.io/en/latest/configuration.html
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 AUTH_USER_MODEL = 'users.Account'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
@@ -182,7 +183,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         # 'rest_framework.authentication.BasicAuthentication',
         # 'rest_framework.authentication.SessionAuthentication',
-    )
+    ), 
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.FileUploadParser',
+    ]
 }
 
 REST_AUTH_SERIALIZERS = {

@@ -16,10 +16,51 @@ class AccountSerializer(serializers.ModelSerializer):
 			'type_user': {'read_only': True}
 		}
 
+class FileSerializer(serializers.Serializer):
+	acta = serializers.FileField()
+
+	def validate(self, data):
+		print("=============")
+		print(data)
+		return data
+
+	def save(self, request):
+		print("======esta sucediendo=========")
+		return True
+
+
 class DocumentsSerializer(serializers.ModelSerializer):
+	documents = serializers.JSONField()
 	class Meta:
 		model = GraduateProfile
 		fields = ['documents']
+		extra_kwargs = {
+			'documents': {'read_only': True},
+		}
+
+	# def document_file(newfile, file):
+	# 	file['fileName'] = newFile.fileName
+	# 	return file
+
+	# # validate all documents propierties
+	# def validate_documents(self, documents, *args, **kwargs):
+	# 	actual_documents = self._args[0].documents
+	# 	try:
+	# 		for doc, attr in documents.items():
+	# 			for key, value in actual_documents[doc].items():
+	# 				actual_documents[doc][key] = attr[key]
+	# 	except KeyError:
+	# 		print(KeyError)
+	# 		actual_documents = self._args[0].documents
+	# 	return actual_documents
+
+	def validate(self, data):
+		return data
+
+	def update(self, instance, validated_data):
+		instance.documents = validated_data.get('documents', instance.documents)
+		#print(instance)
+		return instance
 
 class ProfileSerializer(serializers.ModelSerializer):
 	account = AccountSerializer()

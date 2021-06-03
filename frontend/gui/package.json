@@ -7,7 +7,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "antd": "^4.4.0",
-    "axios": ">=0.21.1"
+    "axios": ">=0.21.1",
     "package.json": "^2.0.1",
     "react": "^16.13.1",
     "react-console-log-plus-hook": "0.0.2",
@@ -15,7 +15,7 @@
     "react-native-logs": "^2.2.1",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.3",
+    "react-scripts": "^4.0.3",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "typescript": "^4.0.3"
