@@ -6,14 +6,64 @@ from allauth.utils import email_address_exists
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
 from rest_framework.authtoken.models import Token
+from django.conf import settings
+from django.contrib.auth import get_user_model, authenticate
+
+# Class to get the auth token from an authenticated account through email
+class CustomAuthTokenSerializer(serializers.Serializer):
+	email = serializers.EmailField(
+			label = _("Email"),
+			write_only = True
+		)
+	password = serializers.CharField(
+		label=_("Password"),
+		style={'input_type': 'password'},
+		trim_whitespace=False,
+		write_only=True
+	)
+
+	token = serializers.CharField(
+		label=_("Token"),
+		read_only=True
+	)
+
+	def authenticate(self, **kwargs):
+		return authenticate(self.context['request'], **kwargs)
+
+	def _validate_email(self, email, password):
+		user = None
+
+		if email and password:
+			user = self.authenticate(email=email, password=password)
+		else:
+			msg = _('Must include "email" and "password".')
+			raise exceptions.ValidationError(msg)
+
+		return user
+
+	def validate(self, attrs):
+		email = attrs.get('email')
+		password = attrs.get('password')
+
+		if email and password:
+			user = self._validate_email(email, password)
+			if not user:
+				msg = _('Unable to log in with provided credentials.')
+				raise serializers.ValidationError(msg, code='authorization')
+		else:
+			msg = _('Must include "email" and "password".')
+			raise serializers.ValidationError(msg, code='authorization')
+		
+		attrs['user'] = user
+		return attrs
 
 class AccountSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Account
-		fields = ['id','email','first_name','last_name','type_user',]
+		fields = ['id','email','first_name','last_name','user_type',]
 		extra_kwargs = {
 			'email': {'read_only': True},
-			'type_user': {'read_only': True}
+			'user_type': {'read_only': True}
 		}
 
 class FileSerializer(serializers.Serializer):
@@ -91,7 +141,9 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 	def update(self, instance, validated_data):
 		account_data = validated_data.pop('account')
+
 		account = (instance.account)
+		print(account_data)
 		
 		instance.enrollment = validated_data.get('enrollment', instance.enrollment)
 		instance.career = validated_data.get('career', instance.career)
@@ -101,6 +153,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 		instance.accurate_docs = validated_data.get('accurate_docs', instance.accurate_docs)
 		instance.documents = validated_data.get('documents', instance.documents)
 		instance.account = validated_data.get('account', instance.account)
+		
 		instance.save()
 
 		account.first_name = account_data.get('first_name', account.first_name)
@@ -108,6 +161,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 		# the email can't be changed, account serializer email field is read_only
 		# account.email = account_data.get('email', account.email)
 		account.save()
+
+		
 
 		return instance	
 
@@ -121,7 +176,7 @@ class RegisterSerializer(serializers.Serializer):
 	email = serializers.EmailField(required=allauth_settings.EMAIL_REQUIRED)
 	first_name = serializers.CharField(required=True, write_only=True)
 	last_name = serializers.CharField(required=True, write_only=True)
-	type_user = serializers.CharField(required=True, write_only=True)
+	user_type = serializers.CharField(required=True, write_only=True)
 	password1 = serializers.CharField(required=True, write_only=True)
 	password2 = serializers.CharField(required=True, write_only=True)
 	# profile data
@@ -141,9 +196,9 @@ class RegisterSerializer(serializers.Serializer):
 		# check if enrollment is unique
 		return enrollment
 
-	def validate_type_user(self, type_user):
+	def validate_user_type(self, user_type):
 		# set user as Egresado
-		return "Egresado"
+		return "USER_GRADUATE"
 
 	def validate_career(self, career):
 		# check if career is valid
@@ -167,7 +222,7 @@ class RegisterSerializer(serializers.Serializer):
 			'last_name': self.validated_data.get('last_name', ''),
 			'password1': self.validated_data.get('password1', ''),
 			'email': self.validated_data.get('email', ''),
-			'type_user': self.validated_data.get('type_user',''),
+			'user_type': self.validated_data.get('user_type',''),
 			'enrollment': self.validated_data.get('enrollment',''),
 			'career': self.validated_data.get('career',''),
 			'gender': self.validated_data.get('gender',''),
@@ -183,12 +238,13 @@ class RegisterSerializer(serializers.Serializer):
 		return attrs
 
 	def save(self, request):
+		print("entrando a registro")
 		# create and save account
 		new_account = Account(
 			email=request.data['email'],
 			first_name=request.data['first_name'],
 			last_name=request.data['last_name'],
-			type_user=request.data['type_user'], 
+			user_type=request.data['user_type'], 
 			)
 		new_account.set_password(request.data['password1'])
 		new_account.save()
@@ -198,6 +254,7 @@ class RegisterSerializer(serializers.Serializer):
 			enrollment=request.data['enrollment'],
 			career=request.data['career'],
 			gender=request.data['gender'],
+			status="STATUS_00",
 			)
 
 		# make a default documents properties

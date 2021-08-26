@@ -1,60 +1,69 @@
 import React, { Fragment } from "react";
-import { Divider, Form, Input, Button, Select } from "antd";
-import axios from "axios";
+import { Divider, Form, Input, Button, Select, Card } from "antd";
 import "antd/dist/antd.css";
-import * as action from "../../../store/actions/account";
+import * as actions from "../../../store/actions/account";
 import { connect } from "react-redux";
 
 class ValidateInfo extends React.Component {
-	state = { account: [] };
+	componentDidMount() {}
 
-	getUserData() {
-		var token = localStorage.getItem("token");
-		if (token === null) {
-			//this.props.history.push("/login/");
-		} else {
-			axios.defaults.headers = {
-				"Content-Type": "application/json",
-				Authorization: `Token ${token}`,
-			};
-			axios.get("http://127.0.0.1:8000/api/account/").then((response) => {
-				this.setState({
-					account: response.data,
-				});
-				console.log(this.state);
-			});
+	componentDidUpdate() {
+		if (!this.props.account.loading) {
+			//when isn't loading the loggin
+			if (this.props.account.error != null) {
+				console.log("error");
+			} else {
+				console.log("se han cargado los datos del usuario");
+			}
 		}
 	}
 
-	componentDidMount() {
-		this.getUserData();
-	}
+	onFinish = (values, oldValues) => {
+		/*Send data updated to store account actions*/
+		if (values.first_name === undefined)
+			values.first_name = oldValues.first_name;
+		if (values.last_name === undefined)
+			values.last_name = oldValues.last_name;
+		if (values.enrollment === undefined)
+			values.enrollment = oldValues.enrollment;
+		if (values.career === undefined) values.career = oldValues.career;
+		if (values.gender === undefined) values.gender = oldValues.gender;
+
+		/*this.props.callbackFromParent(1);*/
+		this.props.onUpdate(
+			values.first_name,
+			values.last_name,
+			values.enrollment,
+			values.career,
+			values.gender,
+			this.props.account.payload.titulation_type
+		);
+	};
 
 	render() {
-		const onFinish = (values) => {
-			//console.log(values);
-			var account_data = this.state.account[0];
-			if (values.first_name === undefined)
-				values.first_name = account_data.account.first_name;
-			if (values.last_name === undefined)
-				values.last_name = account_data.account.last_name;
-			if (values.enrollment === undefined)
-				values.enrollment = account_data.enrollment;
-			if (values.career === undefined)
-				values.career = account_data.career;
-			if (values.gender === undefined)
-				values.gender = account_data.gender;
+		const dataValues = (data) => {
+			/*Need receive props.data to return main profile data*/
+			return {
+				// eslint-disable-next-line
+				["first_name"]: data.account.first_name,
+				// eslint-disable-next-line
+				["last_name"]: data.account.last_name,
+				// eslint-disable-next-line
+				["enrollment"]: data.enrollment,
+				// eslint-disable-next-line
+				["career"]: data.career,
+				// eslint-disable-next-line
+				["gender"]: data.gender,
+			};
+		};
 
-			this.props.callbackFromParent("2");
-
-			this.props.onUpdate(
-				values.first_name,
-				values.last_name,
-				values.enrollment,
-				values.career,
-				values.gender,
-				account_data.titulation_type
-			);
+		const layout = {
+			labelCol: {
+				span: 8,
+			},
+			wrapperCol: {
+				span: 1,
+			},
 		};
 
 		let lastIndex = 0;
@@ -63,139 +72,206 @@ class ValidateInfo extends React.Component {
 			return lastIndex;
 		};
 
-		const layout = {
-			labelCol: {
-				span: 8,
-			},
-			wrapperCol: {
-				span: 16,
-			},
-		};
-
-		const dataValues = this.state.account.map((profile) => {
-			// eslint-disable-next-line
-			return {
-				["name"]: profile.account.first_name,
-				["last_name"]: profile.account.last_name,
-				["enrollment"]: profile.enrollment,
-				["career"]: profile.career,
-				["gender"]: profile.gender,
-			};
-		});
-
-		const profiles = this.state.account.map((profile) => {
-			return (
-				<div key={updateIndex()}>
-					<Form.Item
-						name="name"
-						label="Nombre(s)"
-						key={updateIndex()}
-						rules={null}
-					>
-						<Input style={{ width: 200 }} size="large" />
-					</Form.Item>
-					<Form.Item
-						name="last_name"
-						label="Apellidos"
-						rules={null}
-						key={updateIndex()}
-					>
-						<Input size="large" />
-					</Form.Item>
-
-					<Form.Item
-						key={updateIndex()}
-						name="enrollment"
-						label="Matrícula"
-						rules={[
-							{
-								type: "number",
-							},
-						]}
-					>
-						<Input style={{ width: 160 }} size="large" />
-					</Form.Item>
-					<Form.Item
-						key={updateIndex()}
-						label="Carrera"
-						name="career"
-						rules={[
-							{
-								message: "Por favor seleccione su carrera!",
-							},
-						]}
-					>
-						<Select size="large" style={{ width: 200 }}>
-							<Select.Option value="eletromecanica">
-								Ing. Electromecánica
-							</Select.Option>
-							<Select.Option value="electronica">
-								Ing. Electrónica
-							</Select.Option>
-							<Select.Option value="gestion">
-								Ing. Gestión Empresarial
-							</Select.Option>
-							<Select.Option value="industrial">
-								Ing. Industrial
-							</Select.Option>
-							<Select.Option value="mecatronica">
-								Ing. Mecatrónica
-							</Select.Option>
-							<Select.Option value="sistemas">
-								Ing. Sistemas Computacionales
-							</Select.Option>
-							<Select.Option value="administracion">
-								Lic. Administración
-							</Select.Option>
-						</Select>
-					</Form.Item>
-					<Form.Item
-						label="Género"
-						key={updateIndex()}
-						name="gender"
-						rules={[
-							{
-								message: "Por favor seleccione una opción!",
-							},
-						]}
-					>
-						<Select style={{ width: 160 }} value="M" size="large">
-							<Select.Option value="M">Masculino</Select.Option>
-							<Select.Option value="F">Femenino</Select.Option>
-							<Select.Option value="O">Otro</Select.Option>
-						</Select>
-					</Form.Item>
-				</div>
-			);
-		});
-
 		return (
 			<div>
 				<Divider orientation="center">Información personal</Divider>
-				{dataValues[0] !== undefined ? (
+				{this.props.account.payload !== null &&
+				this.props.loading === false ? (
 					<Fragment>
 						<p>
 							Verifique que toda su información personal sea
 							correcta, esto para evitar problemas durante el
 							proceso. Los cambios se guardarán al dar siguiente.
 						</p>
-						<Form
-							{...layout}
-							name="nest-messages"
-							onFinish={(values) => onFinish(values)}
-							validateMessages={null}
-							initialValues={dataValues[0]}
+						<div
+							style={{
+								display: "flex",
+
+								width: "100%",
+
+								justifyContent: "center",
+							}}
 						>
-							{profiles}
-							<Form.Item
-								wrapperCol={{ ...layout.wrapperCol, offset: 8 }}
-								orientation="right"
+							<Form
+								labelCol={{ ...layout.labelCol }}
+								name="validate-profile"
+								onFinish={(values) =>
+									this.onFinish(
+										values,
+										dataValues(this.props.account.payload)
+									)
+								}
+								validateMessages={null}
+								scrollToFirstError
+								initialValues={dataValues(
+									this.props.account.payload
+								)}
 							>
-								<Button type="primary" htmlType="submit">
-									Siguiente
-								</Button>
-							</Form.Item>
-						</Form>
+								<Card
+									key={updateIndex()}
+									title="Datos"
+									style={{
+										width: 800,
+										alignSelf: "center",
+										margin: "1%",
+										//fontWeight: "bold",
+									}}
+								>
+									<div key={updateIndex()}>
+										<Form.Item
+											key={updateIndex()}
+											label="Nombre completo"
+											rules={null}
+											style={{ marginBottom: 0 }}
+										>
+											<Form.Item
+												key={updateIndex()}
+												name="first_name"
+												rules={[
+													{
+														required: true,
+														message:
+															"Por favor introduce tu nombre!",
+													},
+												]}
+												hasFeedback
+												style={{
+													display: "inline-block",
+													width: "calc(50% - 8px)",
+												}}
+											>
+												<Input
+													placeholder="Nombre(s)"
+													size="large"
+												/>
+											</Form.Item>
+											<Form.Item
+												key={updateIndex()}
+												name="last_name"
+												rules={[
+													{
+														required: true,
+														message:
+															"Por favor introduce tus apellidos!",
+													},
+												]}
+												hasFeedback
+												style={{
+													display: "inline-block",
+													width: "calc(50% - 8px)",
+													margin: "0 8px",
+												}}
+											>
+												<Input
+													placeholder="Apellidos"
+													size="large"
+												/>
+											</Form.Item>
+										</Form.Item>
+										<Form.Item
+											key={updateIndex()}
+											name="enrollment"
+											label="Matrícula"
+											rules={[
+												{
+													required: true,
+													tye: "number",
+													message:
+														"Por favor introduce tu matrícula!",
+												},
+											]}
+											hasFeedback
+										>
+											<Input
+												style={{ width: 160 }}
+												size="large"
+											/>
+										</Form.Item>
+										<Form.Item
+											key={updateIndex()}
+											label="Carrera"
+											name="career"
+											rules={[
+												{
+													required: true,
+													message:
+														"Por favor seleccione su carrera!",
+												},
+											]}
+											hasFeedback
+										>
+											<Select
+												size="large"
+												style={{ width: 200 }}
+											>
+												<Select.Option value="eletromecanica">
+													Ing. Electromecánica
+												</Select.Option>
+												<Select.Option value="electronica">
+													Ing. Electrónica
+												</Select.Option>
+												<Select.Option value="gestion">
+													Ing. Gestión Empresarial
+												</Select.Option>
+												<Select.Option value="industrial">
+													Ing. Industrial
+												</Select.Option>
+												<Select.Option value="mecatronica">
+													Ing. Mecatrónica
+												</Select.Option>
+												<Select.Option value="sistemas">
+													Ing. Sistemas
+													Computacionales
+												</Select.Option>
+												<Select.Option value="administracion">
+													Lic. Administración
+												</Select.Option>
+											</Select>
+										</Form.Item>
+										<Form.Item
+											label="Género"
+											key={updateIndex()}
+											name="gender"
+											rules={[
+												{
+													required: true,
+													message:
+														"Por favor seleccione una opcion!",
+												},
+											]}
+											hasFeedback
+										>
+											<Select
+												style={{ width: 160 }}
+												value="M"
+												size="large"
+											>
+												<Select.Option value="mas">
+													Masculino
+												</Select.Option>
+												<Select.Option value="fem">
+													Femenino
+												</Select.Option>
+												<Select.Option value="ind">
+													Otro
+												</Select.Option>
+											</Select>
+										</Form.Item>
+									</div>
+								</Card>
+								<Form.Item
+									wrapperCol={{
+										...layout.wrapperCol,
+										offset: 8,
+									}}
+									orientation="right"
+								>
+									<Button type="primary" htmlType="submit">
+										Siguiente
+									</Button>
+								</Form.Item>
+							</Form>
+						</div>
 					</Fragment>
 				) : (
 					<p>CARGANDO</p>
@@ -207,8 +283,9 @@ class ValidateInfo extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		token: state.token,
-		name: state.name,
+		account: state.account,
+		loading: state.account.loading,
+		error: state.account.error,
 	};
 };
 
@@ -223,7 +300,7 @@ const mapDispatchToProps = (dispatch) => {
 			titulation_type
 		) =>
 			dispatch(
-				action.accountUpdate(
+				actions.accountUpdate(
 					first_name,
 					last_name,
 					enrollment,

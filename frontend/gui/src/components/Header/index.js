@@ -26,7 +26,7 @@ class NormalHeader extends React.Component {
 							title={
 								<span>
 									<UserOutlined />
-									{localStorage.getItem("all_name")}
+									{this.props.user_name}
 								</span>
 							}
 						>

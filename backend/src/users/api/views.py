@@ -23,7 +23,6 @@ class UploadDocumentsView(viewsets.ModelViewSet):
         return profile
 
     def update(self, request, *args, **kwargs):
-        print("entrando a update")
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         doc = ValidationFiles()
@@ -42,10 +41,8 @@ class UploadDocumentsView(viewsets.ModelViewSet):
 class FilesView(views.APIView):
     parser_classes = (MultiPartParser, FormParser)
     def get(self, request, *args, **kwargs):
-        print("entrando ")
         results = FileSerializer().data
         return Response(results)
-
 
     def post(self, request, *args, **kwargs):
         serializer = FileSerializer(data=request.data)
@@ -57,10 +54,10 @@ class FilesView(views.APIView):
         return Response(status=204)
 
 class AccountViewSet(viewsets.ModelViewSet):
-    #permission_classes = (IsAuthenticated,)  
+    permission_classes = (IsAuthenticated,)  
     serializer_class = AccountSerializer
     queryset = Account.objects.all()
-    # return all data for authenticated user
+    # return all own data for authenticated user
     # superuser true get all data
     # superuser false get own data
     def get_queryset(self):
@@ -71,14 +68,13 @@ class AccountViewSet(viewsets.ModelViewSet):
         return Account.objects.filter(id=user.id)
 
     def get_object(self):
-        print("entra aqui")
         obj = get_object_or_404(Account.objects.filter(id=self.kwargs["pk"]))
         #obj = get_object_or_404(Account.objects.filter(id=16760256))
         self.check_object_permissions(self.request, obj)
         return obj
 
 class GraduateProfileViewSet(viewsets.ModelViewSet):
-    #permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = ProfileSerializer
     queryset = GraduateProfile.objects.all()
 
@@ -88,7 +84,7 @@ class GraduateProfileViewSet(viewsets.ModelViewSet):
         if user.is_superuser:
             return GraduateProfile.objects.all()
         ### CHANGE TO account_id = user.id ===========================================
-        profile = GraduateProfile.objects.filter(enrollment=self.kwargs["pk"])
+        profile = GraduateProfile.objects.filter(account_id = user)#enrollment=self.kwargs["pk"])
         return profile
 
     # don't needed, only for reference

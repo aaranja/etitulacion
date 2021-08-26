@@ -14,7 +14,7 @@ class Account(AbstractUser):
 
 	# all object are provided from CustomUserManager
 	objects = AccountManager()
-	type_user = models.CharField(blank=True, max_length=15)
+	user_type = models.CharField(blank=True, max_length=15)
 	
 	def __str__(self):
 		return self.email

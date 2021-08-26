@@ -7,10 +7,11 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (token) => {
+export const authSuccess = (token, user_type) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
     token: token,
+    user_type: user_type,
   };
 };
 
@@ -24,6 +25,9 @@ export const authFail = (error) => {
 export const logout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("expirationDate");
+  localStorage.removeItem("all_name");
+  localStorage.removeItem("userID");
+  localStorage.removeItem("user_type");
   return {
     type: actionTypes.AUTH_LOGOUT,
   };
@@ -41,17 +45,22 @@ export const authLogin = (email, password) => {
   return (dispatch) => {
     dispatch(authStart());
     axios
-      .post("http://127.0.0.1:8000/rest-auth/login/", {
+      .post("http://127.0.0.1:8000/authenticate/", {
         email: email,
         password: password,
       })
       .then((res) => {
-        const token = res.data.key;
+        const token = res.data.token;
+        const user_id = res.data.user_id;
+        const user_type = res.data.user_type;
+        console.log(res.data);
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-        console.log("login aceptado: ".concat(expirationDate));
+        /*console.log("login aceptado: ".concat(expirationDate));*/
         localStorage.setItem("token", token);
+        localStorage.setItem("userID", user_id);
+        localStorage.setItem("user_type", user_type);
         localStorage.setItem("expirationDate", expirationDate);
-        dispatch(authSuccess(token));
+        dispatch(authSuccess(token, user_type));
         dispatch(checkAuthTimeout(3600));
       })
       .catch((err) => {
@@ -91,7 +100,7 @@ export const authSignUp = (
         email: email,
         first_name: first_name,
         last_name: last_name,
-        type_user: "egresado",
+        user_type: "USER_GRADUATE",
         password1: password1,
         password2: password2,
         enrollment: enrollment,
@@ -116,6 +125,7 @@ export const authSignUp = (
 export const authCheckState = () => {
   return (dispatch) => {
     const token = localStorage.getItem("token");
+    const user_type = localStorage.getItem("user_type");
     //console.log(token.concat("TESTT"));
     if (token === undefined) {
       dispatch(logout());
@@ -126,7 +136,7 @@ export const authCheckState = () => {
       } else {
         const expirationTime = expirationDate.getTime() - new Date().getTime();
         const newDate = expirationTime / 1000;
-        dispatch(authSuccess(token));
+        dispatch(authSuccess(token, user_type));
         dispatch(checkAuthTimeout(newDate));
       }
     }

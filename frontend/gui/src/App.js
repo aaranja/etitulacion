@@ -27,7 +27,8 @@ export class App extends Component {
 
 function mapStateToProps(state, ownProps = {}) {
   return {
-    isAuthenticated: state.token !== null,
+    isAuthenticated: state.auth.token !== null,
+    user_type: state.auth.user_type,
   };
 }
 

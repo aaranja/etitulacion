@@ -7,9 +7,8 @@ const { Step } = Steps;
 class Sidebar extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			current: props.current,
-		};
+		/*console.log("cambiando a:", props.current);*/
+		this.state = { current: props.current };
 	}
 
 	onChange = (current) => {
@@ -17,8 +16,14 @@ class Sidebar extends React.Component {
 		this.setState({ current });
 	};
 
+	componentDidUpdate(prevProps) {
+		/* cambiar el step actual por el nuevo */
+		if (this.props.current !== prevProps.current) {
+			this.setState({ current: this.props.current });
+		}
+	}
+
 	render() {
-		const { current } = this.state;
 		return (
 			<Sider width={200} className="site-layout-background">
 				<Menu
@@ -35,10 +40,12 @@ class Sidebar extends React.Component {
 							Proceso
 						</Divider>
 						<Steps
-							current={current}
-							onChange={this.onChange}
+							current={this.state.current}
 							direction="vertical"
-							style={{ paddingLeft: "7%" }}
+							style={{
+								paddingLeft: "8%",
+								borderRight: "0",
+							}}
 						>
 							<Step
 								title="Información"

@@ -3,10 +3,10 @@ import {
 	Divider,
 	Table,
 	Input,
-	Popconfirm,
+	/*	Popconfirm,*/
 	Form,
 	Upload,
-	message,
+	/*	message,*/
 	Button,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
@@ -179,7 +179,7 @@ class UploadDocs extends React.Component {
 			{
 				title: "Documento",
 				dataIndex: "documento",
-				width: "30%",
+				width: "15%",
 			},
 			{
 				title: "Estatus",
@@ -195,6 +195,7 @@ class UploadDocs extends React.Component {
 						onChange: this.handleChange(record.name),
 						multiple: false,
 					};
+					/*console.log(record);*/
 					var fileList = null;
 					if (record.key !== undefined) {
 						var file = this.state[record.name];

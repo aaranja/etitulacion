@@ -1,7 +1,7 @@
-const form = {
+export const form = {
   labelCol: {
     xs: {
-      span: 24,
+      span: 4,
     },
     sm: {
       span: 8,
@@ -16,7 +16,7 @@ const form = {
     },
   },
 };
-const tail = {
+export const tail = {
   wrapperCol: {
     xs: {
       span: 24,
