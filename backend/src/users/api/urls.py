@@ -1,14 +1,16 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
-from .views import AccountViewSet, GraduateProfileViewSet, UploadDocumentsView, FilesView
+from .views import AccountViewSet, GraduateProfileViewSet, UploadDocumentsView, FilesView, VerifyInformationView
 
 router = DefaultRouter()
 router.register(r'account', GraduateProfileViewSet, basename='profile')
 router.register(r'documents', UploadDocumentsView, basename='documents')
+# router.register(r'process/1', VerifyInformationView, basename='process_1')
 router.register(r'', AccountViewSet, basename='user')
 
 urlpatterns = [
-	path('<pk>/upload/', FilesView.as_view()),
+	path(r'<pk>/upload/', FilesView.as_view()),
+	path('process/1/<pk>/', VerifyInformationView.as_view()),
 ]
 # from .views import (
 #     AccountListView,

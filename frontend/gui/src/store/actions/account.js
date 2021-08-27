@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
+import * as transactionTypes from "./transactionTypes";
 import { logout } from "./auth";
 
 export const transactionStart = () => {
@@ -36,9 +37,7 @@ export const accountUpdate = (
       dispatch(logout());
     } else {
       dispatch(transactionStart());
-
       var account = { first_name: first_name, last_name: last_name };
-      console.log(account);
     }
     axios.defaults.headers = {
       "Content-Type": "application/json",
@@ -59,7 +58,6 @@ export const accountUpdate = (
         dispatch(transactionSuccess(res.data));
       })
       .catch((error) => {
-        console.log("error");
         dispatch(transactionFail(error));
       });
   };

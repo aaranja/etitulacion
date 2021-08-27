@@ -78,7 +78,6 @@ class FileSerializer(serializers.Serializer):
 		print("======esta sucediendo=========")
 		return True
 
-
 class DocumentsSerializer(serializers.ModelSerializer):
 	documents = serializers.JSONField()
 	class Meta:
@@ -129,7 +128,6 @@ class ProfileSerializer(serializers.ModelSerializer):
 		]
 
 		extra_kwargs = {
-			'status': {'read_only': True},
 			'accurate_docs': {'read_only': True},
 			'enrollment': {'read_only':True},
 		}
@@ -141,9 +139,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 	def update(self, instance, validated_data):
 		account_data = validated_data.pop('account')
-
 		account = (instance.account)
-		print(account_data)
 		
 		instance.enrollment = validated_data.get('enrollment', instance.enrollment)
 		instance.career = validated_data.get('career', instance.career)
@@ -161,9 +157,6 @@ class ProfileSerializer(serializers.ModelSerializer):
 		# the email can't be changed, account serializer email field is read_only
 		# account.email = account_data.get('email', account.email)
 		account.save()
-
-		
-
 		return instance	
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -228,13 +221,16 @@ class RegisterSerializer(serializers.Serializer):
 			'gender': self.validated_data.get('gender',''),
 		}
 
-	def attrsDocs(self, name):
+	def attrsDocs(self, index, name, keyName):
 		attrs = dict()
-		attrs['fullName'] 	=  name
+		attrs['key']		= str(index)
+		attrs['keynum'] 	= index
+		attrs['fullName'] 	= name
 		attrs['fileName'] 	= ""
 		attrs['status']		= 'empty'
 		attrs['path']		= 'none'
 		attrs['url']		= 'none'
+		attrs['keyName']	= keyName
 		return attrs
 
 	def save(self, request):
@@ -258,13 +254,19 @@ class RegisterSerializer(serializers.Serializer):
 			)
 
 		# make a default documents properties
-		documents = dict()
-		documents["acta"]		= self.attrsDocs('Acta de Nacimimento')
-		documents["curp"]		= self.attrsDocs('C.U.R.P.')
-		documents["titulo_bach"]= self.attrsDocs('Título de bachillerato')
-		documents["ingles"]		= self.attrsDocs('Constancia de inglés')
-		documents["cni"]		= self.attrsDocs('Constancia de no inconvenientes')
-
+		
+		documents = []
+		documents.append(self.attrsDocs(0,'Acta de Nacimimento', "ACTA"))
+		documents.append(self.attrsDocs(1,'C.U.R.P.', 'CURP'))
+		documents.append(self.attrsDocs(2,'Título de bachillerato','BACH'))
+		documents.append(self.attrsDocs(3,'Constancia de acreditación del idioma extranjero','CING'))
+		documents.append(self.attrsDocs(4,'Constancia de no inconvenientes','CDNI'))
+		documents.append(self.attrsDocs(5,'Certificado de licenciatura','CLIC'))
+		documents.append(self.attrsDocs(6,'Constancia de servicio social','CDNI'))
+		documents.append(self.attrsDocs(7,'Equivalencia y/o dictamen de convalidación de estudios','CDNI'))
+		documents.append(self.attrsDocs(8,'Acuse del registro en el SAT'))
+		documents.append(self.attrsDocs(9,'Comprobante de no adeudo'))
+		
 		# save documents and account on new profile
 		new_profile.documents = documents
 		new_profile.account = new_account

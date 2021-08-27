@@ -3,8 +3,8 @@ import { Layout, Card } from "antd";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
-import ValidateInfo from "./Steps/ValidateInfo";
-import UploadDocs from "./Steps/UploadDocs";
+import ValidateInformation from "./Steps/ValidateInformation";
+import UploadDocuments from "./Steps/UploadDocuments";
 import currentStep from "./utils";
 
 const { Content } = Layout;
@@ -26,10 +26,16 @@ class Process extends React.Component {
 		const currentView = (step) => {
 			switch (step) {
 				case 1:
-					return <UploadDocs />;
+					return (
+						<UploadDocuments
+							callbackFromParent={this.getChildState}
+						/>
+					);
 				default:
 					return (
-						<ValidateInfo callbackFromParent={this.getChildState} />
+						<ValidateInformation
+							callbackFromParent={this.getChildState}
+						/>
 					);
 			}
 		};

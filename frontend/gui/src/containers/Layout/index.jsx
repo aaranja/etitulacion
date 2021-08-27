@@ -49,11 +49,14 @@ class NormalLayout extends React.Component {
 const mapStateToProps = (state) => {
 	/*store name into props to put it in header*/
 	var name = null;
-	if (state.account.payload !== null) {
-		name =
-			state.account.payload.account["first_name"] +
-			" " +
-			state.account.payload.account["last_name"];
+	if (state.account !== undefined) {
+		console.log(state);
+		if (state.account.payload !== null) {
+			name =
+				state.account.payload.account["first_name"] +
+				" " +
+				state.account.payload.account["last_name"];
+		}
 	}
 	return {
 		name: name,

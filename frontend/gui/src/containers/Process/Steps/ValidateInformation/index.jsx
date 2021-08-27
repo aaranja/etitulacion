@@ -1,8 +1,18 @@
 import React, { Fragment } from "react";
-import { Divider, Form, Input, Button, Select, Card } from "antd";
+import {
+	Divider,
+	Form,
+	Input,
+	Button,
+	Select,
+	Card,
+	PageHeader,
+	Descriptions,
+} from "antd";
 import "antd/dist/antd.css";
-import * as actions from "../../../store/actions/process";
+import * as actions from "../../../../store/actions/process";
 import { connect } from "react-redux";
+import { ArrowRightOutlined } from "@ant-design/icons";
 
 class ValidateInfo extends React.Component {
 	componentDidMount() {}
@@ -68,15 +78,33 @@ class ValidateInfo extends React.Component {
 
 		return (
 			<div>
-				<Divider orientation="center">Información personal</Divider>
-				{this.props.account.payload !== null &&
-				this.props.loading === false ? (
-					<Fragment>
-						<p>
+				<PageHeader
+					ghost={false}
+					title="Información"
+					/*subTitle="This is a subtitle"*/
+					extra={[
+						<Button
+							key="1"
+							type="primary"
+							htmlType="submit"
+							form="validate-profile"
+						>
+							Siguiente <ArrowRightOutlined />
+						</Button>,
+					]}
+				>
+					<Descriptions size="small" column={1}>
+						<Descriptions.Item label="Instrucciones">
 							Verifique que toda su información personal sea
 							correcta, esto para evitar problemas durante el
 							proceso. Los cambios se guardarán al dar siguiente.
-						</p>
+						</Descriptions.Item>
+					</Descriptions>
+				</PageHeader>
+				<Divider orientation="center">Datos personales</Divider>
+				{this.props.account.payload !== null &&
+				this.props.loading === false ? (
+					<Fragment>
 						<div
 							style={{
 								display: "flex",
@@ -169,7 +197,7 @@ class ValidateInfo extends React.Component {
 											rules={[
 												{
 													required: true,
-													tye: "number",
+
 													message:
 														"Por favor introduce tu matrícula!",
 												},
@@ -179,6 +207,14 @@ class ValidateInfo extends React.Component {
 											<Input
 												style={{ width: 160 }}
 												size="large"
+												maxLength="8"
+												onKeyPress={(event) => {
+													if (
+														!/[0-9]/.test(event.key)
+													) {
+														event.preventDefault();
+													}
+												}}
 											/>
 										</Form.Item>
 										<Form.Item
@@ -253,17 +289,6 @@ class ValidateInfo extends React.Component {
 										</Form.Item>
 									</div>
 								</Card>
-								<Form.Item
-									wrapperCol={{
-										...layout.wrapperCol,
-										offset: 8,
-									}}
-									orientation="right"
-								>
-									<Button type="primary" htmlType="submit">
-										Siguiente
-									</Button>
-								</Form.Item>
 							</Form>
 						</div>
 					</Fragment>

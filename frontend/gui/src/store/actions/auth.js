@@ -80,16 +80,6 @@ export const authSignUp = (
   career,
   gender
 ) => {
-  console.log(
-    email,
-    first_name,
-    last_name,
-    password1,
-    password2,
-    enrollment,
-    career,
-    gender
-  );
   return (dispatch) => {
     dispatch(authStart());
     axios.defaults.headers = {
@@ -108,12 +98,13 @@ export const authSignUp = (
         gender: gender,
       })
       .then((res) => {
+        var user_type = "USER_GRADUATE";
         console.log(res.data);
         const token = res.data.key;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
         localStorage.setItem("token", token);
         localStorage.setItem("expirationDate", expirationDate);
-        dispatch(authSuccess(token));
+        dispatch(authSuccess(token, user_type));
         dispatch(checkAuthTimeout(3600));
       })
       .catch((err) => {
