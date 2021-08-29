@@ -50,7 +50,6 @@ const mapStateToProps = (state) => {
 	/*store name into props to put it in header*/
 	var name = null;
 	if (state.account !== undefined) {
-		console.log(state);
 		if (state.account.payload !== null) {
 			name =
 				state.account.payload.account["first_name"] +

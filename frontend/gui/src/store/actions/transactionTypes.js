@@ -39,3 +39,23 @@ export const D_Fail = (error) => {
 		error: error,
 	};
 };
+
+export const uploadStart = () => {
+	return {
+		type: actionTypes.UPDATE_DOC_START,
+	};
+};
+
+export const uploadSuccess = (payload) => {
+	return {
+		type: actionTypes.UPDATE_DOC_SUCCESS,
+		payload: payload,
+	};
+};
+
+export const uploadFail = (error) => {
+	return {
+		type: actionTypes.UPDATE_DOC_FAIL,
+		error: error,
+	};
+};

@@ -187,9 +187,12 @@ REST_FRAMEWORK = {
 		# 'rest_framework.authentication.SessionAuthentication',
 	), 
 	# cambiar para permitir subir archivos
-	# 'DEFAULT_PARSER_CLASSES': [
-	#     'rest_framework.parsers.FileUploadParser',
-	# ]
+	'DEFAULT_PARSER_CLASSES': [
+		'rest_framework.parsers.FormParser',
+		'rest_framework.parsers.JSONParser',
+	    'rest_framework.parsers.FileUploadParser',
+	    'rest_framework.parsers.MultiPartParser',
+	]
 }
 
 REST_AUTH_SERIALIZERS = {

@@ -66,49 +66,49 @@ class AccountSerializer(serializers.ModelSerializer):
 			'user_type': {'read_only': True}
 		}
 
-class FileSerializer(serializers.Serializer):
-	acta = serializers.FileField()
-
-	def validate(self, data):
-		print("=============")
-		print(data)
-		return data
-
-	def save(self, request):
-		print("======esta sucediendo=========")
-		return True
-
 class DocumentsSerializer(serializers.ModelSerializer):
 	documents = serializers.JSONField()
+	update_type = serializers.CharField()
+
 	class Meta:
 		model = GraduateProfile
-		fields = ['documents']
-		extra_kwargs = {
-			'documents': {'read_only': True},
-		}
+		fields = ['documents','update_type']
+	
+	def validate_documents(self, documents, *args, **kwargs):
+		prevDoc = self._args[0].documents
+		newDoc = documents[0]
+		
+		if(newDoc['status']== "removed"):
+			# delete a document
+			for i in range(len(prevDoc)):
+				index = i-1
+				currentDoc = prevDoc[index]
+				if(currentDoc['key'] == newDoc['key']):
+					prevDoc.pop(index)
+		else:
+			Replaced = False
+			for i in range(len(prevDoc)):
+				index = i-1
+				if(prevDoc[index]['key'] == newDoc['key']):
+					# replace a document
+					Replaced = True
+					prevDoc[index] = newDoc
+			if(not Replaced):
+				# add new document
+				prevDoc.append(newDoc)
+		return prevDoc
 
-	# def document_file(newfile, file):
-	# 	file['fileName'] = newFile.fileName
-	# 	return file
-
-	# # validate all documents propierties
-	# def validate_documents(self, documents, *args, **kwargs):
-	# 	actual_documents = self._args[0].documents
-	# 	try:
-	# 		for doc, attr in documents.items():
-	# 			for key, value in actual_documents[doc].items():
-	# 				actual_documents[doc][key] = attr[key]
-	# 	except KeyError:
-	# 		print(KeyError)
-	# 		actual_documents = self._args[0].documents
-	# 	return actual_documents
+	def validate_update_type(self, update_type, *args, **kwargs):
+		return update_type
 
 	def validate(self, data):
 		return data
 
 	def update(self, instance, validated_data):
+
+		# print(validated_data)
 		instance.documents = validated_data.get('documents', instance.documents)
-		#print(instance)
+		instance.save()
 		return instance
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -138,6 +138,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 		return documents
 
 	def update(self, instance, validated_data):
+		
+		print("entrando a update")
 		account_data = validated_data.pop('account')
 		account = (instance.account)
 		
@@ -221,18 +223,6 @@ class RegisterSerializer(serializers.Serializer):
 			'gender': self.validated_data.get('gender',''),
 		}
 
-	def attrsDocs(self, index, name, keyName):
-		attrs = dict()
-		attrs['key']		= str(index)
-		attrs['keynum'] 	= index
-		attrs['fullName'] 	= name
-		attrs['fileName'] 	= ""
-		attrs['status']		= 'empty'
-		attrs['path']		= 'none'
-		attrs['url']		= 'none'
-		attrs['keyName']	= keyName
-		return attrs
-
 	def save(self, request):
 		print("entrando a registro")
 		# create and save account
@@ -256,16 +246,6 @@ class RegisterSerializer(serializers.Serializer):
 		# make a default documents properties
 		
 		documents = []
-		documents.append(self.attrsDocs(0,'Acta de Nacimimento', "ACTA"))
-		documents.append(self.attrsDocs(1,'C.U.R.P.', 'CURP'))
-		documents.append(self.attrsDocs(2,'Título de bachillerato','BACH'))
-		documents.append(self.attrsDocs(3,'Constancia de acreditación del idioma extranjero','CING'))
-		documents.append(self.attrsDocs(4,'Constancia de no inconvenientes','CDNI'))
-		documents.append(self.attrsDocs(5,'Certificado de licenciatura','CLIC'))
-		documents.append(self.attrsDocs(6,'Constancia de servicio social','CDNI'))
-		documents.append(self.attrsDocs(7,'Equivalencia y/o dictamen de convalidación de estudios','CDNI'))
-		documents.append(self.attrsDocs(8,'Acuse del registro en el SAT'))
-		documents.append(self.attrsDocs(9,'Comprobante de no adeudo'))
 		
 		# save documents and account on new profile
 		new_profile.documents = documents

@@ -44,7 +44,73 @@ export const processStep2 = (values) => {
 		if (token === undefined) {
 			dispatch(logout());
 		} else {
-			dispatch(transactionTypes._Start());
+			var files = values[1];
+			var dataFiles = values[0];
+			let formData = new FormData();
+			var jsonData = JSON.stringify(dataFiles[2]);
+
+			formData.append("file", files[2]);
+			formData.append("data", jsonData);
+
+			axios
+				.post(
+					`http://127.0.0.1:8000/api/process/2/upload/files/`,
+					formData,
+					{
+						headers: {
+							Authorization: `Token ${token}`,
+							"Content-type": "multipart/form-data",
+						},
+					}
+				)
+				.then((response) => {
+					console.log(response);
+
+					// dispatch(transactionTypes._Success(response.data));
+				})
+				.catch((error) => {
+					console.log(error);
+					// dispatch(transactionTypes._Fail(error));
+				});
+		}
+	};
+};
+
+export const processUploadDocument = (metadata, file, update_type) => {
+	return (dispatch) => {
+		var token = localStorage.getItem("token");
+		if (token === undefined) {
+			dispatch(logout());
+		} else {
+			dispatch(transactionTypes.uploadStart());
+			let formData = new FormData();
+			var jsonData = JSON.stringify(metadata);
+			if (update_type === "upload") {
+				formData.append("file", file);
+			} else {
+				formData.append("file", null);
+			}
+			formData.append("update_type", update_type);
+			formData.append("data", jsonData);
+			axios
+				.put(
+					`http://127.0.0.1:8000/api/process/2/upload/files/`,
+					formData,
+					{
+						headers: {
+							Authorization: `Token ${token}`,
+							"Content-type": "multipart/form-data",
+						},
+					}
+				)
+				.then((response) => {
+					console.log(response);
+					dispatch(transactionTypes.uploadSuccess(response));
+				})
+				.catch((error) => {
+					console.log(error);
+					dispatch(transactionTypes.uploadFail(error));
+				});
 		}
 	};
 };
@@ -66,7 +132,6 @@ export const processGetDocumentsDetails = () => {
 					`http://127.0.0.1:8000/api/process/2/documents/descriptions/`
 				)
 				.then((response) => {
-					console.log(response.data);
 					dispatch(transactionTypes.D_Success(response.data));
 				})
 				.catch((error) => {
