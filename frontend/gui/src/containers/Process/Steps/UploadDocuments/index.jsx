@@ -1,16 +1,36 @@
 import React, { Component } from "react";
-import { Divider, Button, PageHeader, Descriptions } from "antd";
-import { ArrowRightOutlined, SaveOutlined } from "@ant-design/icons";
+import {
+	Divider,
+	Button,
+	PageHeader,
+	Descriptions,
+	Tag,
+	notification,
+} from "antd";
+import {
+	ArrowRightOutlined,
+	SaveOutlined,
+	CloseCircleOutlined,
+} from "@ant-design/icons";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions/process";
 import DocumentsTable from "./DocumentsTable";
+import { SmileOutlined } from "@ant-design/icons";
 
 class UploadDocuments extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			isChange: false,
+		};
+	}
+
 	componentDidMount() {
 		/*reference to table documents*/
 		this.uploading = React.createRef();
 		/* get documents details */
 		this.props.getDocumentsDetails();
+		console.log(this.uploading);
 	}
 
 	componentDidUpdate() {
@@ -18,14 +38,15 @@ class UploadDocuments extends Component {
 		if (this.props.upload.loading !== true) {
 			if (this.props.upload.payload !== null) {
 				const data = this.props.upload.payload;
-				this.uploading.current.onUploadSuccess(
-					data.data.key,
-					data.data.status
-				);
-			}
-		}
+				if (this.uploading.current !== null) {
+					console.log(this.uploading.current.state);
 
-		if (!this.props.loading) {
+					this.uploading.current.onUploadSuccess(
+						data.data.key,
+						data.data.status
+					);
+				}
+			}
 		}
 	}
 
@@ -49,12 +70,59 @@ class UploadDocuments extends Component {
 						file[key],
 						"removed"
 					);
-					// console.log(metadata[key]);
-					// console.log(file[key]);
 				}
 			}
 		}
-		// this.props.uploadDocument(documents);
+
+		// set that the changes have been saved
+		this.setState({
+			isChange: false,
+		});
+	};
+
+	// function to set in the page header if
+	// the user has changes to save
+	newChanges = (isChanged) => {
+		if (isChanged) {
+			this.setState({
+				isChange: isChanged,
+			});
+		}
+	};
+
+	openNotification = (mensaje, type) => {
+		var placement = "topRight";
+		notification.open({
+			message: type,
+			description: mensaje,
+			icon: <CloseCircleOutlined style={{ color: "#FF4848" }} />,
+		});
+	};
+
+	onNextProcess = () => {
+		var able = true;
+		var dataSource = this.uploading.current.state.dataSource;
+		var fileList = this.uploading.current.state.fileList;
+
+		for (const key in dataSource) {
+			if (
+				fileList[key].status === "empty" &&
+				dataSource[key].required === true
+			) {
+				able = false;
+				break;
+			}
+		}
+
+		if (able) {
+			this.props.onNextProcess("STATUS_05");
+		} else {
+			this.openNotification(
+				"Para avanzar termine de subir toda su documentación",
+				"Error"
+			);
+			console.log("no puede avanzar");
+		}
 	};
 
 	render() {
@@ -66,13 +134,20 @@ class UploadDocuments extends Component {
 					title="Documentación"
 					/*subTitle="This is a subtitle"*/
 					extra={[
+						<Tag key="3" visible={this.state.isChange}>
+							Tiene cambios sin guardar
+						</Tag>,
 						<Button
 							key="2"
 							onClick={() => this.onUploadDocuments()}
 						>
 							Guardar <SaveOutlined />
 						</Button>,
-						<Button key="1" type="primary">
+						<Button
+							key="1"
+							type="primary"
+							onClick={() => this.onNextProcess()}
+						>
 							Siguiente <ArrowRightOutlined />
 						</Button>,
 					]}
@@ -93,15 +168,23 @@ class UploadDocuments extends Component {
 					</Descriptions>
 				</PageHeader>
 				<Divider orientation="center">Subir documentación</Divider>
-				<DocumentsTable
-					dataSource={this.props.dataSource}
-					ref={this.uploading}
-				/>
+
+				{this.props.loading !== true ? (
+					<DocumentsTable
+						dataSource={this.props.dataSource}
+						ref={this.uploading}
+						callBack={this.newChanges}
+					/>
+				) : (
+					<p>CARGANDO </p>
+				)}
 			</div>
 		);
 	}
 }
 
+// function to return a merge betweern document
+// metadata and user document, to set into dataSource
 const tableMetadata = (metadata, userDocument) => {
 	var fileName = "";
 	var status = "empty";
@@ -123,25 +206,50 @@ const tableMetadata = (metadata, userDocument) => {
 	};
 };
 
+// function to filter clasification
+// between services, coordination or both
+// return true if clasification is for services
+const getClasification = (metadata) => {
+	var clas = metadata.clasification;
+
+	if (clas === 1 || clas === 3) {
+		return true;
+	}
+
+	return false;
+};
+
 const mapStateToProps = (state) => {
 	var dataSource = [];
 	var metadata = null;
+	// when documents data isn't loading and is in payload,
+	// charge metadata files on datasource
+	// to put in table
 	if (state.servdata.loading !== true && state.servdata.payload !== null) {
 		metadata = state.servdata.payload;
-		console.log(metadata);
 		for (const key in metadata) {
-			dataSource.push(metadata[key]);
+			// return true if document is services clasification
+			if (getClasification(metadata[key])) {
+				// put documents metadata into dataSource
+				dataSource.push(metadata[key]);
+			}
 		}
+		// when user data is loaded, put in datasource to load
+		// the current state of documents
 		if (state.account.loading !== true && state.account.payload !== null) {
+			// metadata of user documents
 			var userDoc = state.account.payload.documents;
 
 			for (const newkey in userDoc) {
 				var docKey = userDoc[newkey].key;
-
-				dataSource[docKey] = tableMetadata(
-					metadata[docKey],
-					userDoc[newkey]
-				);
+				// return true if document is services clasification
+				if (getClasification(metadata[docKey])) {
+					// put user documents metadata into dataSource
+					dataSource[docKey] = tableMetadata(
+						metadata[docKey],
+						userDoc[newkey]
+					);
+				}
 			}
 		}
 	}
@@ -158,7 +266,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		getDocumentsDetails: () =>
 			dispatch(actions.processGetDocumentsDetails()),
-		uploadDocuments: (values) => dispatch(actions.processStep2(values)),
+		onNextProcess: (status) => dispatch(actions.processStep2(status)),
 		uploadDocument: (metadata, file, update_type) =>
 			dispatch(
 				actions.processUploadDocument(metadata, file, update_type)

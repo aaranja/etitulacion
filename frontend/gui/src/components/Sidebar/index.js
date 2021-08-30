@@ -1,14 +1,21 @@
 import React from "react";
-import { Layout, Menu, Steps, Divider } from "antd";
-
+import { Layout, Menu, Steps, Divider, Card } from "antd";
+import {
+	UserOutlined,
+	ProfileOutlined,
+	LogoutOutlined,
+} from "@ant-design/icons";
+import Logo from "../../img/logo-transparent2.png";
 const { Sider } = Layout;
 const { Step } = Steps;
+const { SubMenu } = Menu;
 
 class Sidebar extends React.Component {
 	constructor(props) {
 		super(props);
 		/*console.log("cambiando a:", props.current);*/
 		this.state = { current: props.current };
+		console.log(this.props.name);
 	}
 
 	onChange = (current) => {
@@ -25,17 +32,35 @@ class Sidebar extends React.Component {
 
 	render() {
 		return (
-			<Sider width={200} className="site-layout-background">
-				<Menu
-					mode="inline"
-					defaultSelectedKeys={["1"]}
-					defaultOpenKeys={["sub1"]}
-					style={{ height: "100%", borderRight: 0 }}
+			<Card
+				style={{
+					marginRight: "0.5%",
+					overflow: "auto",
+					position: "fixed",
+					left: 10,
+					minHeight: "90vh",
+					width: 250,
+					display: "flex",
+					flexDirection: "column",
+				}}
+			>
+				<Sider
+					width={200}
+					className="site-layout-background"
+					style={{
+						backgroundColor: "white",
+						display: "flex",
+						flexDirection: "column",
+						justifyContent: "flex-end",
+					}}
 				>
 					<div>
 						<Divider
 							orientation="center"
-							style={{ paddingLeft: "5%", paddingRight: "5%" }}
+							style={{
+								paddingLeft: "5%",
+								paddingRight: "5%",
+							}}
 						>
 							Proceso
 						</Divider>
@@ -65,8 +90,8 @@ class Sidebar extends React.Component {
 							/>
 						</Steps>
 					</div>
-				</Menu>
-			</Sider>
+				</Sider>
+			</Card>
 		);
 	}
 }

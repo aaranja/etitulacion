@@ -31,10 +31,11 @@ class NormalLayout extends React.Component {
 					user_name={this.props.name}
 				/>
 				<Content
+					className="site-layout"
 					style={{
 						padding: "1%",
-						width: "100vw",
-						height: "100vh",
+						overflow: "auto",
+						marginTop: 65,
 					}}
 				>
 					{React.cloneElement(this.props.children, {

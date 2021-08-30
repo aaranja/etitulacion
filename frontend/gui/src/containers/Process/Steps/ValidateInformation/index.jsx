@@ -108,9 +108,7 @@ class ValidateInfo extends React.Component {
 						<div
 							style={{
 								display: "flex",
-
 								width: "100%",
-
 								justifyContent: "center",
 							}}
 						>
@@ -129,166 +127,139 @@ class ValidateInfo extends React.Component {
 									this.props.account.payload
 								)}
 							>
-								<Card
+								<Form.Item
+									label="Nombre(s)"
 									key={updateIndex()}
-									title="Datos"
-									style={{
-										width: 800,
-										alignSelf: "center",
-										margin: "1%",
-										//fontWeight: "bold",
-									}}
+									name="first_name"
+									rules={[
+										{
+											required: true,
+											message:
+												"Por favor introduce tu nombre!",
+										},
+									]}
+									hasFeedback
+									// style={{
+									// 	display: "inline-block",
+									// 	width: "calc(50% - 8px)",
+									// }}
 								>
-									<div key={updateIndex()}>
-										<Form.Item
-											key={updateIndex()}
-											label="Nombre completo"
-											rules={null}
-											style={{ marginBottom: 0 }}
-										>
-											<Form.Item
-												key={updateIndex()}
-												name="first_name"
-												rules={[
-													{
-														required: true,
-														message:
-															"Por favor introduce tu nombre!",
-													},
-												]}
-												hasFeedback
-												style={{
-													display: "inline-block",
-													width: "calc(50% - 8px)",
-												}}
-											>
-												<Input
-													placeholder="Nombre(s)"
-													size="large"
-												/>
-											</Form.Item>
-											<Form.Item
-												key={updateIndex()}
-												name="last_name"
-												rules={[
-													{
-														required: true,
-														message:
-															"Por favor introduce tus apellidos!",
-													},
-												]}
-												hasFeedback
-												style={{
-													display: "inline-block",
-													width: "calc(50% - 8px)",
-													margin: "0 8px",
-												}}
-											>
-												<Input
-													placeholder="Apellidos"
-													size="large"
-												/>
-											</Form.Item>
-										</Form.Item>
-										<Form.Item
-											key={updateIndex()}
-											name="enrollment"
-											label="Matrícula"
-											rules={[
-												{
-													required: true,
+									<Input
+										placeholder="Nombre(s)"
+										size="large"
+									/>
+								</Form.Item>
 
-													message:
-														"Por favor introduce tu matrícula!",
-												},
-											]}
-											hasFeedback
-										>
-											<Input
-												style={{ width: 160 }}
-												size="large"
-												maxLength="8"
-												onKeyPress={(event) => {
-													if (
-														!/[0-9]/.test(event.key)
-													) {
-														event.preventDefault();
-													}
-												}}
-											/>
-										</Form.Item>
-										<Form.Item
-											key={updateIndex()}
-											label="Carrera"
-											name="career"
-											rules={[
-												{
-													required: true,
-													message:
-														"Por favor seleccione su carrera!",
-												},
-											]}
-											hasFeedback
-										>
-											<Select
-												size="large"
-												style={{ width: 200 }}
-											>
-												<Select.Option value="eletromecanica">
-													Ing. Electromecánica
-												</Select.Option>
-												<Select.Option value="electronica">
-													Ing. Electrónica
-												</Select.Option>
-												<Select.Option value="gestion">
-													Ing. Gestión Empresarial
-												</Select.Option>
-												<Select.Option value="industrial">
-													Ing. Industrial
-												</Select.Option>
-												<Select.Option value="mecatronica">
-													Ing. Mecatrónica
-												</Select.Option>
-												<Select.Option value="sistemas">
-													Ing. Sistemas
-													Computacionales
-												</Select.Option>
-												<Select.Option value="administracion">
-													Lic. Administración
-												</Select.Option>
-											</Select>
-										</Form.Item>
-										<Form.Item
-											label="Género"
-											key={updateIndex()}
-											name="gender"
-											rules={[
-												{
-													required: true,
-													message:
-														"Por favor seleccione una opcion!",
-												},
-											]}
-											hasFeedback
-										>
-											<Select
-												style={{ width: 160 }}
-												value="M"
-												size="large"
-											>
-												<Select.Option value="mas">
-													Masculino
-												</Select.Option>
-												<Select.Option value="fem">
-													Femenino
-												</Select.Option>
-												<Select.Option value="ind">
-													Otro
-												</Select.Option>
-											</Select>
-										</Form.Item>
-									</div>
-								</Card>
+								<Form.Item
+									key={updateIndex()}
+									label="Apellidos"
+									name="last_name"
+									rules={[
+										{
+											required: true,
+											message:
+												"Por favor introduce tus apellidos!",
+										},
+									]}
+									hasFeedback
+									// style={{
+									// 	display: "inline-block",
+									// 	width: "calc(50% - 8px)",
+									// 	margin: "0 8px",
+									// }}
+								>
+									<Input
+										placeholder="Apellidos"
+										size="large"
+									/>
+								</Form.Item>
+								<Form.Item
+									key={updateIndex()}
+									name="enrollment"
+									label="Matrícula"
+									rules={[
+										{
+											required: true,
+
+											message:
+												"Por favor introduce tu matrícula!",
+										},
+									]}
+									hasFeedback
+									style={{ width: "400px" }}
+								>
+									<Input
+										size="large"
+										maxLength="8"
+										onKeyPress={(event) => {
+											if (!/[0-9]/.test(event.key)) {
+												event.preventDefault();
+											}
+										}}
+									/>
+								</Form.Item>
+								<Form.Item
+									key={updateIndex()}
+									label="Carrera"
+									name="career"
+									rules={[
+										{
+											required: true,
+											message:
+												"Por favor seleccione su carrera!",
+										},
+									]}
+									hasFeedback
+								>
+									<Select size="large">
+										<Select.Option value="eletromecanica">
+											Ing. Electromecánica
+										</Select.Option>
+										<Select.Option value="electronica">
+											Ing. Electrónica
+										</Select.Option>
+										<Select.Option value="gestion">
+											Ing. Gestión Empresarial
+										</Select.Option>
+										<Select.Option value="industrial">
+											Ing. Industrial
+										</Select.Option>
+										<Select.Option value="mecatronica">
+											Ing. Mecatrónica
+										</Select.Option>
+										<Select.Option value="sistemas">
+											Ing. Sistemas Computacionales
+										</Select.Option>
+										<Select.Option value="administracion">
+											Lic. Administración
+										</Select.Option>
+									</Select>
+								</Form.Item>
+								<Form.Item
+									label="Género"
+									key={updateIndex()}
+									name="gender"
+									rules={[
+										{
+											required: true,
+											message:
+												"Por favor seleccione una opcion!",
+										},
+									]}
+									hasFeedback
+								>
+									<Select size="large">
+										<Select.Option value="mas">
+											Masculino
+										</Select.Option>
+										<Select.Option value="fem">
+											Femenino
+										</Select.Option>
+										<Select.Option value="ind">
+											Otro
+										</Select.Option>
+									</Select>
+								</Form.Item>
 							</Form>
 						</div>
 					</Fragment>

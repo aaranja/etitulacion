@@ -1,5 +1,5 @@
 from users.models import Account, GraduateProfile
-from .serializers import AccountSerializer, ProfileSerializer,DocumentsSerializer
+from .serializers import AccountSerializer, ProfileSerializer,DocumentsSerializer, StatusSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status, views
 from rest_framework.response import Response
@@ -8,8 +8,25 @@ from rest_framework import generics
 from rest_framework.request import Request
 from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 from .documents import ValidationFiles
-import json
+import json, time
 from types import SimpleNamespace
+
+# view for route '/process/update/status/'
+class UpdateStatusView(views.APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer = StatusSerializer
+
+    def put(self, request, *args, **kwargs):
+       
+        user = self.request.user
+        profile = GraduateProfile.objects.get(account_id=user)
+        data = request.data
+        
+        serializer = self.serializer(profile, {'status':data['status']} , partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data': "dta"}, status = status.HTTP_202_ACCEPTED)
+        return Response({'data': "dta"}, status = status.HTTP_202_ACCEPTED)
 
 # view for route '/process/1/<pk>/', fist step of process
 class VerifyInformationView(views.APIView):
@@ -35,7 +52,7 @@ class VerifyInformationView(views.APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status = status.HTTP_201_CREATED)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status = status.HTTP_202_ACCEPTED)
 
 # view for route 'process/2/upload/<pk>/', able to update documents json
 class UploadFileView(views.APIView):
@@ -57,6 +74,7 @@ class UploadFileView(views.APIView):
         return file
     
     def put(self, request, format=None):
+        time.sleep(1)
         update_type = request.data['update_type']
         data = request.data['data']
         user = self.request.user
@@ -66,8 +84,12 @@ class UploadFileView(views.APIView):
             file = request.FILES['file']
             status_response = "success"
 
+        print(len(data))
+
         profile = GraduateProfile.objects.get(account_id = user)
         fileData = json.loads(data, object_hook=lambda d: SimpleNamespace(**d))
+        
+        print(fileData)
         serializer = self.serializer(profile, {'documents':[self.saveNewDocument(fileData, update_type)], 'update_type': update_type} , partial=True)
         
         if serializer.is_valid():

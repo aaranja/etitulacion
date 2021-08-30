@@ -12,7 +12,14 @@ const SubMenu = Menu.SubMenu;
 class NormalHeader extends React.Component {
 	render() {
 		return (
-			<Header style={{ height: "67px" }}>
+			<Header
+				style={{
+					height: "60px",
+					position: "fixed",
+					width: "100%",
+					overflow: "hidden",
+				}}
+			>
 				<div className="logo">
 					<a href="/home/">
 						<span style={{ color: "#FF6363" }}>e</span>Titulación

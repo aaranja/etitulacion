@@ -10,7 +10,7 @@ import rootReducer from "./store/reducers/rootReducer";
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(rootReducer, composeEnhances(applyMiddleware(thunk)));
+const store = createStore(rootReducer, applyMiddleware(thunk)); //, composeEnhances(applyMiddleware(thunk)));
 
 const app = (
 	<Provider store={store}>

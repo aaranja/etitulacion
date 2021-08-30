@@ -66,6 +66,21 @@ class AccountSerializer(serializers.ModelSerializer):
 			'user_type': {'read_only': True}
 		}
 
+class StatusSerializer(serializers.ModelSerializer):
+	status = serializers.CharField()
+	class Meta:
+		model = GraduateProfile
+		fields = ['status']
+
+	def validate_status(self, status, *args, **kwargs):
+		print(status)
+		return status
+
+	def update(self, instance, validated_data):
+		instance.status = validated_data.get('status', instance.status)
+		instance.save()
+		return instance
+
 class DocumentsSerializer(serializers.ModelSerializer):
 	documents = serializers.JSONField()
 	update_type = serializers.CharField()
@@ -136,6 +151,10 @@ class ProfileSerializer(serializers.ModelSerializer):
 	def validate_documents(self, documents, *args, **kwargs):
 		print(self._args[0].documents)
 		return documents
+
+	def validate_status(self,status, *args, **kwargs):
+		print(status)
+		return status
 
 	def update(self, instance, validated_data):
 		

@@ -38,31 +38,21 @@ export const processStep1 = (values) => {
 	};
 };
 
-export const processStep2 = (values) => {
+export const processStep2 = (status) => {
 	return (dispatch) => {
 		var token = localStorage.getItem("token");
 		if (token === undefined) {
 			dispatch(logout());
 		} else {
-			var files = values[1];
-			var dataFiles = values[0];
-			let formData = new FormData();
-			var jsonData = JSON.stringify(dataFiles[2]);
-
-			formData.append("file", files[2]);
-			formData.append("data", jsonData);
-
+			axios.defaults.headers = {
+				"Content-Type": "application/json",
+				Authorization: `Token ${token}`,
+			};
+			console.log(status);
 			axios
-				.post(
-					`http://127.0.0.1:8000/api/process/2/upload/files/`,
-					formData,
-					{
-						headers: {
-							Authorization: `Token ${token}`,
-							"Content-type": "multipart/form-data",
-						},
-					}
-				)
+				.put(`http://127.0.0.1:8000/api/process/update/status/`, {
+					status: status,
+				})
 				.then((response) => {
 					console.log(response);
 
@@ -77,7 +67,7 @@ export const processStep2 = (values) => {
 };
 
 export const processUploadDocument = (metadata, file, update_type) => {
-	return (dispatch) => {
+	return async (dispatch) => {
 		var token = localStorage.getItem("token");
 		if (token === undefined) {
 			dispatch(logout());
@@ -92,7 +82,7 @@ export const processUploadDocument = (metadata, file, update_type) => {
 			}
 			formData.append("update_type", update_type);
 			formData.append("data", jsonData);
-			axios
+			await axios
 				.put(
 					`http://127.0.0.1:8000/api/process/2/upload/files/`,
 					formData,
@@ -104,7 +94,7 @@ export const processUploadDocument = (metadata, file, update_type) => {
 					}
 				)
 				.then((response) => {
-					console.log(response);
+					// console.log(response);
 					dispatch(transactionTypes.uploadSuccess(response));
 				})
 				.catch((error) => {

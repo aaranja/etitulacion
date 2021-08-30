@@ -5,7 +5,7 @@ import {
 	ExclamationCircleOutlined,
 	SyncOutlined,
 } from "@ant-design/icons";
-import { Upload, Button, message, Tag, Table } from "antd";
+import { Upload, Button, message, Tag, Table, notification } from "antd";
 
 class DocumentsTable extends Component {
 	constructor(props) {
@@ -22,6 +22,7 @@ class DocumentsTable extends Component {
 			fileList: docList,
 			uploading: false,
 			files: preFiles,
+			newChanges: false,
 		};
 	}
 
@@ -57,7 +58,12 @@ class DocumentsTable extends Component {
 			});
 		} else {
 			if (status === "removed") {
+				currentFileList[key].status = "empty";
+				console.log(currentFileList);
 				message.error(`Se eliminó: ${currentDataSource[key].fullName}`);
+				this.setState({
+					fileList: currentFileList,
+				});
 			}
 		}
 	};
@@ -108,9 +114,8 @@ class DocumentsTable extends Component {
 			dataSource: currentDataSource,
 			fileList: currentList,
 			uploading: true,
+			newChanges: false,
 		});
-
-		console.log(uploadList);
 
 		return [uploadList, this.state.files];
 	};
@@ -189,6 +194,8 @@ class DocumentsTable extends Component {
 								fileList: dataFiles,
 								files: files,
 							});
+
+							this.props.callBack(true);
 						},
 						maxCount: 1,
 
@@ -221,14 +228,14 @@ class DocumentsTable extends Component {
 
 									dataTable[index].status = "unloaded";
 									files[index] = info.file;
+									this.setState({
+										dataSource: dataTable,
+										fileList: dataFiles,
+										files: files,
+									});
+									this.props.callBack(true);
 								}
 							}
-
-							this.setState({
-								dataSource: dataTable,
-								fileList: dataFiles,
-								files: files,
-							});
 						},
 						multiple: false,
 					};
