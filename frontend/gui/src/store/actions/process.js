@@ -50,7 +50,7 @@ export const processStep2 = (status) => {
 			};
 			console.log(status);
 			axios
-				.put(`http://127.0.0.1:8000/api/process/update/status/`, {
+				.put(`http://127.0.0.1:8000/api/graduate/profile/status/`, {
 					status: status,
 				})
 				.then((response) => {
@@ -126,6 +126,32 @@ export const processGetDocumentsDetails = () => {
 				})
 				.catch((error) => {
 					dispatch(transactionTypes.D_Fail(error));
+				});
+		}
+	};
+};
+
+// get graduate status
+export const getStatus = () => {
+	return (dispatch) => {
+		var token = localStorage.getItem("token");
+		if (token === undefined) {
+			dispatch(logout());
+		} else {
+			dispatch(transactionTypes._Start());
+			axios.defaults.headers = {
+				"Content-Type": "application/json",
+				Authorization: `Token ${token}`,
+			};
+			axios
+				.get(`http://127.0.0.1:8000/api/graduate/profile/status/`)
+				.then((response) => {
+					console.log(response);
+
+					dispatch(transactionTypes._Success(response.data));
+				})
+				.catch((error) => {
+					dispatch(transactionTypes._Fail(error));
 				});
 		}
 	};

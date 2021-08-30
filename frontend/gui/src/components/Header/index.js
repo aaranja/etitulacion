@@ -10,6 +10,24 @@ const { Header } = Layout;
 const SubMenu = Menu.SubMenu;
 
 class NormalHeader extends React.Component {
+	unLogged = () => {
+		return (
+			<Menu
+				theme="dark"
+				style={{ float: "right" }}
+				mode="horizontal"
+				className="rightMenu"
+				key="1"
+			>
+				<Menu.Item key="1">
+					<Link to="/signup/">Registro</Link>
+				</Menu.Item>
+				<Menu.Item key="2">
+					<Link to="/login/">Iniciar sesión</Link>
+				</Menu.Item>
+			</Menu>
+		);
+	};
 	render() {
 		return (
 			<Header
@@ -25,7 +43,12 @@ class NormalHeader extends React.Component {
 						<span style={{ color: "#FF6363" }}>e</span>Titulación
 					</a>
 				</div>
-				<Menu theme="dark" mode="horizontal" className="rightMenu">
+				<Menu
+					theme="dark"
+					mode="horizontal"
+					className="rightMenu"
+					key="2"
+				>
 					{this.props.authenticated ? (
 						<SubMenu
 							style={{ float: "right" }}
@@ -53,21 +76,7 @@ class NormalHeader extends React.Component {
 								</span>
 							</Menu.Item>
 						</SubMenu>
-					) : (
-						<Menu
-							theme="dark"
-							style={{ float: "right" }}
-							mode="horizontal"
-							className="rightMenu"
-						>
-							<Menu.Item key="1">
-								<Link to="/signup/">Registro</Link>
-							</Menu.Item>
-							<Menu.Item key="2">
-								<Link to="/login/">Iniciar sesión</Link>
-							</Menu.Item>
-						</Menu>
-					)}
+					) : null}
 				</Menu>
 			</Header>
 		);

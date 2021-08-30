@@ -10,6 +10,8 @@ const { Content } = Layout;
 
 class NormalLayout extends React.Component {
 	componentDidUpdate(prevProps, nextProps) {
+		console.log("actualizando");
+
 		if (prevProps.isAuthenticated !== this.props.isAuthenticated) {
 			if (this.props.isAuthenticated === false) {
 				this.props.history.push("/login/");
@@ -49,17 +51,17 @@ class NormalLayout extends React.Component {
 
 const mapStateToProps = (state) => {
 	/*store name into props to put it in header*/
-	var name = null;
-	if (state.account !== undefined) {
-		if (state.account.payload !== null) {
-			name =
-				state.account.payload.account["first_name"] +
-				" " +
-				state.account.payload.account["last_name"];
-		}
-	}
+	// var name = null;
+	// if (state.account !== undefined) {
+	// 	if (state.account.payload !== null) {
+	// 		name =
+	// 			state.account.payload.account["first_name"] +
+	// 			" " +
+	// 			state.account.payload.account["last_name"];
+	// 	}
+	// }
 	return {
-		name: name,
+		name: state.auth.fullname,
 	};
 };
 

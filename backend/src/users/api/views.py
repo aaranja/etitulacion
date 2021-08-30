@@ -11,10 +11,15 @@ from .documents import ValidationFiles
 import json, time
 from types import SimpleNamespace
 
-# view for route '/process/update/status/'
-class UpdateStatusView(views.APIView):
+# view for route '/graduate/profile/status/'
+class StatusView(views.APIView):
     permission_classes = (IsAuthenticated,)
     serializer = StatusSerializer
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        profile = GraduateProfile.objects.get(account_id = user)
+        return Response({'status': profile.status})
 
     def put(self, request, *args, **kwargs):
        

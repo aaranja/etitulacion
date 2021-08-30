@@ -1,21 +1,12 @@
 import React from "react";
-import { Layout, Menu, Steps, Divider, Card } from "antd";
-import {
-	UserOutlined,
-	ProfileOutlined,
-	LogoutOutlined,
-} from "@ant-design/icons";
-import Logo from "../../img/logo-transparent2.png";
+import { Layout, Steps, Divider, Card } from "antd";
 const { Sider } = Layout;
 const { Step } = Steps;
-const { SubMenu } = Menu;
 
 class Sidebar extends React.Component {
 	constructor(props) {
 		super(props);
-		/*console.log("cambiando a:", props.current);*/
 		this.state = { current: props.current };
-		console.log(this.props.name);
 	}
 
 	onChange = (current) => {
@@ -83,6 +74,10 @@ class Sidebar extends React.Component {
 							<Step
 								title="Aprobación S.E."
 								description="Servicios escolares está validando tu proceso."
+							/>
+							<Step
+								title="Tipo de titulación"
+								description="Selecciona el tipo de titulación."
 							/>
 							<Step
 								title="Aprobación C.T."

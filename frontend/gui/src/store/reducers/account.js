@@ -22,10 +22,26 @@ const actionFail = (state, action) => {
 };
 
 const actionSuccess = (state, action) => {
+	// load user data
+	var data = state.payload;
+	if (data !== null) {
+		// if state.payload isn't null means the new action
+		// is an update.
+		// update data with the new data of action.payload
+		for (const key in action.payload) {
+			if (data[key] !== undefined) {
+				data[key] = action.payload[key];
+			}
+		}
+	} else {
+		// if state.payload == null
+		// is the first load of user data
+		data = action.payload;
+	}
 	return updateObject(state, {
 		error: null,
 		loading: false,
-		payload: action.payload,
+		payload: data,
 	});
 };
 

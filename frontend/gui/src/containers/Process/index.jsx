@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Card, Menu, Affix } from "antd";
+import { Layout, Card } from "antd";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
@@ -17,7 +17,6 @@ class Process extends React.Component {
 		this.state = {
 			step: this.props.currentStatus,
 		};
-		console.log(this.props);
 	}
 
 	getChildState = (step) => {
@@ -37,6 +36,11 @@ class Process extends React.Component {
 					return (
 						<ServiceApproval
 							callbackFromParent={this.getChildState}
+							status={{
+								codeStatus: this.props.codeStatus,
+								statusType: this.props.statusType,
+								message: this.props.message,
+							}}
 						/>
 					);
 				default:
@@ -59,7 +63,6 @@ class Process extends React.Component {
 				<Sidebar
 					callbackFromParent={this.getChildState}
 					current={this.state.step}
-					name={this.props.name}
 					style={{
 						width: 400,
 					}}
@@ -92,21 +95,22 @@ class Process extends React.Component {
 
 const mapStateToProps = (state) => {
 	/*load current status and set the step*/
-	var name = null;
-	var status = 0;
+	var keyStatus = 0;
+	var codeStatus = null;
+	var statustype = null;
+	var message = null;
 	if (state.account.payload !== null) {
-		status = currentStep(state.account.payload.status);
-		if (status === 5) {
-			status = 2;
-		}
-		name =
-			state.account.payload.account["first_name"] +
-			" " +
-			state.account.payload.account["last_name"];
+		var status = currentStep(state.account.payload.status);
+		keyStatus = status.key;
+		codeStatus = status.code;
+		statustype = status.status;
+		message = status.message;
 	}
 	return {
-		currentStatus: status,
-		name: name,
+		currentStatus: keyStatus,
+		codeStatus: codeStatus,
+		statusType: statustype,
+		message: message,
 	};
 };
 

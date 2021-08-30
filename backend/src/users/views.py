@@ -14,8 +14,10 @@ class CustomObtainAuthToken(ObtainAuthToken):
 		user = serializer.validated_data['user']
 		token, created = Token.objects.get_or_create(user=user)
 		print("Sesión iniciada por: "+user.email)
+		fullname = user.first_name + " " +user.last_name
 		return Response({
 			'token': token.key,
 			'user_id': user.pk,
 			'user_type': user.user_type,
+			'fullname': fullname,
 			})

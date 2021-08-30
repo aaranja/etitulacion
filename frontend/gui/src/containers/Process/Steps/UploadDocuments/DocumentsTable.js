@@ -5,7 +5,7 @@ import {
 	ExclamationCircleOutlined,
 	SyncOutlined,
 } from "@ant-design/icons";
-import { Upload, Button, message, Tag, Table, notification } from "antd";
+import { Upload, Button, message, Tag, Table } from "antd";
 
 class DocumentsTable extends Component {
 	constructor(props) {

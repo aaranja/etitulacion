@@ -15,7 +15,6 @@ import {
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions/process";
 import DocumentsTable from "./DocumentsTable";
-import { SmileOutlined } from "@ant-design/icons";
 
 class UploadDocuments extends Component {
 	constructor(props) {
@@ -91,7 +90,6 @@ class UploadDocuments extends Component {
 	};
 
 	openNotification = (mensaje, type) => {
-		var placement = "topRight";
 		notification.open({
 			message: type,
 			description: mensaje,

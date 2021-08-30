@@ -64,7 +64,8 @@ export const accountUpdate = (
 
 /* function to get all own account data: name, user type, enrollment, documents...*/
 export const accountGetData = () => {
-  return (dispatch) => {
+  console.log("consiguiendo datos");
+  return async (dispatch) => {
     const token = localStorage.getItem("token");
     if (token === undefined) {
       dispatch(logout());
@@ -74,11 +75,11 @@ export const accountGetData = () => {
         "Content-Type": "application/json",
         Authorization: `Token ${token}`,
       };
-      axios
+      await axios
         .get("http://127.0.0.1:8000/api/account/")
         .then((response) => {
           /*dispatch all data*/
-          /*this return an array*/
+          /*this return an OBJECT*/
           dispatch(transactionSuccess(response.data[0]));
         })
         .catch((error) => {
@@ -90,7 +91,7 @@ export const accountGetData = () => {
 
 /* function to get account data: name, user type, email and id*/
 export const accountGetSession = () => {
-  return (dispatch) => {
+  return async (dispatch) => {
     const token = localStorage.getItem("token");
     const userID = localStorage.getItem("userID");
     if (token === undefined || userID === undefined) {
@@ -101,7 +102,7 @@ export const accountGetSession = () => {
         "Content-Type": "application/json",
         Authorization: `Token ${token}`,
       };
-      axios
+      await axios
         .get(`http://127.0.0.1:8000/api/${userID}`)
         .then((response) => {
           /*console.log(response.data);*/

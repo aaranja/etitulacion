@@ -7,11 +7,12 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (token, user_type) => {
+export const authSuccess = (token, user_type, fullname) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
     token: token,
     user_type: user_type,
+    fullname: fullname,
   };
 };
 
@@ -53,14 +54,16 @@ export const authLogin = (email, password) => {
         const token = res.data.token;
         const user_id = res.data.user_id;
         const user_type = res.data.user_type;
-        console.log(res.data);
+        const fullname = res.data.fullname;
+
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
         /*console.log("login aceptado: ".concat(expirationDate));*/
         localStorage.setItem("token", token);
         localStorage.setItem("userID", user_id);
         localStorage.setItem("user_type", user_type);
+        localStorage.setItem("fullname", fullname);
         localStorage.setItem("expirationDate", expirationDate);
-        dispatch(authSuccess(token, user_type));
+        dispatch(authSuccess(token, user_type, fullname));
         dispatch(checkAuthTimeout(3600));
       })
       .catch((err) => {
@@ -82,6 +85,7 @@ export const authSignUp = (
 ) => {
   return (dispatch) => {
     dispatch(authStart());
+
     axios.defaults.headers = {
       "Content-Type": "application/json",
     };
@@ -99,12 +103,11 @@ export const authSignUp = (
       })
       .then((res) => {
         var user_type = "USER_GRADUATE";
-        console.log(res.data);
         const token = res.data.key;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
         localStorage.setItem("token", token);
         localStorage.setItem("expirationDate", expirationDate);
-        dispatch(authSuccess(token, user_type));
+        dispatch(authSuccess(token, user_type, "null"));
         dispatch(checkAuthTimeout(3600));
       })
       .catch((err) => {
@@ -117,6 +120,7 @@ export const authCheckState = () => {
   return (dispatch) => {
     const token = localStorage.getItem("token");
     const user_type = localStorage.getItem("user_type");
+    const fullname = localStorage.getItem("fullname");
     //console.log(token.concat("TESTT"));
     if (token === undefined) {
       dispatch(logout());
@@ -127,7 +131,7 @@ export const authCheckState = () => {
       } else {
         const expirationTime = expirationDate.getTime() - new Date().getTime();
         const newDate = expirationTime / 1000;
-        dispatch(authSuccess(token, user_type));
+        dispatch(authSuccess(token, user_type, fullname));
         dispatch(checkAuthTimeout(newDate));
       }
     }

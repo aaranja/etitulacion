@@ -7,39 +7,63 @@ export const STATUS_00 = {
 	key: 0,
 	code: "STATUS_00",
 	info: "INFORMATION_PROCESS",
+	status: "default",
 };
 export const STATUS_01 = {
 	key: 1,
 	code: "STATUS_01",
 	info: "DOCUMENTATION_PROCESS",
+	status: "default",
 };
 export const STATUS_02 = {
 	key: 2,
 	code: "STATUS_02",
-	info: "ERROR_INFORMATION",
+	info: "INFORMATION_ERROR",
+	message: "Ha ocurrido un error con tu información.",
+	status: "error",
 };
 export const STATUS_03 = {
-	key: 3,
+	key: 2,
 	code: "STATUS_03",
-	info: "ERROR_DOCUMENTATION",
+	info: "DOCUMENTATION_ERROR",
+	message: "Ha ocurrido un error con tu documentación.",
+	status: "error",
 };
 export const STATUS_04 = {
-	key: 4,
+	key: 2,
 	code: "STATUS_04",
-	info: "ERROR_DOCUMENTATION_INFORMATION",
+	info: "DOCUMENTATION_INFORMATION_ERROR",
+	message: "Ha ocurrido un error con tu información o documentación.",
+	status: "error",
 };
 export const STATUS_05 = {
-	key: 5,
+	key: 2,
 	code: "STATUS_05",
-	info: "SERVICES_APPROVAL",
+	info: "SERVICES_APPROVAL_PROCESSING",
+	message: "La documentación aún no ha sido aprobada. Por favor espera.",
+	status: "processing",
 };
 export const STATUS_06 = {
-	key: 6,
+	key: 2,
+	code: "STATUS_06",
+	info: "SERVICES_APPROVAL_SUCCESS",
+	message: "La documentación ha sido aprobada.",
+	status: "success",
+};
+export const STATUS_07 = {
+	key: 3,
+	code: "STATUS_07",
+	info: "SELECT_TITULATION_TYPE",
+	message: "Selecciona el tipo de titulación",
+	status: "default",
+};
+export const STATUS_09 = {
+	key: 4,
 	code: "STATUS_06",
 	info: "COORDINATION_APPROVAL",
 };
-export const STATUS_07 = {
-	key: 7,
+export const STATUS_10 = {
+	key: 4,
 	code: "STATUS_07",
 	info: "FIRST_SECCION_COMPLETE",
 };
