@@ -25,7 +25,6 @@ const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 class AdminLogin extends Component {
 	onFinish = (values) => {
-		console.log("inciando el login");
 		this.props.onAuth(values.email, values.password);
 	};
 

@@ -1,5 +1,5 @@
 from users.models import Account, GraduateProfile
-from .serializers import AccountSerializer, ProfileSerializer,DocumentsSerializer, StatusSerializer
+from .serializers import AccountSerializer, ProfileSerializer,DocumentsSerializer, StatusSerializer, StaffRegisterSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status, views
 from rest_framework.response import Response
@@ -10,6 +10,23 @@ from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 from .documents import ValidationFiles
 import json, time
 from types import SimpleNamespace
+
+
+# view fro router '/admin/register/staff/'
+class StaffRegisterView(views.APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer = StaffRegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        if(user.is_superuser):
+            print("is admin")
+            serializer = self.serializer(user, request.data , partial=True)
+            if serializer.is_valid():
+                print("cuenta creada")
+                serializer.save(request)
+
+        return Response({'data': 'userdata'}, status = status.HTTP_201_CREATED )
 
 # view for route '/graduate/profile/status/'
 class StatusView(views.APIView):

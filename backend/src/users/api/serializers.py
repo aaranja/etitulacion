@@ -57,6 +57,52 @@ class CustomAuthTokenSerializer(serializers.Serializer):
 		attrs['user'] = user
 		return attrs
 
+class StaffRegisterSerializer(serializers.ModelSerializer):
+	# account data
+	email = serializers.EmailField(required=allauth_settings.EMAIL_REQUIRED)
+	first_name = serializers.CharField(required=True, write_only=True)
+	last_name = serializers.CharField(required=True, write_only=True)
+	user_type = serializers.CharField(required=True, write_only=True)
+	password1 = serializers.CharField(required=True, write_only=True)
+	password2 = serializers.CharField(required=True, write_only=True)
+	
+	class Meta:
+		model = Account
+		fields = ['id', 'email','first_name', 'last_name','user_type', 'password1', 'password2']
+	
+	def validate_email(self, email):
+		email = get_adapter().clean_email(email)
+		if allauth_settings.UNIQUE_EMAIL:
+			if email and email_address_exists(email):
+				raise serializers.ValidationError(
+					_("A user is already registered with this e-mail address."))
+		return email
+
+	def validate_password1(self, password):
+		return get_adapter().clean_password(password)
+
+	def validate(self, data):
+		if data['password1'] != data['password2']:
+			raise serializers.ValidationError(
+				_("The two password fields didn't match."))
+		return data
+
+	def save(self, request):
+		print("Creando cuenta de staff")
+		print(request.data)
+		# create and save account
+		new_account = Account(
+			email=request.data['email'],
+			first_name=request.data['first_name'],
+			last_name=request.data['last_name'],
+			user_type=request.data['user_type'], 
+			)
+		new_account.is_staff = True
+		new_account.set_password(request.data['password1'])
+		new_account.save()
+		return new_account
+
+
 class AccountSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Account
@@ -185,6 +231,7 @@ class TokenSerializer(serializers.ModelSerializer):
 		model = Token
 		fields = ['key', 'user']
 
+# class to register a new graduate
 class RegisterSerializer(serializers.Serializer):
 	# account data
 	email = serializers.EmailField(required=allauth_settings.EMAIL_REQUIRED)

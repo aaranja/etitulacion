@@ -4,6 +4,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Process from "../../containers/Process";
 import SServices from "../../containers/SServices";
+import Coordination from "../../containers/Coordination";
 import * as actions from "../../store/actions/account";
 import * as userTypes from "../../const/userTypes";
 
@@ -34,6 +35,8 @@ class Home extends React.Component {
 						return <Process />;
 					case userTypes.USER_SERVICES:
 						return <SServices />;
+					case userTypes.USER_COORDINATION:
+						return <Coordination />;
 					default:
 						return (
 							<p>
