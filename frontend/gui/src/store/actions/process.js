@@ -44,6 +44,7 @@ export const processStep2 = (status) => {
 		if (token === undefined) {
 			dispatch(logout());
 		} else {
+			dispatch(transactionTypes._Start());
 			axios.defaults.headers = {
 				"Content-Type": "application/json",
 				Authorization: `Token ${token}`,
@@ -54,9 +55,7 @@ export const processStep2 = (status) => {
 					status: status,
 				})
 				.then((response) => {
-					console.log(response);
-
-					// dispatch(transactionTypes._Success(response.data));
+					dispatch(transactionTypes._Success(response.data));
 				})
 				.catch((error) => {
 					console.log(error);

@@ -56,13 +56,14 @@ class Process extends React.Component {
 			<Layout
 				className="site-layout-background"
 				style={{
-					width: "100%",
 					height: "100%",
+					marginLeft: 260,
 				}}
 			>
 				<Sidebar
 					callbackFromParent={this.getChildState}
 					current={this.state.step}
+					currentFinished={this.props.currentStatus}
 					style={{
 						width: 400,
 					}}
@@ -70,16 +71,13 @@ class Process extends React.Component {
 
 				<Card
 					style={{
-						width: "90vw",
+						width: "84vw",
 						overflow: "initial",
-						marginLeft: 260,
 					}}
 				>
 					<Content
 						className="site-layout-background"
 						style={{
-							paddingLeft: 24,
-							paddingRight: 24,
 							margin: 0,
 							minHeight: 280,
 							overflow: "initial",

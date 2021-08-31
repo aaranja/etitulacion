@@ -286,6 +286,7 @@ class DocumentsTable extends Component {
 				dataSource={this.state.dataSource}
 				columns={columns}
 				style={{ fontSize: "110%" }}
+				extra={[<p>hola</p>]}
 			/>
 		);
 	}

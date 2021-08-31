@@ -7,6 +7,7 @@ class Sidebar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { current: props.current };
+		console.log(this.props.currentFinished);
 	}
 
 	onChange = (current) => {
@@ -20,6 +21,18 @@ class Sidebar extends React.Component {
 			this.setState({ current: this.props.current });
 		}
 	}
+
+	status = (key) => {
+		if (key < this.props.currentFinished) {
+			return "finish";
+		} else {
+			if (key === this.props.currentFinished) {
+				return "process";
+			} else {
+				return "wait";
+			}
+		}
+	};
 
 	render() {
 		return (
@@ -66,18 +79,22 @@ class Sidebar extends React.Component {
 							<Step
 								title="Información"
 								description="Valida tus datos personales."
+								status={this.status(0)}
 							/>
 							<Step
 								title="Documentación"
 								description="Sube la documentación requerida."
+								status={this.status(1)}
 							/>
 							<Step
 								title="Aprobación S.E."
 								description="Servicios escolares está validando tu proceso."
+								status={this.status(2)}
 							/>
 							<Step
 								title="Tipo de titulación"
 								description="Selecciona el tipo de titulación."
+								status={this.status(3)}
 							/>
 							<Step
 								title="Aprobación C.T."

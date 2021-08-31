@@ -92,9 +92,9 @@
     display: inline-block;
   }
   .leftMenu,
-  .rightMenu {
+ /* .rightMenu {
     display: none;
-  }
+  }*/
   .logo a {
     margin-left: -20px;
   }

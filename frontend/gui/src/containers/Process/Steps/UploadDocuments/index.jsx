@@ -119,7 +119,6 @@ class UploadDocuments extends Component {
 				"Para avanzar termine de subir toda su documentación",
 				"Error"
 			);
-			console.log("no puede avanzar");
 		}
 	};
 
@@ -153,14 +152,22 @@ class UploadDocuments extends Component {
 					<Descriptions size="middle" column={1}>
 						<Descriptions.Item label={<b>INSTRUCCIONES</b>}>
 							Deberá subir en cada uno de los apartos
-							correspondientes los documentos escaneados en
-							<b>&nbsp;ORIGINAL&nbsp;</b> para su cotejo.
+							correspondientes los documentos
+							<b>&nbsp;ESCANEADOS EN ORIGINAL&nbsp;</b> para su
+							cotejo.
 						</Descriptions.Item>
 						<Descriptions.Item>
 							<b>
 								Un archivo digital (PDF) por cada documento, por
-								ambos lados, no mayor a 2.5MB. ESCANEAR LOS
-								DOCUMENTOS ORIGINALES.
+								ambos lados, no mayor a 2.5MB.
+							</b>
+						</Descriptions.Item>
+						<Descriptions.Item>
+							<b>
+								Asegurese de que toda su documentación esté
+								correcta, una vez que le de click al botón de
+								siguiente se iniciará el proceso de revisión por
+								parte de servicios escolares.
 							</b>
 						</Descriptions.Item>
 					</Descriptions>

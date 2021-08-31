@@ -30,7 +30,7 @@ class StatusView(views.APIView):
         serializer = self.serializer(profile, {'status':data['status']} , partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({'data': "dta"}, status = status.HTTP_202_ACCEPTED)
+            return Response({"status": data['status']}, status = status.HTTP_202_ACCEPTED)
         return Response({'data': "dta"}, status = status.HTTP_202_ACCEPTED)
 
 # view for route '/process/1/<pk>/', fist step of process
@@ -89,16 +89,18 @@ class UploadFileView(views.APIView):
             file = request.FILES['file']
             status_response = "success"
 
-        print(len(data))
-
         profile = GraduateProfile.objects.get(account_id = user)
         fileData = json.loads(data, object_hook=lambda d: SimpleNamespace(**d))
         
-        print(fileData)
         serializer = self.serializer(profile, {'documents':[self.saveNewDocument(fileData, update_type)], 'update_type': update_type} , partial=True)
         
         if serializer.is_valid():
             serializer.save()
+            if(status_response == "removed"):
+                status_serializer = StatusSerializer(profile, {'status':"STATUS_01"},  partial=True)
+                if( status_serializer.is_valid()):
+                    status_serializer.save()
+                    print("estatus cambiado")
             return Response({'status': status_response, 'key': fileData.key}, status=status.HTTP_202_ACCEPTED)
         return Response({'status': "error", 'key': fileData.key}, status=status.HTTP_202_ACCEPTED)
 

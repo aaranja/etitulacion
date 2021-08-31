@@ -48,6 +48,7 @@ class NormalHeader extends React.Component {
 					mode="horizontal"
 					className="rightMenu"
 					key="2"
+					style={{ float: "right" }}
 				>
 					{this.props.authenticated ? (
 						<SubMenu
@@ -66,10 +67,7 @@ class NormalHeader extends React.Component {
 									<Link to="/account/">Datos personales</Link>
 								</span>
 							</Menu.Item>
-							<Menu.Item
-								key="setting:2"
-								onClick={this.props.logout}
-							>
+							<Menu.Item key="2" onClick={this.props.logout}>
 								<span>
 									<LogoutOutlined />
 									Cerrar sesión
