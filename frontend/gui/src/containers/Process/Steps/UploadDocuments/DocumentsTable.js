@@ -17,6 +17,7 @@ class DocumentsTable extends Component {
 			docList[key] = this.getFileList(this.props.dataSource[key]);
 			preFiles[key] = null;
 		}
+		console.log(this.props.dataSource);
 		this.state = {
 			dataSource: this.props.dataSource,
 			fileList: docList,

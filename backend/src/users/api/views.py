@@ -1,6 +1,7 @@
 from users.models import Account, GraduateProfile
 from .serializers import AccountSerializer, ProfileSerializer,DocumentsSerializer, StatusSerializer, StaffRegisterSerializer
 from django.shortcuts import get_object_or_404
+from django.core import serializers
 from rest_framework import viewsets, status, views
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -11,6 +12,28 @@ from .documents import ValidationFiles
 import json, time
 from types import SimpleNamespace
 
+# view for router '/staff/graduate-list/'
+class GraduateListView(views.APIView):
+    permissions_classes = (IsAuthenticated,)
+
+    def get(self, request, * args, **kwargs):
+        user = self.request.user
+        # only staff can get all graduate data
+        if(user.is_staff is True):
+            # get graduate profile data
+            profiles_queryset = GraduateProfile.objects.all()
+            listProfile = list(profiles_queryset.values('enrollment','career','status','accurate_docs','account_id'))
+            listGraduate = []
+            for graduate in listProfile:
+                # get graduate account data
+                account_queryset = Account.objects.filter(id = graduate['account_id'], user_type="USER_GRADUATE")
+                account = list(account_queryset.values('first_name', 'last_name'))[0]
+                # merge profile and account data
+                account.update(graduate)
+                # add to global list graduate
+                listGraduate.append(account)
+            return Response(listGraduate, status = status.HTTP_200_OK, content_type='application/json')
+        return Response(None,status = status.HTTP_405_METHOD_NOT_ALLOWED)
 
 # view fro router '/admin/register/staff/'
 class StaffRegisterView(views.APIView):
