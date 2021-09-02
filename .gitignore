@@ -25,3 +25,6 @@
 /frontend/gui/npm-debug.log*
 /frontend/gui/yarn-debug.log*
 /frontend/gui/yarn-error.log*
+
+# remove idea folder
+/.idea
