@@ -31,6 +31,7 @@ class NormalLayout extends React.Component {
 					authenticated={this.props.isAuthenticated}
 					logout={this.props.logout}
 					user_name={this.props.name}
+					user_type={this.props.user_type}
 				/>
 				<Content
 					className="site-layout"
@@ -62,6 +63,7 @@ const mapStateToProps = (state) => {
 	// }
 	return {
 		name: state.auth.fullname,
+		user_type: state.auth.user_type,
 	};
 };
 

@@ -17,7 +17,6 @@ class DocumentsTable extends Component {
 			docList[key] = this.getFileList(this.props.dataSource[key]);
 			preFiles[key] = null;
 		}
-		console.log(this.props.dataSource);
 		this.state = {
 			dataSource: this.props.dataSource,
 			fileList: docList,
@@ -60,7 +59,6 @@ class DocumentsTable extends Component {
 		} else {
 			if (status === "removed") {
 				currentFileList[key].status = "empty";
-				console.log(currentFileList);
 				message.error(`Se eliminó: ${currentDataSource[key].fullName}`);
 				this.setState({
 					fileList: currentFileList,
@@ -190,28 +188,32 @@ class DocumentsTable extends Component {
 							dataTable[key - 1].fileName = "";
 							dataTable[key - 1].status = "removed";
 							files[key - 1] = null;
+
+							console.log(dataTable[key - 1]);
 							this.setState({
 								dataSource: dataTable,
 								fileList: dataFiles,
 								files: files,
 							});
 
-							this.props.callBack(true);
+							this.props.callBack(true, "removed");
 						},
 						maxCount: 1,
 
 						beforeUpload: (file) => {
+							console.log(file);
 							if (file.type !== "application/pdf") {
 								message.error(
 									`${file.name} no es un archivo PDF!`
 								);
+							} else {
 							}
 							return false;
 							/*return file.type === "pdf"
 								? true
 								: Upload.LIST_IGNORE;*/
 						},
-						onChange: (info, key = record.key) => {
+						onChange: (info, key = record.key, type) => {
 							var dataFiles = this.state.fileList;
 							var newFile = info.fileList[0];
 							var dataTable = this.state.dataSource;
@@ -234,7 +236,7 @@ class DocumentsTable extends Component {
 										fileList: dataFiles,
 										files: files,
 									});
-									this.props.callBack(true);
+									this.props.callBack(true, "uploaded");
 								}
 							}
 						},

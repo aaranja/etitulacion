@@ -1,81 +1,73 @@
 import React, { Component } from "react";
-import { Menu, Layout, Card, Input, Divider, PageHeader, Button } from "antd";
+import { Layout } from "antd";
 import GraduateTable from "../GraduateTable";
+import DocumentsViewer from "../DocumentsViewer";
+import SidebarList from "../../components/SidebarList";
+import SidebarDoc from "../../components/SidebarDoc";
 import "antd/dist/antd.css";
-import { ReloadOutlined } from "@ant-design/icons";
-const { SubMenu } = Menu;
-const { Search } = Input;
+
 class SServices extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			currentView: "list",
+			graduate: null,
+		};
+	}
+
+	setCurrentView = (view) => {
+		this.setState({
+			currentView: view,
+			graduate: null,
+		});
+	};
+
+	setGraduateDoc = (data, view) => {
+		this.setState({
+			currentView: view,
+			graduate: data,
+		});
+	};
+
 	render() {
+		const currentView = () => {
+			switch (this.state.currentView) {
+				case "list":
+					return (
+						<>
+							{" "}
+							<SidebarList />
+							<GraduateTable callBack={this.setGraduateDoc} />
+						</>
+					);
+				case "documents":
+					return (
+						<>
+							<SidebarDoc info={this.state.graduate} />
+							<DocumentsViewer
+								callBack={this.setCurrentView}
+								graduate={this.state.graduate}
+							/>{" "}
+						</>
+					);
+				default:
+					return null;
+			}
+		};
+
 		return (
-			<div style={{}}>
-				<Layout
-					className="site-layout-background"
-					style={{
-						backgroundColor: "green",
-						height: "89vh",
-						marginLeft: 425,
-						marginRight: "10%",
-						minWidth: 500,
-					}}
-				>
-					<Card
-						style={{
-							overflow: "auto",
-							position: "fixed",
-							display: "flex",
-							flexDirection: "column",
-							minWidth: 250,
-							width: 260,
-							minHeight: "89vh",
-							left: 170,
-							padding: 0,
-							backgroundColor: "white",
-						}}
-					>
-						{" "}
-						<Divider orientation="left">Buscar egresado</Divider>
-						<Search placeholder="Introduce nombre o matrícula" />
-						<Divider orientation="left"></Divider>
-						<Menu
-							defaultSelectedKeys={["1"]}
-							style={{
-								display: "flex",
-								flexDirection: "column",
-								justifyContent: "flex-end",
-								margin: 0,
-								padding: 0,
-							}}
-						>
-							<Menu.Item key="1">Lista de egresados</Menu.Item>
-							<SubMenu title="SubMenu" key="sub1">
-								<Menu.Item key="2">SubMenuItem</Menu.Item>
-							</SubMenu>
-						</Menu>
-					</Card>
-					<Card
-						style={{
-							margin: 0,
-							minHeight: 280,
-							overflow: "initial",
-							height: "100%",
-						}}
-					>
-						{" "}
-						<PageHeader
-							ghost={false}
-							title="Lista de egresados"
-							/*subTitle="This is a subtitle"*/
-							extra={[
-								<Button key="1">
-									Actualizar <ReloadOutlined />
-								</Button>,
-							]}
-						></PageHeader>
-						<GraduateTable />
-					</Card>
-				</Layout>
-			</div>
+			<Layout
+				className="site-layout-background"
+				style={{
+					height: "100%",
+					marginLeft: 425,
+					marginRight: "10%",
+					minWidth: 500,
+				}}
+			>
+				{currentView()}
+			</Layout>
 		);
 	}
 }

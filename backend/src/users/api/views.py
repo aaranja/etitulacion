@@ -124,6 +124,7 @@ class UploadFileView(views.APIView):
         data = request.data['data']
         user = self.request.user
         file = None
+        print(update_type)
         status_response = "removed"
         if(update_type == "upload"):
             file = request.FILES['file']

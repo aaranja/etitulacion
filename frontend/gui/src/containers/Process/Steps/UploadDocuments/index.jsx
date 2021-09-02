@@ -21,15 +21,20 @@ class UploadDocuments extends Component {
 		super(props);
 		this.state = {
 			isChange: false,
+			typeChange: "empty",
 		};
 	}
 
+	componentWillUnmount() {
+		console.log("adioss");
+	}
+
 	componentDidMount() {
+		// console.log("me he montado");
 		/*reference to table documents*/
 		this.uploading = React.createRef();
 		/* get documents details */
 		this.props.getDocumentsDetails();
-		console.log(this.uploading);
 	}
 
 	componentDidUpdate() {
@@ -39,11 +44,15 @@ class UploadDocuments extends Component {
 				const data = this.props.upload.payload;
 				if (this.uploading.current !== null) {
 					console.log(this.uploading.current.state);
-
-					this.uploading.current.onUploadSuccess(
-						data.data.key,
-						data.data.status
-					);
+					if (
+						!this.state.isChanged &&
+						this.state.typeChange === "success"
+					) {
+						this.uploading.current.onUploadSuccess(
+							data.data.key,
+							data.data.status
+						);
+					}
 				}
 			}
 		}
@@ -76,15 +85,17 @@ class UploadDocuments extends Component {
 		// set that the changes have been saved
 		this.setState({
 			isChange: false,
+			typeChange: "success",
 		});
 	};
 
 	// function to set in the page header if
 	// the user has changes to save
-	newChanges = (isChanged) => {
+	newChanges = (isChanged, type) => {
 		if (isChanged) {
 			this.setState({
 				isChange: isChanged,
+				typeChange: type,
 			});
 		}
 	};
@@ -232,6 +243,7 @@ const mapStateToProps = (state) => {
 	// to put in table
 	if (state.servdata.loading !== true && state.servdata.payload !== null) {
 		metadata = state.servdata.payload;
+
 		for (const key in metadata) {
 			// return true if document is services clasification
 			if (getClasification(metadata[key])) {

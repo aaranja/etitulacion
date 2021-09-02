@@ -22,10 +22,25 @@ const actionFail = (state, action) => {
 };
 
 const actionSuccess = (state, action) => {
+	var data = null;
+	if (state.payload !== null) {
+		data = state.payload;
+
+		for (const key in action.payload) {
+			if (data[key] !== undefined) {
+				data[key] = action.payload[key];
+			} else {
+				data[key] = action.payload[key];
+			}
+		}
+	} else {
+		data = action.payload;
+	}
+
 	return updateObject(state, {
 		error: null,
 		loading: false,
-		payload: action.payload,
+		payload: data,
 	});
 };
 
