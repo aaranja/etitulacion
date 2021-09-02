@@ -34,7 +34,8 @@ class DocumentsViewer extends Component {
 					/*subTitle="This is a subtitle"*/
 				></PageHeader>
 				<List
-					size="large"
+					size="middle"
+					loading={this.props.loading}
 					footer={
 						<div
 							style={{
@@ -50,7 +51,23 @@ class DocumentsViewer extends Component {
 					}
 					bordered
 					dataSource={this.props.metadata}
-					renderItem={(item) => <List.Item>{item}</List.Item>}
+					renderItem={(item) => (
+						<div
+							key={item.key}
+							onClick={(key) => {
+								console.log(key);
+							}}
+						>
+							<List.Item
+								actions={[
+									<a key="list-loadmore-edit">Descargar</a>,
+									// <a key="list-loadmore-more">more</a>,
+								]}
+							>
+								{item}
+							</List.Item>
+						</div>
+					)}
 				/>
 			</Card>
 		);

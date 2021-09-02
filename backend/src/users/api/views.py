@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 from rest_framework.request import Request
 from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
-from .documents import ValidationFiles
+from .documents import Files
 import json, time
 from types import SimpleNamespace
 
@@ -124,24 +124,40 @@ class UploadFileView(views.APIView):
         data = request.data['data']
         user = self.request.user
         file = None
-        print(update_type)
+
         status_response = "removed"
         if(update_type == "upload"):
             file = request.FILES['file']
             status_response = "success"
 
         profile = GraduateProfile.objects.get(account_id = user)
-        fileData = json.loads(data, object_hook=lambda d: SimpleNamespace(**d))
-        
-        serializer = self.serializer(profile, {'documents':[self.saveNewDocument(fileData, update_type)], 'update_type': update_type} , partial=True)
+        fileData = json.loads(
+            data, 
+            object_hook=lambda d: SimpleNamespace(**d))
+
+        serializer = self.serializer(
+            profile, 
+            {'documents':[self.saveNewDocument(fileData, update_type)], 
+            'update_type': update_type} , 
+            partial=True
+            )
         
         if serializer.is_valid():
             serializer.save()
+
+            # save file
+            if(file is not None):
+                Files.save(self,file, fileData.keyName, profile.enrollment)
+            # remove file
+            else: 
+                print(fileData)
+                Files.remove(self, fileData.keyName, profile.enrollment)
+
+            # if the user remove an document, the status changes to documentation incomplete
             if(status_response == "removed"):
                 status_serializer = StatusSerializer(profile, {'status':"STATUS_01"},  partial=True)
                 if( status_serializer.is_valid()):
                     status_serializer.save()
-                    print("estatus cambiado")
             return Response({'status': status_response, 'key': fileData.key}, status=status.HTTP_202_ACCEPTED)
         return Response({'status': "error", 'key': fileData.key}, status=status.HTTP_202_ACCEPTED)
 
