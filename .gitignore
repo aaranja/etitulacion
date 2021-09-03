@@ -3,6 +3,7 @@
 /backend/src/secrets.json
 /backend/src/db.sqlite3
 /backend/src/database.json
+/backend/src/storage/documents
 
 # frontend dependencies
 /frontend/gui/node_modules
