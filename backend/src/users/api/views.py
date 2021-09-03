@@ -10,8 +10,9 @@ from rest_framework.request import Request
 from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 from .documents import Files
 import json, time
+import asyncio
 from types import SimpleNamespace
-
+from asgiref.sync import sync_to_async
 # view for router '/staff/graduate-list/'
 class GraduateListView(views.APIView):
     permissions_classes = (IsAuthenticated,)
@@ -100,6 +101,7 @@ class VerifyInformationView(views.APIView):
         return Response(serializer.errors, status = status.HTTP_202_ACCEPTED)
 
 # view for route 'process/2/upload/<pk>/', able to update documents json
+
 class UploadFileView(views.APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (MultiPartParser, FormParser,)
@@ -117,9 +119,9 @@ class UploadFileView(views.APIView):
         file['status']     = fileStatus
         file['url']        = metadata.url
         return file
-    
+
     def put(self, request, format=None):
-        time.sleep(1)
+        
         update_type = request.data['update_type']
         data = request.data['data']
         user = self.request.user
@@ -141,8 +143,9 @@ class UploadFileView(views.APIView):
             'update_type': update_type} , 
             partial=True
             )
-        
+
         if serializer.is_valid():
+            
             serializer.save()
 
             # save file
@@ -150,7 +153,7 @@ class UploadFileView(views.APIView):
                 Files.save(self,file, fileData.keyName, profile.enrollment)
             # remove file
             else: 
-                print(fileData)
+                
                 Files.remove(self, fileData.keyName, profile.enrollment)
 
             # if the user remove an document, the status changes to documentation incomplete

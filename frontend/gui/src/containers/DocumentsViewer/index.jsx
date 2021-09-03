@@ -60,8 +60,8 @@ class DocumentsViewer extends Component {
 						>
 							<List.Item
 								actions={[
+									// eslint-disable-next-line
 									<a key="list-loadmore-edit">Descargar</a>,
-									// <a key="list-loadmore-more">more</a>,
 								]}
 							>
 								{item}

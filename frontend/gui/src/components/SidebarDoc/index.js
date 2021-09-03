@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Divider, Input, Card, Descriptions, Button, Space } from "antd";
 import careerTypes from "../../const/careerTypes";
-const { Search } = Input;
+
 const { TextArea } = Input;
 
 class SidebarDoc extends Component {

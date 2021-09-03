@@ -11,6 +11,7 @@ import {
 	ArrowRightOutlined,
 	SaveOutlined,
 	CloseCircleOutlined,
+	LoadingOutlined,
 } from "@ant-design/icons";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions/process";
@@ -20,13 +21,12 @@ class UploadDocuments extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isChange: false,
-			typeChange: "empty",
+			isChange: false, // changes state tag
+			typeChange: "empty", // upload status on update
+			uploadList: [], // current list to upload on update
+			uploadCount: 0, // lenght of the current list
+			loading: false, // loading state to save icon
 		};
-	}
-
-	componentWillUnmount() {
-		console.log("adioss");
 	}
 
 	componentDidMount() {
@@ -38,60 +38,103 @@ class UploadDocuments extends Component {
 	}
 
 	componentDidUpdate() {
-		// charge the new state of upload to child table
-		if (this.props.upload.loading !== true) {
-			if (this.props.upload.payload !== null) {
+		// when the component is rachaged, verify if uploadlist is lenght 0,
+		// if is not 0, remove one and then upload it
+		// then, update the state to do the same until the upload list lenght
+		// is 0
+		if (!this.props.upload.loading) {
+			// only when typeChange upload is active
+			if (this.state.typeChange === "upload") {
+				// set the charge is success to the current load
 				const data = this.props.upload.payload;
-				if (this.uploading.current !== null) {
-					console.log(this.uploading.current.state);
-					if (
-						!this.state.isChanged &&
-						this.state.typeChange === "success"
-					) {
-						this.uploading.current.onUploadSuccess(
-							data.data.key,
-							data.data.status
-						);
-					}
+				this.uploading.current.onUploadSuccess(
+					data.data.key,
+					data.data.status
+				);
+			}
+			if (this.state.uploadCount > 0) {
+				var count = this.state.uploadCount - 1;
+
+				// get all upload list
+				var uploadList = this.state.uploadList;
+				// remove one document from upload list
+				var uDocument = uploadList.shift();
+				// upload that document remove
+				this.props.uploadDocument(
+					uDocument.metadata,
+					uDocument.file,
+					uDocument.type
+				);
+
+				// changes tag is set
+				var isChange = true; // activate top changes tag
+				var loading = true; // activate icon loading
+				var typeChange = "upload"; // activate change tag charges in table
+
+				// remove changes tag if count is void
+				if (count === 0) {
+					isChange = false; // deactivate top changes tag
+					loading = false; // deactivate icon loading
 				}
+
+				this.setState({
+					uploadList: uploadList,
+					uploadCount: count,
+					isChange: isChange,
+					loading: loading,
+					typeChange: typeChange,
+				});
 			}
 		}
 	}
-
+	// send new files to uploadList state to
+	// send to server when component is update
 	onUploadDocuments = () => {
-		// send new files to user documents database
+		// get list of documents from child
 		var data = this.uploading.current.onUpload();
 		var metadata = data[0];
 		var file = data[1];
-		//console.log(documents);
+		var uploadCount = 0;
+		var uploadList = [];
+
+		// iterate metadata to get the correct files to save it
 		for (const key in metadata) {
 			var dataFile = metadata[key];
-			// make actions
+			// save the file into uploadList
 			if (dataFile.status === "uploading") {
-				// upload new file into database
-				this.props.uploadDocument(metadata[key], file[key], "upload");
+				uploadCount++;
+				uploadList.push({
+					metadata: metadata[key],
+					file: file[key],
+					type: "upload",
+				});
 			} else {
 				if (dataFile.status === "removed") {
-					// remove to the database
-					this.props.uploadDocument(
-						metadata[key],
-						file[key],
-						"removed"
-					);
+					uploadCount++;
+					uploadList.push({
+						metadata: metadata[key],
+						file: file[key],
+						type: "removed",
+					});
 				}
 			}
 		}
 
-		// set that the changes have been saved
-		this.setState({
-			isChange: false,
-			typeChange: "success",
-		});
+		// save upload list if has one document and change state
+		if (uploadCount !== 0) {
+			this.setState({
+				uploadCount: uploadCount,
+				uploadList: uploadList,
+				loading: true,
+			});
+		}
 	};
 
 	// function to set in the page header if
 	// the user has changes to save
 	newChanges = (isChanged, type) => {
+		// set changes state tags true
+		// deactivate upload on update when typechange is not 'upload'
 		if (isChanged) {
 			this.setState({
 				isChange: isChanged,
@@ -109,7 +152,7 @@ class UploadDocuments extends Component {
 	};
 
 	onNextProcess = () => {
-		var able = true;
+		var enable = true;
 		var dataSource = this.uploading.current.state.dataSource;
 		var fileList = this.uploading.current.state.fileList;
 
@@ -118,12 +161,12 @@ class UploadDocuments extends Component {
 				fileList[key].status === "empty" &&
 				dataSource[key].required === true
 			) {
-				able = false;
+				enable = false;
 				break;
 			}
 		}
 
-		if (able) {
+		if (enable) {
 			this.props.onNextProcess("STATUS_05");
 		} else {
 			this.openNotification(
@@ -149,7 +192,12 @@ class UploadDocuments extends Component {
 							key="2"
 							onClick={() => this.onUploadDocuments()}
 						>
-							Guardar <SaveOutlined />
+							Guardar{" "}
+							{this.state.loading ? (
+								<LoadingOutlined />
+							) : (
+								<SaveOutlined />
+							)}
 						</Button>,
 						<Button
 							key="1"

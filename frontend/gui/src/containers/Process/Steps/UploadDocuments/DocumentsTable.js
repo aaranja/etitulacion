@@ -189,7 +189,6 @@ class DocumentsTable extends Component {
 							dataTable[key - 1].status = "removed";
 							files[key - 1] = null;
 
-							console.log(dataTable[key - 1]);
 							this.setState({
 								dataSource: dataTable,
 								fileList: dataFiles,
@@ -201,7 +200,6 @@ class DocumentsTable extends Component {
 						maxCount: 1,
 
 						beforeUpload: (file) => {
-							console.log(file);
 							if (file.type !== "application/pdf") {
 								message.error(
 									`${file.name} no es un archivo PDF!`

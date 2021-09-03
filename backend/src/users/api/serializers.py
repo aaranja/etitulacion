@@ -8,6 +8,7 @@ from allauth.account.utils import setup_user_email
 from rest_framework.authtoken.models import Token
 from django.conf import settings
 from django.contrib.auth import get_user_model, authenticate
+import asyncio
 
 # Class to get the auth token from an authenticated account through email
 class CustomAuthTokenSerializer(serializers.Serializer):
@@ -138,7 +139,7 @@ class DocumentsSerializer(serializers.ModelSerializer):
 	def validate_documents(self, documents, *args, **kwargs):
 		prevDoc = self._args[0].documents
 		newDoc = documents[0]
-		
+
 		if(newDoc['status']== "removed"):
 			# delete a document
 			for i in range(len(prevDoc)):
@@ -147,6 +148,7 @@ class DocumentsSerializer(serializers.ModelSerializer):
 				if(currentDoc['key'] == newDoc['key']):
 					prevDoc.pop(index)
 		else:
+
 			Replaced = False
 			for i in range(len(prevDoc)):
 				index = i-1
