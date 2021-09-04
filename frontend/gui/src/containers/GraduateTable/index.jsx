@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Table, PageHeader, Button, Card } from "antd";
+import { Table, PageHeader, Button, Card, Progress, Tag } from "antd";
 import * as actions from "../../store/actions/staff_services";
 import { ReloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
+
 class GraduateTable extends Component {
 	constructor(props) {
 		super(props);
@@ -24,9 +25,9 @@ class GraduateTable extends Component {
 	render() {
 		const datacolumns = [
 			{
-				title: "No. de control",
+				title: "No. control",
 				dataIndex: "enrollment",
-				width: "15%",
+				width: "10%",
 			},
 			{
 				title: "Nombre",
@@ -47,11 +48,68 @@ class GraduateTable extends Component {
 				title: "Estatus",
 				dataIndex: "status",
 				width: "10%",
+				render: (text, record) => {
+					var current = 0;
+					switch (text) {
+						case "STATUS_00":
+							current = 0;
+							break;
+						case "STATUS_01":
+							current = 1;
+							break;
+						case "STATUS_02":
+							current = 2;
+							break;
+						case "STATUS_03":
+							current = 2;
+							break;
+						case "STATUS_04":
+							current = 2;
+							break;
+						case "STATUS_05":
+							current = 3;
+							break;
+						case "STATUS_06":
+							current = 4;
+							break;
+						default:
+							current = 4;
+					}
+					return <Progress percent={current * 25} steps={4} />;
+				},
 			},
 			{
 				title: "Documentación",
 				dataIndex: "documents",
 				width: "10%",
+				render: (text, record) => {
+					var color = "default";
+					var custom_text = "Sin cargar";
+					var status = record.status;
+					if (status === "STATUS_06") {
+						color = "success";
+						custom_text = "Aprobada";
+					} else {
+						if (status === "STATUS_05") {
+							color = "processing";
+							custom_text = "Por revisar";
+						} else {
+							if (status === "STATUS_04") {
+								color = "error";
+								custom_text = "Rechazada";
+							}
+						}
+					}
+
+					return (
+						<Tag
+							color={color}
+							style={{ width: "100%", textAlign: "center" }}
+						>
+							{custom_text}
+						</Tag>
+					);
+				},
 			},
 		];
 

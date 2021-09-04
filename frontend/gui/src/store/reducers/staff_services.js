@@ -44,6 +44,14 @@ const actionSuccess = (state, action) => {
 	});
 };
 
+const actionReset = (state, action) => {
+	state.payload[action.resetType] = null;
+	return updateObject(state, {
+		error: null,
+		loading: false,
+	});
+};
+
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		case actionTypes.GET_DATA_START:
@@ -52,6 +60,8 @@ const reducer = (state = initialState, action) => {
 			return actionSuccess(state, action);
 		case actionTypes.GET_DATA_FAIL:
 			return actionFail(state, action);
+		case actionTypes.RESET_DATA:
+			return actionReset(state, action);
 		default:
 			return state;
 	}

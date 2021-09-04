@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 class DocumentsViewer extends Component {
 	constructor(props) {
 		super(props);
-
+		console.log(props);
 		// get the name of the documents
 		this.props.getDocumentsDetails();
 
@@ -22,19 +22,23 @@ class DocumentsViewer extends Component {
 		this.props.getGraduateData(props.graduatePK);
 	}
 
+	componentWillUnmount() {
+		this.props.reset("graduate");
+	}
+
 	setApproval = (message, status) => {
 		this.props.setApproval(this.props.graduatePK, message, status);
 	};
-
-	componentDidUpdate() {}
 
 	render() {
 		return (
 			<>
 				<SidebarDoc
 					graduate={this.props.graduateData}
+					loading={this.props.loading}
 					onApproval={this.setApproval}
 				/>
+
 				<Card
 					style={{
 						margin: 0,
@@ -53,47 +57,49 @@ class DocumentsViewer extends Component {
 					{this.props.loading ? (
 						<LoadingOutlined />
 					) : this.props.error !== "NO_DOCUMENTS" ? (
-						<List
-							size="middle"
-							loading={this.props.loading}
-							footer={
-								<div
-									style={{
-										display: "flex",
-										justifyContent: "center",
-									}}
-								>
-									<Space>
-										Descargar todos los archivos
-										<Button type="primary">
-											<DownloadOutlined /> Aquí
-										</Button>
-									</Space>
-								</div>
-							}
-							bordered
-							dataSource={this.props.metadata}
-							renderItem={(item) => (
-								<div
-									key={item.key}
-									onClick={(key) => {
-										console.log(key);
-									}}
-								>
-									<List.Item
-										actions={[
-											// eslint-disable-next-line
-											<a key="list-loadmore-edit">
-												<DownloadOutlined /> &nbsp;
-												Descargar
-											</a>,
-										]}
+						<>
+							<List
+								size="middle"
+								loading={this.props.loading}
+								footer={
+									<div
+										style={{
+											display: "flex",
+											justifyContent: "center",
+										}}
 									>
-										{item}
-									</List.Item>
-								</div>
-							)}
-						/>
+										<Space>
+											Descargar todos los archivos
+											<Button type="primary">
+												<DownloadOutlined /> Aquí
+											</Button>
+										</Space>
+									</div>
+								}
+								bordered
+								dataSource={this.props.metadata}
+								renderItem={(item) => (
+									<div
+										key={item.key}
+										onClick={(key) => {
+											console.log(key);
+										}}
+									>
+										<List.Item
+											actions={[
+												// eslint-disable-next-line
+												<a key="list-loadmore-edit">
+													<DownloadOutlined /> &nbsp;
+													Descargar
+												</a>,
+											]}
+										>
+											{item}
+										</List.Item>
+									</div>
+								)}
+							/>
+						</>
 					) : (
 						<p>
 							El egresado {this.props.graduatePK} no ha cargado
@@ -122,19 +128,22 @@ const mapStateToProps = (state) => {
 	var documents = [];
 	var graduateData = null;
 	var error = null;
-	// var loading = true;
-
+	var loading = true;
 	var currentState = state.staff_services;
-	if (!currentState.loading && currentState.payload !== null) {
+
+	if (currentState.payload !== null) {
 		// get documents name
 		if (currentState.payload.documents !== undefined) {
 			documents = formatDataSource(currentState.payload.documents);
 		}
 
 		// get graduate data
-		if (currentState.payload.graduate !== undefined) {
+		if (
+			currentState.payload.graduate !== undefined &&
+			currentState.payload.graduate !== null
+		) {
 			graduateData = currentState.payload.graduate;
-			// loading = false;
+			loading = false;
 			if (
 				graduateData.status === "STATUS_01" ||
 				graduateData.status === "STATUS_00"
@@ -145,7 +154,7 @@ const mapStateToProps = (state) => {
 	}
 
 	return {
-		loading: state.staff_services.loading,
+		loading: loading,
 		metadata: documents,
 		graduateData: graduateData,
 		error: error,
@@ -159,6 +168,7 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(actions.getGraduate(enrollment)),
 		setApproval: (enrollment, message, type) =>
 			dispatch(actions.setApproval(enrollment, message, type)),
+		reset: (type) => dispatch(actions.resetData(type)),
 	};
 };
 

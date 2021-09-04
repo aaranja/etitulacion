@@ -40,6 +40,13 @@ export const D_Fail = (error) => {
 	};
 };
 
+export const D_Reset = (resetType) => {
+	return {
+		type: actionTypes.RESET_DATA,
+		resetType: resetType,
+	};
+};
+
 export const uploadStart = () => {
 	return {
 		type: actionTypes.UPDATE_DOC_START,

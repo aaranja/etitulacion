@@ -57,7 +57,7 @@ class Process extends React.Component {
 				className="site-layout-background"
 				style={{
 					height: "100%",
-					marginLeft: 260,
+					marginLeft: 300,
 				}}
 			>
 				<Sidebar

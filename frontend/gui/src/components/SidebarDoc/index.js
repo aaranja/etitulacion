@@ -17,31 +17,52 @@ const { TextArea } = Input;
 class SidebarDoc extends Component {
 	constructor(props) {
 		super(props);
+
+		var dataSource = [];
+		// if (this.props.loading) {
+		// 	var history = this.props.graduate.notifications;
+		// 	for (const key in history) {
+		// 		var not =
+		// 			history[key].date +
+		// 			" - " +
+		// 			history[key].time +
+		// 			"\r| " +
+		// 			history[key].message;
+		// 		dataSource.unshift(not);
+		// 	}
+		// }
+
 		this.state = {
-			dataSource: [],
+			dataSource: dataSource,
+			loading: true,
 		};
 	}
 
+	componentWillUnmount() {
+		this.props = null;
+		this.setState({
+			dataSource: [],
+			loading: true,
+		});
+	}
+
 	componentDidUpdate() {
-		if (this.props.graduate !== null) {
-			var dataSource = this.state.dataSource;
-			if (dataSource.length === 0) {
-				var history = this.props.graduate.notifications;
-				for (const key in history) {
-					var not =
-						history[key].date +
-						" - " +
-						history[key].time +
-						"\r| " +
-						history[key].message;
-					dataSource.unshift(not);
-				}
-				this.setState({
-					dataSource: dataSource,
-				});
+		var dataSource = this.state.dataSource;
+		if (!this.props.loading && this.state.loading) {
+			var history = this.props.graduate.notifications;
+			for (const key in history) {
+				var not =
+					history[key].date +
+					" - " +
+					history[key].time +
+					"\r| " +
+					history[key].message;
+				dataSource.unshift(not);
 			}
-		} else {
-			console.log("no hay egresado");
+			this.setState({
+				dataSource: dataSource,
+				loading: false,
+			});
 		}
 	}
 

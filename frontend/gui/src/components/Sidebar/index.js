@@ -38,14 +38,17 @@ class Sidebar extends React.Component {
 		return (
 			<Card
 				style={{
-					marginRight: "0.5%",
-					overflow: "auto",
+					margin: 0.5,
+					overflowY: "scroll",
 					position: "fixed",
-					left: 10,
-					minHeight: "90vh",
-					width: 250,
 					display: "flex",
 					flexDirection: "column",
+					maxHeight: "90vh",
+					minWidth: 250,
+					width: 300,
+					minHeight: "89vh",
+					left: 10,
+					padding: 0,
 				}}
 			>
 				<Sider
@@ -53,9 +56,7 @@ class Sidebar extends React.Component {
 					className="site-layout-background"
 					style={{
 						backgroundColor: "white",
-						display: "flex",
-						flexDirection: "column",
-						justifyContent: "flex-end",
+						paddingBottom: "15%",
 					}}
 				>
 					<div>

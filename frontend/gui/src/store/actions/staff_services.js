@@ -27,6 +27,13 @@ export const getGraduateList = () => {
 	};
 };
 
+// remove certain data
+export const resetData = (type) => {
+	return (dispatch) => {
+		dispatch(transactionTypes.D_Reset(type));
+	};
+};
+
 export const setApproval = (enrollment, message, type) => {
 	return async (dispatch) => {
 		var token = localStorage.getItem("token");
@@ -75,7 +82,10 @@ export const getGraduate = (enrollment) => {
 				)
 				.then((response) => {
 					dispatch(
-						transactionTypes.D_Success({ graduate: response.data })
+						transactionTypes.D_Success({
+							graduate: response.data,
+							loading: false,
+						})
 					);
 				})
 				.catch((error) => {

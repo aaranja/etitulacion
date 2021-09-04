@@ -59,7 +59,7 @@ class SServices extends Component {
 							<DocumentsViewer
 								callBack={this.setCurrentView}
 								graduatePK={this.state.graduate}
-							/>{" "}
+							/>
 						</>
 					);
 				default:
@@ -71,10 +71,11 @@ class SServices extends Component {
 			<Layout
 				className="site-layout-background"
 				style={{
+					display: "flex",
 					height: "100%",
-					marginLeft: 465,
+					marginLeft: "25%",
 					marginRight: "10%",
-					minWidth: 500,
+					minWidth: "50%",
 				}}
 			>
 				{currentView()}
