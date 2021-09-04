@@ -18,6 +18,12 @@ const BaseRouter = () => (
 			user_type="normal"
 			render={(props) => <Home {...props} />}
 		/>
+		<PrivateRoute
+			exact
+			path="/home/documents/:id"
+			user_type="normal"
+			render={(props) => <Home {...props} />}
+		/>
 		<Route
 			exact
 			path="/admin/login/"

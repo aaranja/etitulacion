@@ -3,30 +3,42 @@ import { Layout } from "antd";
 import GraduateTable from "../GraduateTable";
 import DocumentsViewer from "../DocumentsViewer";
 import SidebarList from "../../components/SidebarList";
-import SidebarDoc from "../../components/SidebarDoc";
 import "antd/dist/antd.css";
 
 class SServices extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			currentView: "list",
-			graduate: null,
-		};
+		if (props.match.params.id !== undefined) {
+			this.state = {
+				currentView: "documents",
+				graduate: props.match.params.id,
+			};
+		} else {
+			this.state = {
+				currentView: "list",
+				graduate: null,
+			};
+			window.history.pushState(
+				"home/",
+				"Home - Servicios escolares",
+				`/home/`
+			);
+		}
 	}
 
-	setCurrentView = (view) => {
-		this.setState({
-			currentView: view,
-			graduate: null,
-		});
-	};
+	setCurrentView = (view, id) => {
+		if (view == "list") {
+			window.history.pushState(
+				"home/",
+				"Home - Servicios escolares",
+				`/home/`
+			);
+		}
 
-	setGraduateDoc = (data, view) => {
 		this.setState({
 			currentView: view,
-			graduate: data,
+			graduate: id,
 		});
 	};
 
@@ -38,16 +50,15 @@ class SServices extends Component {
 						<>
 							{" "}
 							<SidebarList />
-							<GraduateTable callBack={this.setGraduateDoc} />
+							<GraduateTable callBack={this.setCurrentView} />
 						</>
 					);
 				case "documents":
 					return (
 						<>
-							<SidebarDoc info={this.state.graduate} />
 							<DocumentsViewer
 								callBack={this.setCurrentView}
-								graduate={this.state.graduate}
+								graduatePK={this.state.graduate}
 							/>{" "}
 						</>
 					);
@@ -61,7 +72,7 @@ class SServices extends Component {
 				className="site-layout-background"
 				style={{
 					height: "100%",
-					marginLeft: 425,
+					marginLeft: 465,
 					marginRight: "10%",
 					minWidth: 500,
 				}}

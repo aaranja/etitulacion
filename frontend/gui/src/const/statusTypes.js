@@ -33,7 +33,8 @@ export const STATUS_04 = {
 	key: 2,
 	code: "STATUS_04",
 	info: "DOCUMENTATION_INFORMATION_ERROR",
-	message: "Ha ocurrido un error con tu información o documentación.",
+	message:
+		"Ha ocurrido un error con tu información o documentación. Sigue las indicaciones.",
 	status: "error",
 };
 export const STATUS_05 = {
@@ -59,11 +60,11 @@ export const STATUS_07 = {
 };
 export const STATUS_09 = {
 	key: 4,
-	code: "STATUS_06",
+	code: "STATUS_09",
 	info: "COORDINATION_APPROVAL",
 };
 export const STATUS_10 = {
 	key: 4,
-	code: "STATUS_07",
+	code: "STATUS_10",
 	info: "FIRST_SECCION_COMPLETE",
 };

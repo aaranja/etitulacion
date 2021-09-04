@@ -28,4 +28,16 @@ class GraduateProfile(models.Model):
 	status = models.CharField(max_length=30, blank=True, null=True)
 	accurate_docs = models.BooleanField(default=False)
 	documents = models.JSONField(blank=True, default=list)
+	notifications = models.JSONField(blank=True, default=list)
 	account = models.OneToOneField(Account,on_delete=models.CASCADE, related_name="account") # relational with Perfil model
+
+
+# notifications structure 
+# [
+# {
+# 	'date': "some-date",
+#   'time': "some-time",
+# 	'type': "default",
+# 	'message': "some-message",
+# }
+# ]

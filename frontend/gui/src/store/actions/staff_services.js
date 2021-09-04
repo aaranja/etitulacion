@@ -27,6 +27,64 @@ export const getGraduateList = () => {
 	};
 };
 
+export const setApproval = (enrollment, message, type) => {
+	return async (dispatch) => {
+		var token = localStorage.getItem("token");
+		if (token === undefined) {
+			dispatch(logout());
+		} else {
+			dispatch(transactionTypes.D_Start());
+			axios.defaults.headers = {
+				"Content-Type": "application/json",
+				Authorization: `Token ${token}`,
+			};
+			await axios
+				.post(
+					`http://127.0.0.1:8000/api/staff/graduate-data/${enrollment}/`,
+					{
+						message: message,
+						type: type,
+					}
+				)
+				.then((response) => {
+					dispatch(
+						transactionTypes.D_Success({ approval: response.data })
+					);
+				})
+				.catch((error) => {
+					dispatch(transactionTypes.D_Fail(error));
+				});
+		}
+	};
+};
+
+export const getGraduate = (enrollment) => {
+	return async (dispatch) => {
+		var token = localStorage.getItem("token");
+		if (token === undefined) {
+			dispatch(logout());
+		} else {
+			dispatch(transactionTypes.D_Start());
+			axios.defaults.headers = {
+				"Content-Type": "application/json",
+				Authorization: `Token ${token}`,
+			};
+			await axios
+				.get(
+					`http://127.0.0.1:8000/api/staff/graduate-data/${enrollment}/`
+				)
+				.then((response) => {
+					dispatch(
+						transactionTypes.D_Success({ graduate: response.data })
+					);
+				})
+				.catch((error) => {
+					dispatch(transactionTypes.D_Fail(error));
+				});
+		}
+	};
+};
+
 export const getDocumentsDetails = () => {
 	return async (dispatch) => {
 		var token = localStorage.getItem("token");

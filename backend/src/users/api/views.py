@@ -1,5 +1,5 @@
 from users.models import Account, GraduateProfile
-from .serializers import AccountSerializer, ProfileSerializer,DocumentsSerializer, StatusSerializer, StaffRegisterSerializer
+from .serializers import AccountSerializer, ProfileSerializer,DocumentsSerializer, StatusSerializer, StaffRegisterSerializer, ApprovalSerializer
 from django.shortcuts import get_object_or_404
 from django.core import serializers
 from rest_framework import viewsets, status, views
@@ -13,11 +13,62 @@ import json, time
 import asyncio
 from types import SimpleNamespace
 from asgiref.sync import sync_to_async
+from datetime import datetime
+
+# view for router '/staff/graduate-data/<pk>/'
+class StaffGraduateView(views.APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        graduatePK = self.kwargs['pk']
+        graduateData = []
+        if(user.is_staff):
+            # search profile
+            profile_queryset = GraduateProfile.objects.filter(enrollment=graduatePK)
+            profile = list(profile_queryset.values('enrollment','career','status','accurate_docs','documents','notifications','account_id'))[0]
+            
+            # search first and last name
+            account_queryset = Account.objects.filter(id=profile['account_id'])
+            account = list(account_queryset.values('first_name','last_name'))[0]
+
+            # merge graduate data
+            account.update(profile)
+            
+            # return graduate data
+            return Response(account, status = status.HTTP_200_OK)
+        return Response(None,status = status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        graduatePK = self.kwargs['pk']
+        if(user.is_staff):
+            graduated = GraduateProfile.objects.get(enrollment = graduatePK)
+            notification_type = request.data['type']
+            notification = {'message': request.data['message'], 'type': notification_type}
+            new_status = None
+            if(notification_type == "error"):
+                new_status = "STATUS_04"
+            elif(notification_type == "success"):
+                new_status = "STATUS_06"
+            else:
+                # if type isn't error or success
+                return Response(None, status = status.HTTP_400_BAD_REQUEST)
+
+            serializer = ApprovalSerializer(graduated, {'notifications': notification, 'status': new_status}, partial=True)
+
+            if(serializer.is_valid()):
+                serializer.save()
+
+            return Response(None, status = status.HTTP_200_OK)
+        return Response(None,status = status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
 # view for router '/staff/graduate-list/'
-class GraduateListView(views.APIView):
+class StaffGraduateListView(views.APIView):
     permissions_classes = (IsAuthenticated,)
 
-    def get(self, request, * args, **kwargs):
+    def get(self, request, *args, **kwargs):
         user = self.request.user
         # only staff can get all graduate data
         if(user.is_staff is True):

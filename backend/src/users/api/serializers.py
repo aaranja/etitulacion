@@ -9,6 +9,7 @@ from rest_framework.authtoken.models import Token
 from django.conf import settings
 from django.contrib.auth import get_user_model, authenticate
 import asyncio
+from datetime import datetime
 
 # Class to get the auth token from an authenticated account through email
 class CustomAuthTokenSerializer(serializers.Serializer):
@@ -89,8 +90,6 @@ class StaffRegisterSerializer(serializers.ModelSerializer):
 		return data
 
 	def save(self, request):
-		print("Creando cuenta de staff")
-		print(request.data)
 		# create and save account
 		new_account = Account(
 			email=request.data['email'],
@@ -112,6 +111,38 @@ class AccountSerializer(serializers.ModelSerializer):
 			'email': {'read_only': True},
 			'user_type': {'read_only': True}
 		}
+
+class ApprovalSerializer(serializers.ModelSerializer):
+	status = serializers.CharField()
+	notifications = serializers.JSONField()
+	class Meta:
+		model = GraduateProfile
+		fields = ['status', 'notifications']
+
+	def validate_notifications(self, notifications, *args, **kwargs):
+		current_not = self._args[0].notifications
+		new_not = notifications
+
+		now = datetime.now()
+		date = now.strftime("%d/%m/%Y")
+		time = now.strftime("%H:%M:%S")
+		message = notifications['message']
+		ntype = notifications['type']
+
+		new_notification = {'date': date, 'time': time, 'message': message, 'type': ntype}
+		
+		current_not.append(new_notification)
+		return current_not
+
+	def validate_status(self, status, *args, **kwargs):
+		return status
+
+	def update(self, instance, validated_data):
+		instance.notifications = validated_data.get('notifications', instance.notifications)
+		instance.status = validated_data.get('status', instance.status)
+		instance.save()
+		return instance
+
 
 class StatusSerializer(serializers.ModelSerializer):
 	status = serializers.CharField()
@@ -140,6 +171,7 @@ class DocumentsSerializer(serializers.ModelSerializer):
 		prevDoc = self._args[0].documents
 		newDoc = documents[0]
 
+
 		if(newDoc['status']== "removed"):
 			# delete a document
 			for i in range(len(prevDoc)):
@@ -159,6 +191,8 @@ class DocumentsSerializer(serializers.ModelSerializer):
 			if(not Replaced):
 				# add new document
 				prevDoc.append(newDoc)
+		print(prevDoc)
+
 		return prevDoc
 
 	def validate_update_type(self, update_type, *args, **kwargs):

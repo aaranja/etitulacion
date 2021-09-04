@@ -89,7 +89,10 @@ class GraduateTable extends Component {
 					onRow={(record, rowIndex) => {
 						return {
 							onClick: (event) => {
-								this.props.callBack(record, "documents");
+								this.props.callBack(
+									"documents",
+									record.enrollment
+								);
 							}, // click row
 						};
 					}}

@@ -9,6 +9,10 @@ import * as actions from "../../store/actions/account";
 import * as userTypes from "../../const/userTypes";
 
 class Home extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
 	componentDidMount() {
 		/* get user data to share within other components*/
 		if (this.props.user_type === userTypes.USER_GRADUATE) {
@@ -34,7 +38,7 @@ class Home extends React.Component {
 					case userTypes.USER_GRADUATE:
 						return <Process />;
 					case userTypes.USER_SERVICES:
-						return <SServices />;
+						return <SServices match={this.props.match} />;
 					case userTypes.USER_COORDINATION:
 						return <Coordination />;
 					default:

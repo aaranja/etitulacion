@@ -99,7 +99,15 @@ class Register extends React.Component {
 								},
 							]}
 						>
-							<Input placeholder="No. control" />
+							<Input
+								placeholder="No. control"
+								maxLength="8"
+								onKeyPress={(event) => {
+									if (!/[0-9]/.test(event.key)) {
+										event.preventDefault();
+									}
+								}}
+							/>
 						</Form.Item>
 						<Form.Item
 							label="Carrera"
