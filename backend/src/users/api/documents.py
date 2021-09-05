@@ -21,3 +21,6 @@ class Files():
 					# delete each file
 					fs.delete(keyName+"/"+name)
 		return True;
+
+	def get(self, keyName, enrollment):
+		return True

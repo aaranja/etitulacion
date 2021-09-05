@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
-from .views import AccountViewSet, GraduateProfileViewSet, UploadFileView, VerifyInformationView, StatusView, StaffRegisterView, StaffGraduateListView, StaffGraduateView
+from .views import AccountViewSet, GraduateProfileViewSet, UploadFileView, VerifyInformationView, StatusView, StaffRegisterView, StaffGraduateListView, StaffGraduateView, StaffGetDocumentView
 
 router = DefaultRouter()
 router.register(r'account', GraduateProfileViewSet, basename='profile')
@@ -13,6 +13,7 @@ urlpatterns = [
 	path('admin/register/staff/', StaffRegisterView.as_view()),
 	path('staff/graduate-list/', StaffGraduateListView.as_view()),
 	path('staff/graduate-data/<pk>/',StaffGraduateView.as_view() ),
+	path('staff/graduate-data/<pk>/documents/<keyname>/',StaffGetDocumentView.as_view()),
 ]
 
 urlpatterns += router.urls

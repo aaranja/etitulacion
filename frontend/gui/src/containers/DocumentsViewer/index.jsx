@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, PageHeader, Button, List, Space } from "antd";
+import { Card, PageHeader, Button, List, Space, Table } from "antd";
 import { LoadingOutlined, DownloadOutlined } from "@ant-design/icons";
 import SidebarDoc from "../../components/SidebarDoc";
 import * as actions from "../../store/actions/staff_services";
@@ -31,6 +31,38 @@ class DocumentsViewer extends Component {
 	};
 
 	render() {
+		const columns = [
+			{
+				title: "No.",
+				dataIndex: "key",
+				key: "key",
+				width: "5%",
+			},
+
+			{
+				title: "Nombre del archivo",
+				dataIndex: "fullName",
+				key: "fullName",
+			},
+			{
+				title: "Operación",
+				dataIndex: "download",
+				width: "10%",
+				key: "download",
+				render: (key, record) => {
+					return (
+						<Button
+							icon={<DownloadOutlined />}
+							shape="round"
+							type="dashed"
+						>
+							Descargar
+						</Button>
+					);
+				},
+			},
+		];
+
 		return (
 			<>
 				<SidebarDoc
@@ -58,46 +90,21 @@ class DocumentsViewer extends Component {
 						<LoadingOutlined />
 					) : this.props.error !== "NO_DOCUMENTS" ? (
 						<>
-							<List
-								size="middle"
-								loading={this.props.loading}
-								footer={
-									<div
-										style={{
-											display: "flex",
-											justifyContent: "center",
-										}}
-									>
-										<Space>
-											Descargar todos los archivos
-											<Button type="primary">
-												<DownloadOutlined /> Aquí
-											</Button>
-										</Space>
-									</div>
-								}
-								bordered
+							<Table
+								columns={columns}
 								dataSource={this.props.metadata}
-								renderItem={(item) => (
-									<div
-										key={item.key}
-										onClick={(key) => {
-											console.log(key);
-										}}
-									>
-										<List.Item
-											actions={[
-												// eslint-disable-next-line
-												<a key="list-loadmore-edit">
-													<DownloadOutlined /> &nbsp;
-													Descargar
-												</a>,
-											]}
-										>
-											{item}
-										</List.Item>
-									</div>
-								)}
+								pagination={false}
+								bordered
+								onRow={(record, rowIndex) => {
+									return {
+										onClick: (event) => {
+											this.props.getDocument(
+												this.props.graduatePK,
+												record.download
+											);
+										},
+									};
+								}}
 							/>
 						</>
 					) : (
@@ -117,7 +124,11 @@ const formatDataSource = (metadata) => {
 	if (metadata !== undefined) {
 		for (const key in metadata) {
 			if (metadata[key].clasification !== 2) {
-				list.push(metadata[key].fullName);
+				list.push({
+					key: key,
+					fullName: metadata[key].fullName,
+					download: metadata[key].keyName,
+				});
 			}
 		}
 	}
@@ -169,6 +180,9 @@ const mapDispatchToProps = (dispatch) => {
 		setApproval: (enrollment, message, type) =>
 			dispatch(actions.setApproval(enrollment, message, type)),
 		reset: (type) => dispatch(actions.resetData(type)),
+		getDocument: (enrollment, keyName) => {
+			dispatch(actions.getDocument(enrollment, keyName));
+		},
 	};
 };
 

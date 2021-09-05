@@ -15,6 +15,23 @@ from types import SimpleNamespace
 from asgiref.sync import sync_to_async
 from datetime import datetime
 
+# view for router '/staff/graduate-data/<pk>/documents/<keyname>/'
+class StaffGetDocumentView(views.APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        if(user.is_staff):
+            graduatePK =self.kwargs['pk']
+            docKeyName = self.kwargs['keyname']
+
+            print(graduatePK)
+            print(docKeyName)
+
+
+            return Response(None, status = status.HTTP_200_OK)
+        return Response(None,status = status.HTTP_405_METHOD_NOT_ALLOWED)
+
 # view for router '/staff/graduate-data/<pk>/'
 class StaffGraduateView(views.APIView):
     permission_classes = (IsAuthenticated,)
@@ -152,7 +169,6 @@ class VerifyInformationView(views.APIView):
         return Response(serializer.errors, status = status.HTTP_202_ACCEPTED)
 
 # view for route 'process/2/upload/<pk>/', able to update documents json
-
 class UploadFileView(views.APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (MultiPartParser, FormParser,)

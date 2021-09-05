@@ -34,6 +34,36 @@ export const resetData = (type) => {
 	};
 };
 
+// get document with keyname and enrollment
+export const getDocument = (enrollment, keyName) => {
+	return async (dispatch) => {
+		var token = localStorage.getItem("token");
+		if (token === undefined) {
+			dispatch(logout());
+		} else {
+			dispatch(transactionTypes.D_Start());
+			axios.defaults.headers = {
+				"Content-Type": "application/json",
+				Authorization: `Token ${token}`,
+			};
+			await axios
+				.get(
+					`http://127.0.0.1:8000/api/staff/graduate-data/${enrollment}/documents/${keyName}/`
+				)
+				.then((response) => {
+					dispatch(
+						transactionTypes.D_Success({
+							document: { data: response.data, keyName: keyName },
+						})
+					);
+				})
+				.catch((error) => {
+					dispatch(transactionTypes.D_Fail(error));
+				});
+		}
+	};
+};
+
 export const setApproval = (enrollment, message, type) => {
 	return async (dispatch) => {
 		var token = localStorage.getItem("token");
