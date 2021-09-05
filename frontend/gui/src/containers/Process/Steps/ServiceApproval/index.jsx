@@ -1,16 +1,55 @@
 import React, { Component } from "react";
-import { PageHeader, Button, Descriptions, Divider, Tag } from "antd";
+import {
+	PageHeader,
+	Button,
+	Descriptions,
+	Divider,
+	Tag,
+	notification,
+	Popconfirm,
+} from "antd";
 import * as actions from "../../../../store/actions/process";
-import { ArrowRightOutlined, ReloadOutlined } from "@ant-design/icons";
+import {
+	ArrowRightOutlined,
+	DeliveredProcedureOutlined,
+	CloseCircleOutlined,
+} from "@ant-design/icons";
 import { connect } from "react-redux";
 
 class ServiceApproval extends Component {
-	componentDidMount() {}
+	constructor(props) {
+		super(props);
+		var len = props.status.notifications.length;
+		var notification = null;
+
+		if (len > 0) {
+			notification = props.status.notifications[len - 1];
+		}
+
+		this.state = {
+			notification: notification,
+		};
+	}
+
+	onBack = () => {
+		if (this.props.status.codeStatus == "STATUS_05") {
+			notification["error"]({
+				message: "Operación no permitida",
+				description: "Para ir para atrás cancele el proceso actual.",
+			});
+		} else {
+			this.props.callbackFromParent(1);
+		}
+	};
 
 	onNextProcess = () => {};
 
 	updateStatus = () => {
 		this.props.getApprovalStatus();
+	};
+
+	sendStatus = (status) => {
+		this.props.setNewStatus(status);
 	};
 
 	render() {
@@ -20,13 +59,16 @@ class ServiceApproval extends Component {
 
 			switch (this.props.status.codeStatus) {
 				case "STATUS_06":
-					text = "Aprobado";
+					text = "Documentación aprobada";
 					break;
 				case "STATUS_05":
-					text = "En proceso";
+					text = "En proceso de revisión";
 					break;
 				case "STATUS_04":
-					text = "Error";
+					text = "Documentación rechazada";
+					break;
+				case "STATUS_03":
+					text = "En espera";
 					break;
 				default:
 					text = null;
@@ -34,6 +76,55 @@ class ServiceApproval extends Component {
 			}
 
 			return <Tag color={this.props.status.statusType}>{text}</Tag>;
+		};
+
+		const initValidation = () => {
+			var text = null;
+			var color = "default";
+			var icon = null;
+			var newStatus = null;
+			switch (this.props.status.codeStatus) {
+				case "STATUS_06":
+					return null;
+				case "STATUS_05":
+					text = "Cancelar";
+					color = "error";
+					icon = <CloseCircleOutlined />;
+					newStatus = "STATUS_03";
+					break;
+				case "STATUS_04":
+					return (
+						<Popconfirm
+							placement="top"
+							title={"¿Has cambiado los documentos incorrectos?"}
+							onConfirm={() => this.sendStatus("STATUS_05")}
+							okText="Si"
+							cancelText="No"
+						>
+							<Button icon={<DeliveredProcedureOutlined />}>
+								Reenviar documentos
+							</Button>
+						</Popconfirm>
+					);
+				case "STATUS_03":
+					text = "Enviar";
+					color = "default";
+					icon = <DeliveredProcedureOutlined />;
+					newStatus = "STATUS_05";
+					break;
+				default:
+					return null;
+			}
+
+			return (
+				<Button
+					type={color}
+					icon={icon}
+					onClick={() => this.sendStatus(newStatus)}
+				>
+					{text}
+				</Button>
+			);
 		};
 
 		// function to set abled or disabled to cdni download
@@ -60,7 +151,7 @@ class ServiceApproval extends Component {
 			<div>
 				<PageHeader
 					ghost={false}
-					onBack={() => this.props.callbackFromParent(1)}
+					onBack={() => this.onBack()}
 					title="Aprobación de documentos por el departamento de servicios escolares"
 					extra={[
 						<Button
@@ -74,13 +165,14 @@ class ServiceApproval extends Component {
 				>
 					<Descriptions size="middle" column={1}>
 						<Descriptions.Item label={<b>INSTRUCCIONES</b>}>
-							El departamento de servicios escolares está
-							procesando tu documentación.
+							Si todo está listo, haz click en el botón "enviar".
+							Esto hará que tu documentación entre al proceso de
+							validación por parte del departamento de servicios
+							escolares.
 						</Descriptions.Item>
 						<Descriptions.Item>
 							Una vez que tu documentación sea aprobada, podrás
-							descargar la
-							<p>&nbsp;constancia de no inconvenientes&nbsp;</p>
+							descargar la constancia de no inconvenientes
 							(requerido para la aprobación de coordinación de
 							titulación*).
 						</Descriptions.Item>
@@ -99,14 +191,7 @@ class ServiceApproval extends Component {
 									justifyContent: "center",
 								}}
 							>
-								<Button type="link">Actualizar</Button>
-								<Button
-									type="primary"
-									shape="circle"
-									icon={<ReloadOutlined />}
-									label="hoal"
-									onClick={this.updateStatus}
-								></Button>
+								{initValidation()}
 							</div>
 						}
 					>
@@ -118,10 +203,10 @@ class ServiceApproval extends Component {
 								{this.props.status.message}
 							</div>
 						</Descriptions.Item>
-						{this.props.status.statusType === "error" ? (
-							<Descriptions.Item label="Comentarios">
+						{this.state.notification !== null ? (
+							<Descriptions.Item label="Notificación">
 								<div style={contentStyle}>
-									Por el momento esto está vacío
+									{this.state.notification.message}
 								</div>
 							</Descriptions.Item>
 						) : null}
@@ -138,6 +223,7 @@ class ServiceApproval extends Component {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		getApprovalStatus: () => dispatch(actions.getStatus()),
+		setNewStatus: (status) => dispatch(actions.setNewStatus(status)),
 	};
 };
 

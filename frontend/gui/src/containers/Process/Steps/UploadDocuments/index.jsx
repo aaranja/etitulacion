@@ -152,27 +152,38 @@ class UploadDocuments extends Component {
 	};
 
 	onNextProcess = () => {
-		var enable = true;
-		var dataSource = this.uploading.current.state.dataSource;
-		var fileList = this.uploading.current.state.fileList;
-
-		for (const key in dataSource) {
-			if (
-				fileList[key].status === "empty" &&
-				dataSource[key].required === true
-			) {
-				enable = false;
-				break;
-			}
-		}
-
-		if (enable) {
-			this.props.onNextProcess("STATUS_05");
-		} else {
+		if (this.state.isChange) {
 			this.openNotification(
-				"Para avanzar termine de subir toda su documentación",
-				"Error"
+				"Guarde los cambios antes de avanzar.",
+				"Operación no permitida."
 			);
+		} else {
+			var enable = true;
+			var dataSource = this.uploading.current.state.dataSource;
+			var fileList = this.uploading.current.state.fileList;
+			var newStatus = this.props.status;
+			for (const key in dataSource) {
+				if (
+					fileList[key].status === "empty" &&
+					dataSource[key].required === true
+				) {
+					enable = false;
+					break;
+				}
+			}
+
+			if (enable) {
+				if (newStatus === "STATUS_01") {
+					newStatus = "STATUS_03";
+				}
+				this.props.onNextProcess(newStatus);
+			} else {
+				// when documents required are not uploaded
+				this.openNotification(
+					"Para avanzar termine de subir toda su documentación.",
+					"Operación no permitida."
+				);
+			}
 		}
 	};
 

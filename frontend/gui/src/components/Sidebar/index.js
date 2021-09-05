@@ -7,7 +7,6 @@ class Sidebar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { current: props.current };
-		console.log(this.props.currentFinished);
 	}
 
 	onChange = (current) => {

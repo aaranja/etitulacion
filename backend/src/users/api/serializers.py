@@ -191,7 +191,7 @@ class DocumentsSerializer(serializers.ModelSerializer):
 			if(not Replaced):
 				# add new document
 				prevDoc.append(newDoc)
-		print(prevDoc)
+		# print(prevDoc)
 
 		return prevDoc
 
@@ -221,17 +221,19 @@ class ProfileSerializer(serializers.ModelSerializer):
 			'status', 
 			'accurate_docs',
 			'account', 
-			'documents'
+			'documents',
+			'notifications',
 		]
 
 		extra_kwargs = {
 			'accurate_docs': {'read_only': True},
 			'enrollment': {'read_only':True},
+			'notifications': {'read_only': True}
 		}
 
 	# validate all documents propierties
 	def validate_documents(self, documents, *args, **kwargs):
-		print(self._args[0].documents)
+		# print(self._args[0].documents)
 		return documents
 
 	def validate_status(self,status, *args, **kwargs):

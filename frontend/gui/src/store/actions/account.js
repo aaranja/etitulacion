@@ -64,7 +64,6 @@ export const accountUpdate = (
 
 /* function to get all own account data: name, user type, enrollment, documents...*/
 export const accountGetData = () => {
-  console.log("consiguiendo datos");
   return async (dispatch) => {
     const token = localStorage.getItem("token");
     if (token === undefined) {

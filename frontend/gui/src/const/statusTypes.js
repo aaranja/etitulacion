@@ -25,9 +25,10 @@ export const STATUS_02 = {
 export const STATUS_03 = {
 	key: 2,
 	code: "STATUS_03",
-	info: "DOCUMENTATION_ERROR",
-	message: "Ha ocurrido un error con tu documentación.",
-	status: "error",
+	info: "SERVICES_APPROVAL_WAIT",
+	message:
+		"Documentación en forma para enviar al departamento de servicios escolares.",
+	status: "default",
 };
 export const STATUS_04 = {
 	key: 2,

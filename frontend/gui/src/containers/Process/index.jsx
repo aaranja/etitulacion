@@ -30,6 +30,7 @@ class Process extends React.Component {
 					return (
 						<UploadDocuments
 							callbackFromParent={this.getChildState}
+							status={this.props.codeStatus}
 						/>
 					);
 				case 2:
@@ -40,6 +41,7 @@ class Process extends React.Component {
 								codeStatus: this.props.codeStatus,
 								statusType: this.props.statusType,
 								message: this.props.message,
+								notifications: this.props.notifications,
 							}}
 						/>
 					);
@@ -97,18 +99,21 @@ const mapStateToProps = (state) => {
 	var codeStatus = null;
 	var statustype = null;
 	var message = null;
+	var notifications = null;
 	if (state.account.payload !== null) {
 		var status = currentStep(state.account.payload.status);
 		keyStatus = status.key;
 		codeStatus = status.code;
 		statustype = status.status;
 		message = status.message;
+		notifications = state.account.payload.notifications;
 	}
 	return {
 		currentStatus: keyStatus,
 		codeStatus: codeStatus,
 		statusType: statustype,
 		message: message,
+		notifications: notifications,
 	};
 };
 

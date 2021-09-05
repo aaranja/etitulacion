@@ -8,6 +8,7 @@ import {
 	Space,
 	Form,
 	List,
+	Popover,
 } from "antd";
 import careerTypes from "../../const/careerTypes";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -117,6 +118,7 @@ class SidebarDoc extends Component {
 							</Descriptions.Item>
 						</Descriptions>
 						<Divider orientation="left">Validación</Divider>
+
 						<Form
 							name="approval"
 							onFinish={(values) => {
@@ -127,7 +129,17 @@ class SidebarDoc extends Component {
 								direction="vertical"
 								style={{ width: "100%" }}
 							>
-								<Form.Item name="comment" key={1}>
+								<Form.Item
+									name="comment"
+									key={1}
+									rules={[
+										{
+											required: true,
+											message:
+												"No puedes dejar este campo vacío.",
+										},
+									]}
+								>
 									<TextArea rows={6} />
 								</Form.Item>
 								<Space
@@ -144,6 +156,7 @@ class SidebarDoc extends Component {
 									>
 										Notificar
 									</Button>
+
 									<Button
 										type="primary"
 										onClick={() =>
@@ -158,6 +171,7 @@ class SidebarDoc extends Component {
 								</Space>
 							</Space>
 						</Form>
+
 						<Divider orientation="left">Historial</Divider>
 						<List
 							size="small"

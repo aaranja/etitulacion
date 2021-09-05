@@ -178,11 +178,6 @@ class UploadFileView(views.APIView):
         user = self.request.user
         file = None
 
-        status_response = "removed"
-        if(update_type == "upload"):
-            file = request.FILES['file']
-            status_response = "success"
-
         profile = GraduateProfile.objects.get(account_id = user)
         fileData = json.loads(
             data, 
@@ -191,27 +186,35 @@ class UploadFileView(views.APIView):
         serializer = self.serializer(
             profile, 
             {'documents':[self.saveNewDocument(fileData, update_type)], 
-            'update_type': update_type} , 
+            'update_type': update_type}, 
             partial=True
             )
 
         if serializer.is_valid():
-            
             serializer.save()
-
-            # save file
-            if(file is not None):
+            
+            # set new status and save file
+            new_status = None
+            status_response = "removed"
+            if(update_type == "upload"):
+                file = request.FILES['file']
                 Files.save(self,file, fileData.keyName, profile.enrollment)
-            # remove file
-            else: 
-                
+                status_response = "success"
+                # check current estatus and if uplaod a document when status is error
+                # set the new status to Services Approval Wait
+                if(profile.status == "STATUS_04"):
+                    new_status = {'status': "STATUS_03"}
+                    status_serializer = StatusSerializer(profile, new_status,  partial=True)
+                    if(status_serializer.is_valid()):
+                        status_serializer.save()
+            elif(update_type == "removed"):
+                # remove file 
                 Files.remove(self, fileData.keyName, profile.enrollment)
-
-            # if the user remove an document, the status changes to documentation incomplete
-            if(status_response == "removed"):
-                status_serializer = StatusSerializer(profile, {'status':"STATUS_01"},  partial=True)
-                if( status_serializer.is_valid()):
+                new_status = {'status': "STATUS_01"}
+                status_serializer = StatusSerializer(profile, new_status,  partial=True)
+                if(status_serializer.is_valid()):
                     status_serializer.save()
+
             return Response({'status': status_response, 'key': fileData.key}, status=status.HTTP_202_ACCEPTED)
         return Response({'status': "error", 'key': fileData.key}, status=status.HTTP_202_ACCEPTED)
 
@@ -241,10 +244,9 @@ class GraduateProfileViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_superuser:
-            return GraduateProfile.objects.all()
         ### CHANGE TO account_id = user.id ===========================================
         profile = GraduateProfile.objects.filter(account_id = user)#enrollment=self.kwargs["pk"])
+        print(profile)
         return profile
 
     # don't needed, only for reference

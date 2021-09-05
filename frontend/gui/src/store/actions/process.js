@@ -38,6 +38,32 @@ export const processStep1 = (values) => {
 	};
 };
 
+export const setNewStatus = (status) => {
+	return (dispatch) => {
+		var token = localStorage.getItem("token");
+		if (token === undefined) {
+			dispatch(logout());
+		} else {
+			dispatch(transactionTypes._Start());
+			axios.defaults.headers = {
+				"Content-Type": "application/json",
+				Authorization: `Token ${token}`,
+			};
+			axios
+				.put(`http://127.0.0.1:8000/api/graduate/profile/status/`, {
+					status: status,
+				})
+				.then((response) => {
+					dispatch(transactionTypes._Success(response.data));
+				})
+				.catch((error) => {
+					console.log(error);
+					// dispatch(transactionTypes._Fail(error));
+				});
+		}
+	};
+};
+
 export const processStep2 = (status) => {
 	return (dispatch) => {
 		var token = localStorage.getItem("token");
@@ -49,7 +75,6 @@ export const processStep2 = (status) => {
 				"Content-Type": "application/json",
 				Authorization: `Token ${token}`,
 			};
-			console.log(status);
 			axios
 				.put(`http://127.0.0.1:8000/api/graduate/profile/status/`, {
 					status: status,
