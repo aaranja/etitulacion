@@ -13,6 +13,7 @@
     "react-console-log-plus-hook": "0.0.2",
     "react-dom": "^16.13.1",
     "react-native-logs": "^2.2.1",
+    "react-pdf": "^5.3.2",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",

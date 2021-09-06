@@ -11,6 +11,7 @@ from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 from .documents import Files
 import json, time
 import asyncio
+from django.http import FileResponse, HttpResponse
 from types import SimpleNamespace
 from asgiref.sync import sync_to_async
 from datetime import datetime
@@ -24,12 +25,11 @@ class StaffGetDocumentView(views.APIView):
         if(user.is_staff):
             graduatePK =self.kwargs['pk']
             docKeyName = self.kwargs['keyname']
-
-            print(graduatePK)
-            print(docKeyName)
-
-
-            return Response(None, status = status.HTTP_200_OK)
+            file = Files.get(self, docKeyName, graduatePK)
+            if(file != None):
+                return HttpResponse(file, status = status.HTTP_200_OK,content_type='application/pdf',)
+            else:
+                return Response(None, status = status.HTTP_404_NOT_FOUND)
         return Response(None,status = status.HTTP_405_METHOD_NOT_ALLOWED)
 
 # view for router '/staff/graduate-data/<pk>/'

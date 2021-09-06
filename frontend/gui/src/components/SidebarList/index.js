@@ -8,11 +8,13 @@ class SiderbarList extends Component {
 			<Card
 				style={{
 					overflow: "auto",
+					overflowY: "scroll",
 					position: "fixed",
 					display: "flex",
 					flexDirection: "column",
 					minWidth: 250,
-					width: 260,
+					maxHeight: "90vh",
+					width: 350,
 					minHeight: "89vh",
 					left: 170,
 					padding: 0,

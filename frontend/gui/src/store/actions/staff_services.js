@@ -42,14 +42,13 @@ export const getDocument = (enrollment, keyName) => {
 			dispatch(logout());
 		} else {
 			dispatch(transactionTypes.D_Start());
-			axios.defaults.headers = {
-				"Content-Type": "application/json",
+			await axios({
+				method: "get",
 				Authorization: `Token ${token}`,
-			};
-			await axios
-				.get(
-					`http://127.0.0.1:8000/api/staff/graduate-data/${enrollment}/documents/${keyName}/`
-				)
+				url: `http://127.0.0.1:8000/api/staff/graduate-data/${enrollment}/documents/${keyName}/`,
+				responseType: "arraybuffer",
+				responseEncoding: "binary",
+			})
 				.then((response) => {
 					dispatch(
 						transactionTypes.D_Success({

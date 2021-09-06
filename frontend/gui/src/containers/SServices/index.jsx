@@ -71,11 +71,8 @@ class SServices extends Component {
 			<Layout
 				className="site-layout-background"
 				style={{
-					display: "flex",
 					height: "100%",
-					marginLeft: "25%",
-					marginRight: "10%",
-					minWidth: "50%",
+					marginLeft: 500,
 				}}
 			>
 				{currentView()}

@@ -87,7 +87,7 @@ class SidebarDoc extends Component {
 					flexDirection: "column",
 					maxHeight: "90vh",
 					minWidth: 250,
-					width: 300,
+					width: 350,
 					minHeight: "89vh",
 					left: 170,
 					padding: 0,

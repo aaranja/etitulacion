@@ -1,4 +1,7 @@
 from django.core.files.storage import FileSystemStorage
+from django.core.files import File 
+import os
+import PyPDF2
 
 class Files():
 	def constructor(self):
@@ -23,4 +26,14 @@ class Files():
 		return True;
 
 	def get(self, keyName, enrollment):
-		return True
+		fs = FileSystemStorage(location="storage/documents/"+str(enrollment)+"/")
+		for listfile in fs.listdir(keyName+"/"):
+			
+			if len(listfile) !=0:
+				for file in listfile:
+					path = fs.location+"\\"+keyName+"\\"+file
+					pdf_file = open(path,'rb')
+					read_pdf = pdf_file.read()
+					pdf_file.close()
+					return read_pdf
+		return None

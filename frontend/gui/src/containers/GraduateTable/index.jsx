@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Table, PageHeader, Button, Card, Progress, Tag } from "antd";
+import { Table, PageHeader, Button, Card, Progress, Tag, Layout } from "antd";
 import * as actions from "../../store/actions/staff_services";
 import { ReloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
-
+const { Content } = Layout;
 class GraduateTable extends Component {
 	constructor(props) {
 		super(props);
@@ -120,41 +120,50 @@ class GraduateTable extends Component {
 		return (
 			<Card
 				style={{
-					margin: 0,
-					minHeight: 280,
+					width: "62vw",
 					overflow: "initial",
-					height: "100%",
 				}}
 			>
-				<PageHeader
-					ghost={false}
-					title="Lista de egresados"
-					/*subTitle="This is a subtitle"*/
-					extra={[
-						<Button key="1">
-							Actualizar <ReloadOutlined />
-						</Button>,
-					]}
-				></PageHeader>
-				<Table
-					pagination={false}
-					rowClassName={() => "editable-row"}
-					bordered
-					dataSource={this.props.dataSource}
-					columns={columns}
-					style={{ fontSize: "100%" }}
-					extra={[<p>hola</p>]}
-					onRow={(record, rowIndex) => {
-						return {
-							onClick: (event) => {
-								this.props.callBack(
-									"documents",
-									record.enrollment
-								);
-							}, // click row
-						};
+				<Content
+					className="site-layout-background"
+					style={{
+						margin: 0,
+						minHeight: 280,
+						overflow: "initial",
 					}}
-				/>
+				>
+					<PageHeader
+						ghost={false}
+						title="Lista de egresados"
+						/*subTitle="This is a subtitle"*/
+						extra={[
+							<Button key="1">
+								Actualizar <ReloadOutlined />
+							</Button>,
+						]}
+					></PageHeader>
+					<Table
+						pagination={false}
+						rowClassName={() => "editable-row"}
+						bordered
+						dataSource={this.props.dataSource}
+						columns={columns}
+						style={{
+							fontSize: "100%",
+						}}
+						extra={[<p>hola</p>]}
+						onRow={(record, rowIndex) => {
+							return {
+								onClick: (event) => {
+									this.props.callBack(
+										"documents",
+										record.enrollment
+									);
+								}, // click row
+							};
+						}}
+					/>
+				</Content>
 			</Card>
 		);
 	}
