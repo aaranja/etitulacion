@@ -19,12 +19,12 @@ export const form = {
 export const tail = {
   wrapperCol: {
     xs: {
-      span: 24,
-      offset: 0,
+      span: 16,
+      offset: 10,
     },
     sm: {
-      span: 16,
-      offset: 8,
+      span: 20,
+      offset: 12,
     },
   },
 };

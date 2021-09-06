@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Layout } from "antd";
-import GraduateTable from "../GraduateTable";
-import DocumentsViewer from "../DocumentsViewer";
-import SidebarList from "../../components/SidebarList";
+import GraduateTable from "./GraduateTable";
+import DocumentsViewer from "./DocumentsViewer";
 import "antd/dist/antd.css";
 
 class SServices extends Component {
@@ -28,7 +27,7 @@ class SServices extends Component {
 	}
 
 	setCurrentView = (view, id) => {
-		if (view == "list") {
+		if (view === "list") {
 			window.history.pushState(
 				"home/",
 				"Home - Servicios escolares",
@@ -46,21 +45,14 @@ class SServices extends Component {
 		const currentView = () => {
 			switch (this.state.currentView) {
 				case "list":
-					return (
-						<>
-							{" "}
-							<SidebarList />
-							<GraduateTable callBack={this.setCurrentView} />
-						</>
-					);
+					return <GraduateTable callBack={this.setCurrentView} />;
 				case "documents":
 					return (
-						<>
-							<DocumentsViewer
-								callBack={this.setCurrentView}
-								graduatePK={this.state.graduate}
-							/>
-						</>
+						<DocumentsViewer
+							callBack={this.setCurrentView}
+							graduatePK={this.state.graduate}
+							callSidebar={this.set}
+						/>
 					);
 				default:
 					return null;

@@ -1,25 +1,9 @@
 import React, { Component } from "react";
-import {
-	PageHeader,
-	Pagination,
-	Divider,
-	Slider,
-	Row,
-	Col,
-	Affix,
-	Space,
-	Button,
-} from "antd";
-import {
-	LoadingOutlined,
-	PlusOutlined,
-	MinusOutlined,
-} from "@ant-design/icons";
+import { PageHeader, Pagination, Slider, Row, Col, Affix, Space } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
-// pdfjs.GlobalWorkerOptions.workerSrc =
-// 	"node_modules/pdfjs-dist/build/pdf.worker.js";
 
-class DocumentPDF extends Component {
+class PDFViewer extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -162,4 +146,4 @@ class DocumentPDF extends Component {
 	}
 }
 
-export default DocumentPDF;
+export default PDFViewer;

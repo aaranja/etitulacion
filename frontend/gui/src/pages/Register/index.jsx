@@ -1,8 +1,10 @@
 // class to register a new graduate user
+// https://colorhunt.co/palette/0820322c394b334756ff4c29
 import React from "react";
-import { Form, Input, Button, Select, Card, Typography } from "antd";
+import { Form, Input, Button, Select, Card, Typography, Space } from "antd";
 import * as action from "../../store/actions/auth";
 import * as itemLayout from "./ItemLayout";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 const { Title } = Typography;
 const { Option } = Select;
@@ -45,7 +47,11 @@ class Register extends React.Component {
 				}}
 			>
 				<Card
-					title={<Title level={3}>Formulario de registro</Title>}
+					title={
+						<Title level={3} style={{ color: "white" }}>
+							Formulario de registro
+						</Title>
+					}
 					bordered={false}
 					style={{
 						width: 500,
@@ -53,6 +59,12 @@ class Register extends React.Component {
 						textAlign: "center",
 						/*fontWeight: "bold",*/
 						boxShadow: "1px 3px 1px #9E9E9E",
+						borderRadius: 5 + "px",
+					}}
+					headStyle={{
+						backgroundColor: "#082032",
+						borderTopLeftRadius: "5px",
+						borderTopRightRadius: "5px",
 					}}
 				>
 					<Form
@@ -209,9 +221,18 @@ class Register extends React.Component {
 						</Form.Item>
 
 						<Form.Item {...itemLayout.tail}>
-							<Button type="primary" htmlType="submit">
-								Registrar
-							</Button>
+							<Space>
+								<Button
+									type="link"
+									icon={<ArrowLeftOutlined />}
+									href="/login/"
+								>
+									Iniciar sesión
+								</Button>
+								<Button type="primary" htmlType="submit">
+									Registrar
+								</Button>
+							</Space>
 						</Form.Item>
 					</Form>
 				</Card>

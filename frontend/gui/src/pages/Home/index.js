@@ -9,10 +9,6 @@ import * as actions from "../../store/actions/account";
 import * as userTypes from "../../const/userTypes";
 
 class Home extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
 	componentDidMount() {
 		/* get user data to share within other components*/
 		if (this.props.user_type === userTypes.USER_GRADUATE) {

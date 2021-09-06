@@ -32,7 +32,7 @@ class ServiceApproval extends Component {
 	}
 
 	onBack = () => {
-		if (this.props.status.codeStatus == "STATUS_05") {
+		if (this.props.status.codeStatus === "STATUS_05") {
 			notification["error"]({
 				message: "Operación no permitida",
 				description: "Para ir para atrás cancele el proceso actual.",

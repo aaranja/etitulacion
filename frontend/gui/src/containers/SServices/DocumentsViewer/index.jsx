@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { Card, PageHeader, Button, List, Space, Table } from "antd";
-import { LoadingOutlined, DownloadOutlined } from "@ant-design/icons";
-import SidebarDoc from "../../components/SidebarDoc";
-import * as actions from "../../store/actions/staff_services";
+import { Card, PageHeader, Table, Layout } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import * as actions from "../../../store/actions/staff_services";
 import { connect } from "react-redux";
-import DocumentPDF from "./DocumentPDF";
+import PDFViewer from "./PDFViewer";
+import Sidebar from "./Sidebar";
+import columns from "./columns";
+const { Content } = Layout;
 
 class DocumentsViewer extends Component {
 	constructor(props) {
@@ -28,7 +30,10 @@ class DocumentsViewer extends Component {
 	}
 
 	componentWillUnmount() {
-		this.props.reset("graduate");
+		// remove graduate data when go out to graduate table
+		if (this.props.graduate !== null) {
+			this.props.reset("graduate");
+		}
 	}
 
 	setApproval = (message, status) => {
@@ -47,38 +52,6 @@ class DocumentsViewer extends Component {
 	};
 
 	render() {
-		const columns = [
-			{
-				title: "No.",
-				dataIndex: "key",
-				key: "key",
-				width: "5%",
-			},
-
-			{
-				title: "Nombre del archivo",
-				dataIndex: "fullName",
-				key: "fullName",
-			},
-			{
-				title: "Operación",
-				dataIndex: "download",
-				width: "10%",
-				key: "download",
-				render: (key, record) => {
-					return (
-						<Button
-							icon={<DownloadOutlined />}
-							shape="round"
-							type="dashed"
-						>
-							Descargar
-						</Button>
-					);
-				},
-			},
-		];
-
 		const view = () => {
 			if (this.state.currentView === "table") {
 				if (this.props.error !== "NO_DOCUMENTS") {
@@ -126,7 +99,7 @@ class DocumentsViewer extends Component {
 			} else {
 				if (this.state.currentView === "documentPDF") {
 					return (
-						<DocumentPDF
+						<PDFViewer
 							callBack={this.setCurrentView}
 							title={this.state.title}
 							document={this.props.viewDocument}
@@ -135,10 +108,9 @@ class DocumentsViewer extends Component {
 				}
 			}
 		};
-
 		return (
 			<>
-				<SidebarDoc
+				<Sidebar
 					graduate={this.props.graduateData}
 					loading={this.props.loading}
 					onApproval={this.setApproval}
@@ -146,13 +118,20 @@ class DocumentsViewer extends Component {
 
 				<Card
 					style={{
-						margin: 0,
-						minHeight: 280,
+						width: "62vw",
 						overflow: "initial",
-						marginRight: 150,
 					}}
 				>
-					{this.props.loading ? <LoadingOutlined /> : view()}
+					<Content
+						className="site-layout-background"
+						style={{
+							margin: 0,
+							minHeight: 280,
+							overflow: "initial",
+						}}
+					>
+						{this.props.loading ? <LoadingOutlined /> : view()}
+					</Content>
 				</Card>
 			</>
 		);

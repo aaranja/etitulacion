@@ -8,33 +8,17 @@ import {
 	Space,
 	Form,
 	List,
-	Popover,
 } from "antd";
-import careerTypes from "../../const/careerTypes";
+import careerTypes from "../../../const/careerTypes";
 import { LoadingOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 
-class SidebarDoc extends Component {
+class Sidebar extends Component {
 	constructor(props) {
 		super(props);
-
-		var dataSource = [];
-		// if (this.props.loading) {
-		// 	var history = this.props.graduate.notifications;
-		// 	for (const key in history) {
-		// 		var not =
-		// 			history[key].date +
-		// 			" - " +
-		// 			history[key].time +
-		// 			"\r| " +
-		// 			history[key].message;
-		// 		dataSource.unshift(not);
-		// 	}
-		// }
-
 		this.state = {
-			dataSource: dataSource,
+			dataSource: [],
 			loading: true,
 		};
 	}
@@ -188,4 +172,4 @@ class SidebarDoc extends Component {
 	}
 }
 
-export default SidebarDoc;
+export default Sidebar;
