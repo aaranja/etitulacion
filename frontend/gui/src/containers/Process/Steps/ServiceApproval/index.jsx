@@ -42,7 +42,13 @@ class ServiceApproval extends Component {
 		}
 	};
 
-	onNextProcess = () => {};
+	onNextProcess = () => {
+		console.log(this.props.status.codeStatus);
+		if (this.props.status.codeStatus === "STATUS_06") {
+			console.log(this.props.status.codeStatus);
+			this.props.setNewStatus("STATUS_07");
+		}
+	};
 
 	updateStatus = () => {
 		this.props.getApprovalStatus();

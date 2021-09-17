@@ -58,7 +58,7 @@ export const setNewStatus = (status) => {
 				})
 				.catch((error) => {
 					console.log(error);
-					// dispatch(transactionTypes._Fail(error));
+					dispatch(transactionTypes._Fail(error));
 				});
 		}
 	};
@@ -99,7 +99,7 @@ export const processUploadDocument = (metadata, file, update_type) => {
 			dispatch(transactionTypes.uploadStart());
 			let formData = new FormData();
 			var jsonData = JSON.stringify(metadata);
-			if (update_type === "upload") {
+			if (update_type === "uploading") {
 				formData.append("file", file);
 			} else {
 				formData.append("file", null);

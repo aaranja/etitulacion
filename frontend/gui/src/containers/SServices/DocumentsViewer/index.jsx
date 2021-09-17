@@ -59,7 +59,7 @@ class DocumentsViewer extends Component {
 						<>
 							<PageHeader
 								ghost={false}
-								title="Documents"
+								title="Documentos"
 								onBack={() => {
 									this.props.callBack("list", null);
 								}}
@@ -90,10 +90,19 @@ class DocumentsViewer extends Component {
 					);
 				} else {
 					return (
-						<p>
-							El egresado {this.props.graduatePK} no ha cargado
-							documentos
-						</p>
+						<>
+							<PageHeader
+								ghost={false}
+								title="Documentos"
+								onBack={() => {
+									this.props.callBack("list", null);
+								}}
+							></PageHeader>
+							<p>
+								El egresado {this.props.graduatePK} no ha
+								cargado documentos
+							</p>{" "}
+						</>
 					);
 				}
 			} else {
@@ -138,19 +147,20 @@ class DocumentsViewer extends Component {
 	}
 }
 
-const formatDataSource = (metadata) => {
+const formatDataSource = (metadata, graduate_docs) => {
 	var list = [];
-	if (metadata !== undefined) {
-		for (const key in metadata) {
-			if (metadata[key].clasification !== 2) {
-				list.push({
-					key: key,
-					fullName: metadata[key].fullName,
-					download: metadata[key].keyName,
-				});
-			}
+	var index = 1;
+	for (const key in graduate_docs) {
+		const gKey = graduate_docs[key].keyNum;
+		if (metadata[gKey].clasification !== 2) {
+			list.push({
+				key: index++,
+				fullName: metadata[gKey].fullName,
+				download: metadata[gKey].keyName,
+			});
 		}
 	}
+
 	return list;
 };
 
@@ -166,9 +176,6 @@ const mapStateToProps = (state) => {
 
 	if (currentState.payload !== null) {
 		// get documents name
-		if (currentState.payload.documents !== undefined) {
-			documents = formatDataSource(currentState.payload.documents);
-		}
 
 		if (currentState.payload.document !== undefined) {
 			if (currentState.payload.document !== null) {
@@ -188,6 +195,13 @@ const mapStateToProps = (state) => {
 				graduateData.status === "STATUS_00"
 			) {
 				error = "NO_DOCUMENTS";
+			} else {
+				if (currentState.payload.documents !== undefined) {
+					documents = formatDataSource(
+						currentState.payload.documents,
+						graduateData.documents
+					);
+				}
 			}
 		}
 	}

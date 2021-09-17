@@ -1,0 +1,30 @@
+> módulos acabados
+	- login 
+	- registro
+	- sesiones de usuarios
+	- base datos para diferente tipos de usuarios
+	- proceso) verificación de información personal
+	- carga de documentación [servicios escolares] ingles, cert.lic
+	- fase de aprobación del egresado
+	- tabla de egresados para servicios escolares
+	- visor de información del egresado
+	- visor de documentos del egresado [80%]
+	- notificación de aprobación de la documentación
+> módulos en proceso
+	- proceso) selección de titulación
+	- carga de residencias, solicitud del egresado y cni
+	- fase de aprobación del egresado por coordinación 
+	- estatus general del egresado [50%]
+	- generación de la constancia de no inconvenientes
+> módulos en espera 
+	- notificación de errores generales en el sistema
+	- interfaz de coordinación de titulación
+	- visor de información y documentos en coordinación
+	- sección de filtros y búsqueda en las tablas de egresado
+	- sección de administrador del sistema
+	- asignación de fecha para la toma de protesta
+	- elaboración de certificado de acta de exámen profesional
+	- elaborar título
+	- comprobación de correo electrónico en el registro
+
+> módulo de 

@@ -30,7 +30,6 @@ class UploadDocuments extends Component {
 	}
 
 	componentDidMount() {
-		// console.log("me he montado");
 		/*reference to table documents*/
 		this.uploading = React.createRef();
 		/* get documents details */
@@ -106,7 +105,7 @@ class UploadDocuments extends Component {
 				uploadList.push({
 					metadata: metadata[key],
 					file: file[key],
-					type: "upload",
+					type: "uploading",
 				});
 			} else {
 				if (dataFile.status === "removed") {
@@ -286,11 +285,9 @@ const tableMetadata = (metadata, userDocument) => {
 // return true if clasification is for services
 const getClasification = (metadata) => {
 	var clas = metadata.clasification;
-
 	if (clas === 1 || clas === 3) {
 		return true;
 	}
-
 	return false;
 };
 

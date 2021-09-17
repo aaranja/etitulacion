@@ -102,6 +102,11 @@ export const authSignUp = (
         gender: gender,
       })
       .then((res) => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("expirationDate");
+        localStorage.removeItem("all_name");
+        localStorage.removeItem("userID");
+        localStorage.removeItem("user_type");
         var user_type = "USER_GRADUATE";
         const token = res.data.key;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
@@ -110,8 +115,8 @@ export const authSignUp = (
         dispatch(authSuccess(token, user_type, "null"));
         dispatch(checkAuthTimeout(3600));
       })
-      .catch((err) => {
-        dispatch(authFail(err));
+      .catch((error) => {
+        dispatch(authFail(error));
       });
   };
 };

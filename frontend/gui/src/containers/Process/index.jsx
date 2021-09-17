@@ -6,6 +6,7 @@ import Sidebar from "../../components/Sidebar";
 import ValidateInformation from "./Steps/ValidateInformation";
 import UploadDocuments from "./Steps/UploadDocuments";
 import ServiceApproval from "./Steps/ServiceApproval";
+import TypeTitulation from "./Steps/TypeTitulation";
 import currentStep from "./utils";
 
 const { Content } = Layout;
@@ -45,6 +46,8 @@ class Process extends React.Component {
 							}}
 						/>
 					);
+				case 3:
+					return <TypeTitulation status={this.props.codeStatus} />;
 				default:
 					return (
 						<ValidateInformation

@@ -10,8 +10,6 @@ const { Content } = Layout;
 
 class NormalLayout extends React.Component {
 	componentDidUpdate(prevProps, nextProps) {
-		console.log("actualizando");
-
 		if (prevProps.isAuthenticated !== this.props.isAuthenticated) {
 			if (this.props.isAuthenticated === false) {
 				this.props.history.push("/login/");

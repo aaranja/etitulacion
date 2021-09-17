@@ -59,13 +59,46 @@ export const STATUS_07 = {
 	message: "Selecciona el tipo de titulación",
 	status: "default",
 };
+export const STATUS_08 = {
+	key: 4,
+	code: "STATUS_08",
+	info: "COORDINATION_APPROVAL_WAIT",
+	message:
+		"Documentación en forma para enviar a la coordinación de titulación.",
+	status: "default",
+};
 export const STATUS_09 = {
 	key: 4,
 	code: "STATUS_09",
-	info: "COORDINATION_APPROVAL",
+	info: "COORDINATION_APPROVAL_PROCESSING",
+	message: "La documentación aún no ha sido aprobada. Por favor espera.",
+	status: "processing",
 };
 export const STATUS_10 = {
 	key: 4,
 	code: "STATUS_10",
-	info: "FIRST_SECCION_COMPLETE",
+	info: "COORDINATION_APPROVAL_FAIL",
+	message:
+		"Ha ocurrido un error con tu información o documentación. Sigue las indicaciones.",
+	status: "error",
+};
+
+export const STATUS_11 = {
+	key: 4,
+	code: "STATUS_11",
+	info: "COORDINATION_APPROVAL_SUCCESS",
+	message: "La documentación ha sido aprobada.",
+	status: "success",
+};
+
+export const STATUS_12 = {
+	key: 5,
+	code: "STATUS_12",
+	info: "COORDINATION_INAUGURATION_WAIT",
+};
+
+export const STATUS_13 = {
+	key: 5,
+	code: "STATUS_13",
+	info: "COORDINATION_INAUGURATION_DATED",
 };

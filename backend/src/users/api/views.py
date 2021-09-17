@@ -80,7 +80,6 @@ class StaffGraduateView(views.APIView):
             return Response(None, status = status.HTTP_200_OK)
         return Response(None,status = status.HTTP_405_METHOD_NOT_ALLOWED)
 
-
 # view for router '/staff/graduate-list/'
 class StaffGraduateListView(views.APIView):
     permissions_classes = (IsAuthenticated,)
@@ -101,8 +100,41 @@ class StaffGraduateListView(views.APIView):
                 account.update(graduate)
                 # add to global list graduate
                 listGraduate.append(account)
+
             return Response(listGraduate, status = status.HTTP_200_OK, content_type='application/json')
         return Response(None,status = status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def status2(self, sStatus):
+        if(sStatus == "STATUS_02"):
+            return ['STATUS_02', 'STATUS_03','STATUS_01','STATUS_00']
+        elif(sStatus == "STATUS_06"):
+            return ['STATUS_06', 'STATUS_07','STATUS_08','STATUS_09']
+        else:
+            return [sStatus]
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        if(user.is_staff):
+            sCareer = request.data['career']
+            sStatus = request.data['status']
+
+            profiles_queryset = None
+            if(sCareer is not None and sStatus is not None):
+                profiles_queryset = GraduateProfile.objects.filter(career = sCareer, status__in = self.status2(sStatus))
+            elif(sCareer is not None):
+                profiles_queryset = GraduateProfile.objects.filter(career = sCareer)
+            elif(sStatus is not None):
+                profiles_queryset = GraduateProfile.objects.filter(status__in = self.status2(sStatus))
+
+            listProfile = list(profiles_queryset.values('enrollment', 'career', 'status', 'accurate_docs', 'account_id' ))
+            listGraduate = []
+            for graduate in listProfile:
+                account_queryset = Account.objects.filter(id=graduate['account_id'], user_type="USER_GRADUATE")
+                account = list(account_queryset.values('first_name', 'last_name'))[0]
+                account.update(graduate)
+                listGraduate.append(account)
+            return Response(listGraduate, status = status.HTTP_200_OK,content_type='application/json')
+        return Response(None, status = status.HTTP_405_METHOD_NOT_ALLOWED)
 
 # view fro router '/admin/register/staff/'
 class StaffRegisterView(views.APIView):
@@ -135,7 +167,7 @@ class StatusView(views.APIView):
         user = self.request.user
         profile = GraduateProfile.objects.get(account_id=user)
         data = request.data
-        
+
         serializer = self.serializer(profile, {'status':data['status']} , partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -187,6 +219,16 @@ class UploadFileView(views.APIView):
         file['url']        = metadata.url
         return file
 
+    def getNewStatus(self, status):
+        if(status == "STATUS_04"):
+            return {'status': "STATUS_03"}
+        elif(status == "STATUS_03"):
+            return {'status': "STATUS_01"}
+        elif(status == "STATUS_08"):
+            return { 'status': "STATUS_07"}
+        else:
+            return { 'status': status}
+
     def put(self, request, format=None):
         
         update_type = request.data['update_type']
@@ -212,21 +254,21 @@ class UploadFileView(views.APIView):
             # set new status and save file
             new_status = None
             status_response = "removed"
-            if(update_type == "upload"):
+            if(update_type == "uploading"):
                 file = request.FILES['file']
                 Files.save(self,file, fileData.keyName, profile.enrollment)
                 status_response = "success"
                 # check current estatus and if uplaod a document when status is error
                 # set the new status to Services Approval Wait
-                if(profile.status == "STATUS_04"):
-                    new_status = {'status': "STATUS_03"}
-                    status_serializer = StatusSerializer(profile, new_status,  partial=True)
-                    if(status_serializer.is_valid()):
-                        status_serializer.save()
+                new_status = self.getNewStatus(profile.status)
+                status_serializer = StatusSerializer(profile, new_status,  partial=True)
+                if(status_serializer.is_valid()):
+                    status_serializer.save()
             elif(update_type == "removed"):
                 # remove file 
                 Files.remove(self, fileData.keyName, profile.enrollment)
-                new_status = {'status': "STATUS_01"}
+                new_status = self.getNewStatus(profile.status)
+
                 status_serializer = StatusSerializer(profile, new_status,  partial=True)
                 if(status_serializer.is_valid()):
                     status_serializer.save()

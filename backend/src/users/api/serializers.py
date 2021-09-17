@@ -10,6 +10,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model, authenticate
 import asyncio
 from datetime import datetime
+from .status import statusCode
 
 # Class to get the auth token from an authenticated account through email
 class CustomAuthTokenSerializer(serializers.Serializer):
@@ -152,6 +153,12 @@ class StatusSerializer(serializers.ModelSerializer):
 
 	def validate_status(self, status, *args, **kwargs):
 		print(status)
+
+		if(status == "STATUS_07"):
+			if(self._args[0].status !="STATUS_06"):
+				raise serializers.ValidationError(
+					_("The two password fields didn't match."))
+				
 		return status
 
 	def update(self, instance, validated_data):
@@ -171,7 +178,6 @@ class DocumentsSerializer(serializers.ModelSerializer):
 		prevDoc = self._args[0].documents
 		newDoc = documents[0]
 
-
 		if(newDoc['status']== "removed"):
 			# delete a document
 			for i in range(len(prevDoc)):
@@ -189,8 +195,8 @@ class DocumentsSerializer(serializers.ModelSerializer):
 					Replaced = True
 					prevDoc[index] = newDoc
 			if(not Replaced):
-				# add new document
-				prevDoc.append(newDoc)
+			    # add new document
+			    prevDoc.append(newDoc)
 		# print(prevDoc)
 
 		return prevDoc
@@ -293,6 +299,11 @@ class RegisterSerializer(serializers.Serializer):
 
 	def validate_enrollment(self, enrollment):
 		# check if enrollment is unique
+
+		if GraduateProfile.objects.filter(enrollment=enrollment).exists():
+			raise serializers.ValidationError(
+				_("The enrollment has already been registered before."))
+
 		return enrollment
 
 	def validate_user_type(self, user_type):

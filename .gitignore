@@ -28,4 +28,5 @@
 /frontend/gui/yarn-error.log*
 
 # remove idea folder
-/.idea
+.idea
+!/.idea/

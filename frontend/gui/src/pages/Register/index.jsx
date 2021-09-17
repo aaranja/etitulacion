@@ -1,16 +1,25 @@
 // class to register a new graduate user
 // https://colorhunt.co/palette/0820322c394b334756ff4c29
 import React from "react";
-import { Form, Input, Button, Select, Card, Typography, Space } from "antd";
+import { NavLink } from "react-router-dom";
+import {
+	Form,
+	Input,
+	Button,
+	Select,
+	Card,
+	Typography,
+	Space,
+	notification,
+} from "antd";
 import * as action from "../../store/actions/auth";
 import * as itemLayout from "./ItemLayout";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 const { Title } = Typography;
 const { Option } = Select;
 class Register extends React.Component {
 	onFinish = (values) => {
-		console.log("Receive values of form: ", values);
 		this.props.onAuth(
 			values.email,
 			values.first_name,
@@ -23,11 +32,19 @@ class Register extends React.Component {
 		);
 	};
 
+	openNotification = (error) => {
+		notification.open({
+			message: "Error",
+			description: `La matrícula que has introducido ya se encuentra registrada.`,
+			icon: <CloseCircleOutlined style={{ color: "#FF4848" }} />,
+		});
+	};
+
 	componentDidUpdate() {
 		if (!this.props.loading) {
 			//when the loading is finish
 			if (this.props.error != null) {
-				this.openNotification();
+				this.openNotification(this.props.error);
 			} else {
 				// without erros -> go to home
 				this.props.history.push("/home/");
@@ -221,14 +238,11 @@ class Register extends React.Component {
 						</Form.Item>
 
 						<Form.Item {...itemLayout.tail}>
-							<Space>
-								<Button
-									type="link"
-									icon={<ArrowLeftOutlined />}
-									href="/login/"
-								>
-									Iniciar sesión
-								</Button>
+							<Space size="large" align="baseline">
+								<NavLink to="/login/">
+									<ArrowLeftOutlined /> &nbsp;&nbsp;Iniciar
+									sesión
+								</NavLink>
 								<Button type="primary" htmlType="submit">
 									Registrar
 								</Button>
