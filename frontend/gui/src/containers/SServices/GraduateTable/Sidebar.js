@@ -7,9 +7,15 @@ class SiderbarList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filters: { career: null, status: null },
+      filters: { career: null, status: null, search: "" },
     };
   }
+
+  onFilterClean = () => {
+    this.setState({
+      filters: { career: null, status: null },
+    });
+  };
 
   onSelectFilter = (filter, type) => {
     // get filter value (status or career), if is null, set null
@@ -59,7 +65,18 @@ class SiderbarList extends Component {
         }}
       >
         <Divider orientation="left">Buscar egresado</Divider>
-        <Search placeholder="Introduce nombre o matrícula" />
+        <Search
+          placeholder="Introduce nombre o matrícula"
+          onSearch={(text) => {
+            let filters = this.state.filters;
+            filters.search = text;
+            this.setState({
+              filters: filters,
+            });
+            this.onSelectFilter({ target: { value: text } }, "search");
+          }}
+        />
+
         <Divider orientation="left">Filtrar por: </Divider>
         <Space direction="vertical">
           <Card

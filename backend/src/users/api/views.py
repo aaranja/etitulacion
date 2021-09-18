@@ -11,10 +11,12 @@ from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 from .documents import Files
 import json, time
 import asyncio
+import re
 from django.http import FileResponse, HttpResponse
 from types import SimpleNamespace
 from asgiref.sync import sync_to_async
 from datetime import datetime
+
 
 # view for router '/staff/graduate-data/<pk>/documents/<keyname>/'
 class StaffGetDocumentView(views.APIView):
@@ -115,24 +117,59 @@ class StaffGraduateListView(views.APIView):
     def post(self, request, *args, **kwargs):
         user = self.request.user
         if(user.is_staff):
-            sCareer = request.data['career']
-            sStatus = request.data['status']
+            sCareer = request.data['career']    # career filter
+            sStatus = request.data['status']    # status filter
+            sSearch = request.data['search']    # enrollment or name filter
 
             profiles_queryset = None
+            # get filter by career and status
             if(sCareer is not None and sStatus is not None):
                 profiles_queryset = GraduateProfile.objects.filter(career = sCareer, status__in = self.status2(sStatus))
+            # get filter by only career
             elif(sCareer is not None):
                 profiles_queryset = GraduateProfile.objects.filter(career = sCareer)
+            # get filter by only status
             elif(sStatus is not None):
                 profiles_queryset = GraduateProfile.objects.filter(status__in = self.status2(sStatus))
+            # get all data
+            else:
+                profiles_queryset = GraduateProfile.objects.all()
 
+            # if enrollment or name is setted in request
+            # set serach type
+            search_type = None
+            if(len(sSearch)>0):
+                if(sSearch.isnumeric()):
+                    search_type = "enrollment"
+                else:
+                    search_type = "name"
+
+            # create a list with only required profile fields
             listProfile = list(profiles_queryset.values('enrollment', 'career', 'status', 'accurate_docs', 'account_id' ))
+            # make a list to merge profile and account fields
             listGraduate = []
+            # on each graduate
             for graduate in listProfile:
+                # get account data
                 account_queryset = Account.objects.filter(id=graduate['account_id'], user_type="USER_GRADUATE")
                 account = list(account_queryset.values('first_name', 'last_name'))[0]
-                account.update(graduate)
-                listGraduate.append(account)
+                # default True: the data is filtered correct
+                isvalid = True
+                # when search type is name, get the name and matches with search
+                if(search_type == "name"):
+                    all_name = account['first_name'] + " "+ account['last_name']
+                    if(re.match(sSearch.lower(),all_name.lower()) is None):
+                        # if is not matching, the data is don't added to list
+                        isvalid = False
+                # when search type is enrollment, get the profile enrollment and matches with search
+                elif(search_type == "enrollment"):
+                    if(re.match(sSearch, str(graduate['enrollment'])) is None):
+                        # if is not matching, the data is don't added to list
+                        isvalid = False
+                if(isvalid):
+                    # add graduate into listgraduate
+                    account.update(graduate)
+                    listGraduate.append(account)
             return Response(listGraduate, status = status.HTTP_200_OK,content_type='application/json')
         return Response(None, status = status.HTTP_405_METHOD_NOT_ALLOWED)
 

@@ -17,8 +17,7 @@ class GraduateTable extends Component {
       loading: false,
       loadingData: false,
       loadingList: false,
-      filters: { career: null, status: null },
-      search: null,
+      filters: { career: null, status: null, search: "" },
     };
     this.props.getGraduateList();
   }
@@ -27,15 +26,30 @@ class GraduateTable extends Component {
     this.setState({
       filters: values,
     });
-    if (values.career !== null || values.status !== null) {
+    if (
+      values.career !== null ||
+      values.status !== null ||
+      values.search !== ""
+    )
       this.props.getFilteredList(values);
-    } else {
+    else {
       this.props.getGraduateList();
     }
   };
 
   render() {
+    let subtitle = "";
     const career = this.state.filters.career;
+    const search = this.state.filters.search;
+    if (career !== null) {
+      subtitle = careerTypes[career];
+      if (search !== "") {
+        subtitle += ": ";
+      }
+    }
+
+    subtitle += search;
+
     return (
       <>
         <Sidebar setFilters={(values) => this.getFilter(values)} />
@@ -56,7 +70,7 @@ class GraduateTable extends Component {
             <PageHeader
               ghost={false}
               title="Lista de egresados"
-              subTitle={career !== null ? careerTypes[career] : null}
+              subTitle={subtitle}
               extra={[
                 <Button key="1">
                   Actualizar <ReloadOutlined />
@@ -74,9 +88,9 @@ class GraduateTable extends Component {
                 fontSize: "100%",
               }}
               extra={[<p>hola</p>]}
-              onRow={(record, rowIndex) => {
+              onRow={(record) => {
                 return {
-                  onClick: (event) => {
+                  onClick: () => {
                     this.props.callBack("documents", record.enrollment);
                   }, // click row
                 };
@@ -90,10 +104,10 @@ class GraduateTable extends Component {
 }
 
 const mapStateToProps = (state) => {
-  var dataSource = [];
+  let dataSource = [];
   if (!state.staff_services.loading && state.staff_services.payload !== null) {
     // set an unique key to each data row
-    var graduatelist = state.staff_services.payload.tableData;
+    let graduatelist = state.staff_services.payload.tableData;
     for (const key in graduatelist) {
       graduatelist[key].key = key;
     }
@@ -110,6 +124,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getGraduateList: () => dispatch(actions.getGraduateList()),
     getFilteredList: (filters) => dispatch(actions.getFilteredList(filters)),
+    getSearchList: (filters) => dispatch(),
   };
 };
 
