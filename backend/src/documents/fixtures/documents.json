@@ -113,7 +113,7 @@
     "model": "documents.documentsdetails",
     "pk": 11,
     "fields": {
-      "keyName": "CLIC",
+      "keyName": "FDDB",
       "fullName": "Ficha de depósito en BANAMEX",
       "description": "Por la cantidad de $2,600.00 pesos, correspondiente al trámite y registro de titulación ante DGTNM. Generar desde el Sistema de Pago Electrónico SPE: <a>https://spe.ensenada.tecnm.mx/</a>",
       "required": true,

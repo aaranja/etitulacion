@@ -1,0 +1,25 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.main,
+.sidebar {
+
+  border: 3px solid black;
+  padding: 15px;
+  background-color: #a2f;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
+.main {
+  width: 60%;
+
+}
+
+.sidebar {
+  width: 25%;
+  height: 25vh;
+}

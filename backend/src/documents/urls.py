@@ -5,7 +5,7 @@ from .views import DocumentsView
 router = DefaultRouter()
 
 urlpatterns = [
-	path('process/2/documents/descriptions/', DocumentsView.as_view()),
+	path('procedure/documents-metadata/', DocumentsView.as_view()),
 ]
 
 urlpatterns += router.urls

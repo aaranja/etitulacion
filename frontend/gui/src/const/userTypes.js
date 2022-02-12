@@ -1,3 +1,0 @@
-export const USER_GRADUATE = "USER_GRADUATE";
-export const USER_SERVICES = "USER_SERVICES";
-export const USER_COORDINATION = "USER_COORDINAT";

@@ -1,21 +1,321 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5aa3a41c-d0c6-4d7f-ba31-35abd8ee6070" name="Changes" comment="">
+    <list default="true" id="5aa3a41c-d0c6-4d7f-ba31-35abd8ee6070" name="Changes" comment="Cambios&#10;Vista de egresado:&#10;- Títulos de trámite actualizado.&#10;- Formato de fecha en el estatus de validación de documentos.&#10;- Interfaz y api de fecha de asistencia al acto protocolario agregada.&#10;- Interfaz y api de liberación del trámite agregada.&#10;- Campo de no. de celular agregado a la bd y a la interfaz de carga de información y registro.&#10;Vista de coordinación:&#10;- Agregado perfil de egresado.&#10;- La interfaz de perfil de egresado ahora contiene las vistas de documentación y trámite.&#10;- Agregado diferentes tipos de proceso en la interfaz de trámite en el perfil del egresado.&#10;- Vista de documentos actualizada.&#10;- Modal para visualizar documentos actualizado.&#10;- Interfaz para mostrar, agregar, eliminar y editar grupos de fechas de toma de protesta agregadas.&#10;- Interfaz para confirmar la fecha de asistencia al acto protocolario y relleno de los datos ARP agregada.&#10;Servicios escolares:&#10;- Interfaz de configuración de CNI agregado. Ahora se puede cambiar la firma y sello del documento.&#10;- Intefaz de perfil del egresado actualizado. Ahora el perfil del egresado contiene las vistas de documentación y trámite.&#10;- Vista de trámite ahora contiene los procesos para generar el CNI y el certificado de acta de examen profesional.&#10;- Modal para visualizar documentos actualizado.&#10;- Interfaz y api para ver las fechas de asistencias confirmadas agregada.&#10;- Interfaz y api para ver los datos ARP de los egresados con asistencia confirmada agregada.&#10;- Interfaz y api para generar y cargar en el servidor el certificado de acta de examen profesional agregada.&#10;- La interfaz de carga del AEP tambień se puede cancelar.&#10;Status:&#10;- Ahora cada acción del personal que repercute en el trámite del egresado se registra en la tabla de historial del egresado.&#10;- Agregados los estados para todas las fases del trámite.&#10;- Ahora la lista de egresados en las interfaces de personal muestra el progreso del trámite y la acción requerida de estado del egresado.&#10;Router:&#10;- Se actualizó la versión de la librería react-router a la versión v6&#10;ANTD:&#10;- Se actualizó la versión de la librería ant design&#10;Menus de staff:&#10;- Ahora el menú para navegar entre las diferentes vistas se encuentra en la parte superior, debajo del header.">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/2cb4a22d-c0fb-47f6-ac8f-4304cbd05db6.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/2cb4a22d-c0fb-47f6-ac8f-4304cbd05db6/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/2cb4a22d-c0fb-47f6-ac8f-4304cbd05db6/storage_v2/_src_/schema/mysql.osA4Bg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/2cb4a22d-c0fb-47f6-ac8f-4304cbd05db6/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/2cb4a22d-c0fb-47f6-ac8f-4304cbd05db6/storage_v2/_src_/schema/sys.zb4BAA.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/webResources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/documents/fixtures/command.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/process/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/process/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/process/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/process/fixtures/titulation.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/process/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/process/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/process/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/process/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/process/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/process/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/storage/img/logo_ite.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/storage/settings/cni/preview/constancia_no_inconvenientes.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/storage/settings/cni/seal/seal.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/storage/settings/cni/signature/signature.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/admin/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/admin/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/admin/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/admin/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/auth/register_url.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/auth/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/auth/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/auth/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/graduate/documents.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/graduate/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/graduate/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/graduate/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/0002_delete_arpdata.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/0003_arpdata.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/0004_auto_20220122_1806.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/0005_auto_20220122_1946.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/0006_remove_arpdata_arp_group.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/0007_auto_20220123_1955.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/0008_auto_20220123_1959.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/0009_alter_arpdata_record_page.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/0010_alter_arpdata_graduate.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/0011_graduatedocuments.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/0012_graduateprocedurehistory_last_status.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/0013_auto_20220210_0947.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/0014_alter_graduateprofile_cellphone.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/backup/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/backup/0002_arpdata_arpgroup_arpprocessperson.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/backup/0002_auto_20220108_1745.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/backup/0003_auto_20220114_1050.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/migrations/backup/0003_auto_20220119_0151.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/staff/File.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/staff/careerTypes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/staff/generate_aep.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/staff/generate_cni.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/staff/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/staff/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/users/staff/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/components/ErrorList/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/components/Header/UserSubMenu.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/components/Header/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/components/ImageCropped/cropimage.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/components/ImageCropped/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/components/ImageFileUpload/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/components/PDFModal/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/components/PDFViewer/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/components/Sidebar/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/components/TableTransfer/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Admin/Accounts/columns.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Admin/Accounts/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Admin/RegisterForm/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Admin/Registers/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Graduate/Process/Approval/ApprovalStatus.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Graduate/Process/Approval/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Graduate/Process/Dossier/DocumentsTable.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Graduate/Process/Dossier/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Graduate/Process/InaugurationDate/arpTable.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Graduate/Process/InaugurationDate/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Graduate/Process/Information/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Graduate/Process/Liberation/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Graduate/Process/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Graduate/Process/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/AEProfessional/AEPGeneration/MultiSelect.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/AEProfessional/AEPGeneration/aep.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/AEProfessional/AEPGeneration/columns.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/AEProfessional/AEPGeneration/formGeneration.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/AEProfessional/AEPGeneration/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/AEProfessional/DateList/columns.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/AEProfessional/DateList/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/AEProfessional/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/ARPProtocol/ARPForm/EditableTable.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/ARPProtocol/ARPForm/MultiSelect.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/ARPProtocol/ARPForm/columns.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/ARPProtocol/ARPForm/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/ARPProtocol/ARPForm/inputTypes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/ARPProtocol/ARPForm/selectOptions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/ARPProtocol/ARPStaff/columns.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/ARPProtocol/ARPStaff/editableTable.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/ARPProtocol/ARPStaff/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/ARPProtocol/columns.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/ARPProtocol/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/ARPProtocol/sidebar.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/CoordinationMenu/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/CNIView/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/Documents/PDFViewer.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/Documents/documents.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/Documents/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/Information/documents-viewer.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/Information/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/ProcedureView/AEPProcess/MultiSelect.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/ProcedureView/AEPProcess/SendFile.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/ProcedureView/AEPProcess/blobToPdf.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/ProcedureView/AEPProcess/form.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/ProcedureView/AEPProcess/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/ProcedureView/AEPProcess/liberationForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/ProcedureView/CurrentProcedure.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/ProcedureView/ServicesProcedure.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/ProcedureView/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/ValidationView/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateTable/columns.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateTable/graduateTable.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateTable/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateTable/sidebar.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/InaugurationDate/GroupDateForm/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/InaugurationDate/GroupDateInfo/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/InaugurationDate/IDSidebar/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/InaugurationDate/columns.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/InaugurationDate/columnsGraduateTable.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/InaugurationDate/groupdate.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/InaugurationDate/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/InaugurationDate/sidebar.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/ServicesMenu/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/Settings/Services/AccountDetails.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/Settings/Services/Signature.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/Test/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/Test/sidertest.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/utils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/logo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/reportWebVitals.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/routes/baseRouter.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/routes/history.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/routes/patternPaths.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/routes/private.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/routes/public.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/routes/withRouter.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/collections/careerTypes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/collections/staffHistory.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/collections/staffStatus.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/collections/staffStyles.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/collections/statusTypes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/collections/userTypes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/img/header_logo1.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/img/header_logo2.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/img/header_logo3.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/img/logo_header_3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/img/pdf_thumbnail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/pages/AdminPanel/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/pages/Home/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/pages/Login/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/pages/Register/ItemLayout.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/pages/Register/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/site/pages/Settings/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/store/actionTypes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/store/actions/serverdata.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/store/actions/staff.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/store/reducers/serverdata.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/store/reducers/staff.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/store/reducers/stafff.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/store/rootReducer/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/gui/src/store/urls/staff.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/etitulacion.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/etitulacion.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/prettier.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/users/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/users/api/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/SServices/GraduateTable/Sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/containers/SServices/GraduateTable/Sidebar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/SServices/GraduateTable/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/containers/SServices/GraduateTable/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/required_apps" beforeDir="false" afterPath="$PROJECT_DIR$/backend/required_apps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/documents/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/documents/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/documents/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/documents/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/documents/fixtures/documents.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/documents/fixtures/documents.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/documents/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/documents/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/documents/migrations/0002_alter_documentsdetails_keyname.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/documents/migrations/0002_alter_documentsdetails_keyname.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/documents/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/documents/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/documents/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/documents/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/documents/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/documents/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/documents/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/documents/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/documents/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/documents/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/etitulacion/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/etitulacion/asgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/etitulacion/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/etitulacion/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/etitulacion/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/etitulacion/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/etitulacion/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/etitulacion/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/manage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/users/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/api/documents.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/api/serializers.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/api/status.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/api/testSerializers.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/api/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/api/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/users/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/managers.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/users/managers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/users/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/migrations/0002_auto_20210613_1420.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/migrations/0003_rename_type_user_account_user_type.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/migrations/0004_graduateprofile_notifications.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/users/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/process/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/users/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backlog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/backlog.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/public/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/public/robots.txt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/public/robots.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/App.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/App.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/components/Header/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/components/PrivateRoute/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/components/Sidebar/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/const/careerTypes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/const/isLogged.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/const/statusTypes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/const/userTypes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Coordination/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Layout/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Layout/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Process/Steps/ServiceApproval/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Process/Steps/TypeTitulation/DocumentsTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Process/Steps/TypeTitulation/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Process/Steps/UploadDocuments/DocumentsTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Process/Steps/UploadDocuments/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Process/Steps/ValidateInformation/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Process/Steps/itemLayout.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateDossier/ProcedureView/AEPProcess/itemLayout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Process/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Process/utils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/SServices/DocumentsViewer/PDFViewer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/SServices/DocumentsViewer/Sidebar.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/SServices/DocumentsViewer/columns.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/SServices/DocumentsViewer/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/SServices/GraduateTable/Sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/GraduateTable/ListSiderbar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/SServices/GraduateTable/columns.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/SServices/GraduateTable/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/SServices/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/StaffRegister/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/SystemInformation/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Admin/SiteInformation/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Test/403.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Test/Account.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Test/AccountDetail.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Test/AccountList.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/containers/Test/Home.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/css/cover.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/css/home.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/css/layout.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/site/css/layout.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/css/login.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/img/IGJH7348.JPG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/img/OMZK8962.JPG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/img/RQNB9185.JPG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/img/logo-transparent.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/img/logo-transparent2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/img/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/site/img/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/img/logo1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/pages/AdminLogin/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/site/pages/AdminLogin/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/pages/AdminPanel/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/pages/Home/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/pages/Login/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/pages/Register/ItemLayout.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/containers/Staff/AEProfessional/AEPGeneration/itemLayout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/pages/Register/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/private.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/routes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/serviceWorker.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/setupTests.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/setupTests.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/actions/account.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/store/actions/account.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/actions/actionTypes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/actions/admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/store/actions/admin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/actions/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/store/actions/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/actions/process.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/actions/staff_services.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/actions/transactionTypes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/reducers/account.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/store/reducers/account.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/reducers/admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/store/reducers/admin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/reducers/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/store/reducers/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/reducers/rootReducer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/reducers/serv_data.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/reducers/staff_services.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/reducers/upload_documents.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gui/src/store/utility.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gui/src/store/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/required.txt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/required.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -30,6 +330,10 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="JsBowerSettings">
+    <bower-package value="" />
+    <bower.json value="" />
+  </component>
   <component name="ProjectId" id="1xnN8EpRc2lxzW3N0M5vzaf54kL" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -37,29 +341,76 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="DatabaseDriversLRU" value="mysql" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="add_unversioned_files" value="$PROJECT_DIR$/backend/src/database.json" />
+    <property name="database.data.extractors.current.export.id" value="Comma-separated (CSV)_id" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="C:\Users\deckard\dev\etitulacion\frontend\gui\node_modules\prettier" />
-    <property name="settings.editor.selected.configurable" value="settings.javascript.prettier" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="JavaScript.Libraries" />
+    <property name="ts.external.directory.path" value="C:\Users\deckard\dev\etitulacion\frontend\gui\node_modules\typescript\lib" />
   </component>
-  <component name="RunManager" selected="Node.js.App.js">
-    <configuration name="App.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/frontend/gui/src/App.js" working-dir="$PROJECT_DIR$/frontend/gui/src">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\deckard\dev\etitulacion\frontend\gui\src\containers\Process\Steps2\Dossier" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.npm start">
+    <configuration name="Debug etitulation front" type="JavascriptDebugType" engineId="502100b2-160f-4963-8a82-4fbb09352a3f" uri="http://localhost:3000">
       <method v="2" />
     </configuration>
-    <configuration name="index.jsx" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/frontend/gui/src/containers/Process/Steps/TypeTitulation/index.jsx" working-dir="$PROJECT_DIR$/frontend/gui/src/containers/Process/Steps/TypeTitulation">
+    <configuration name="etitulacion" type="Python.DjangoServer" factoryName="Django server" singleton="false">
+      <module name="etitulacion" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="etitulacion.settings" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\deckard\dev\etitulacion\backend\env\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="127.0.0.1" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Node.js.App.js" />
-        <item itemvalue="Node.js.index.jsx" />
-      </list>
-    </recent_temporary>
+    <configuration name="npm start" type="js.build_tools.npm">
+      <package-json value="$PROJECT_DIR$/frontend/gui/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Django Server.etitulacion" />
+      <item itemvalue="JavaScript Debug.Debug etitulation front" />
+      <item itemvalue="npm.npm start" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -77,12 +428,58 @@
       <workItem from="1631400022020" duration="3776000" />
       <workItem from="1631570183368" duration="2017000" />
       <workItem from="1631844349511" duration="7021000" />
-      <workItem from="1631902238825" duration="20314000" />
+      <workItem from="1631902238825" duration="21120000" />
+      <workItem from="1631954506963" duration="4115000" />
+      <workItem from="1631993492815" duration="21273000" />
+      <workItem from="1632078753485" duration="15872000" />
+      <workItem from="1632101287800" duration="10831000" />
+      <workItem from="1632155805106" duration="14997000" />
+      <workItem from="1632175359056" duration="612000" />
+      <workItem from="1632194549606" duration="91000" />
+      <workItem from="1632245863545" duration="12993000" />
+      <workItem from="1632267192174" duration="1826000" />
+      <workItem from="1632274532868" duration="8473000" />
+      <workItem from="1632292161341" duration="2376000" />
+      <workItem from="1632326712031" duration="1378000" />
+      <workItem from="1632328401055" duration="252000" />
+      <workItem from="1632328668484" duration="2059000" />
+      <workItem from="1632330759710" duration="41866000" />
+      <workItem from="1632375137753" duration="13000" />
+      <workItem from="1632380738381" duration="8302000" />
+      <workItem from="1632421830150" duration="5317000" />
+      <workItem from="1632428505287" duration="25418000" />
+      <workItem from="1632518519026" duration="3871000" />
+      <workItem from="1632544752257" duration="75000" />
+      <workItem from="1632544888869" duration="1320000" />
+      <workItem from="1632595816754" duration="10526000" />
+      <workItem from="1632612687469" duration="28989000" />
+      <workItem from="1632676741647" duration="595000" />
+      <workItem from="1632698549345" duration="12107000" />
+      <workItem from="1632777205415" duration="602000" />
+      <workItem from="1632781096406" duration="7584000" />
+      <workItem from="1633047493572" duration="23000" />
+      <workItem from="1644697151905" duration="495000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Cambios&#10;Vista de egresado:&#10;- Títulos de trámite actualizado.&#10;- Formato de fecha en el estatus de validación de documentos.&#10;- Interfaz y api de fecha de asistencia al acto protocolario agregada.&#10;- Interfaz y api de liberación del trámite agregada.&#10;- Campo de no. de celular agregado a la bd y a la interfaz de carga de información y registro.&#10;Vista de coordinación:&#10;- Agregado perfil de egresado.&#10;- La interfaz de perfil de egresado ahora contiene las vistas de documentación y trámite.&#10;- Agregado diferentes tipos de proceso en la interfaz de trámite en el perfil del egresado.&#10;- Vista de documentos actualizada.&#10;- Modal para visualizar documentos actualizado.&#10;- Interfaz para mostrar, agregar, eliminar y editar grupos de fechas de toma de protesta agregadas.&#10;- Interfaz para confirmar la fecha de asistencia al acto protocolario y relleno de los datos ARP agregada.&#10;Servicios escolares:&#10;- Interfaz de configuración de CNI agregado. Ahora se puede cambiar la firma y sello del documento.&#10;- Intefaz de perfil del egresado actualizado. Ahora el perfil del egresado contiene las vistas de documentación y trámite.&#10;- Vista de trámite ahora contiene los procesos para generar el CNI y el certificado de acta de examen profesional.&#10;- Modal para visualizar documentos actualizado.&#10;- Interfaz y api para ver las fechas de asistencias confirmadas agregada.&#10;- Interfaz y api para ver los datos ARP de los egresados con asistencia confirmada agregada.&#10;- Interfaz y api para generar y cargar en el servidor el certificado de acta de examen profesional agregada.&#10;- La interfaz de carga del AEP tambień se puede cancelar.&#10;Status:&#10;- Ahora cada acción del personal que repercute en el trámite del egresado se registra en la tabla de historial del egresado.&#10;- Agregados los estados para todas las fases del trámite.&#10;- Ahora la lista de egresados en las interfaces de personal muestra el progreso del trámite y la acción requerida de estado del egresado.&#10;Router:&#10;- Se actualizó la versión de la librería react-router a la versión v6&#10;ANTD:&#10;- Se actualizó la versión de la librería ant design&#10;Menus de staff:&#10;- Ahora el menú para navegar entre las diferentes vistas se encuentra en la parte superior, debajo del header." />
+    <option name="LAST_COMMIT_MESSAGE" value="Cambios&#10;Vista de egresado:&#10;- Títulos de trámite actualizado.&#10;- Formato de fecha en el estatus de validación de documentos.&#10;- Interfaz y api de fecha de asistencia al acto protocolario agregada.&#10;- Interfaz y api de liberación del trámite agregada.&#10;- Campo de no. de celular agregado a la bd y a la interfaz de carga de información y registro.&#10;Vista de coordinación:&#10;- Agregado perfil de egresado.&#10;- La interfaz de perfil de egresado ahora contiene las vistas de documentación y trámite.&#10;- Agregado diferentes tipos de proceso en la interfaz de trámite en el perfil del egresado.&#10;- Vista de documentos actualizada.&#10;- Modal para visualizar documentos actualizado.&#10;- Interfaz para mostrar, agregar, eliminar y editar grupos de fechas de toma de protesta agregadas.&#10;- Interfaz para confirmar la fecha de asistencia al acto protocolario y relleno de los datos ARP agregada.&#10;Servicios escolares:&#10;- Interfaz de configuración de CNI agregado. Ahora se puede cambiar la firma y sello del documento.&#10;- Intefaz de perfil del egresado actualizado. Ahora el perfil del egresado contiene las vistas de documentación y trámite.&#10;- Vista de trámite ahora contiene los procesos para generar el CNI y el certificado de acta de examen profesional.&#10;- Modal para visualizar documentos actualizado.&#10;- Interfaz y api para ver las fechas de asistencias confirmadas agregada.&#10;- Interfaz y api para ver los datos ARP de los egresados con asistencia confirmada agregada.&#10;- Interfaz y api para generar y cargar en el servidor el certificado de acta de examen profesional agregada.&#10;- La interfaz de carga del AEP tambień se puede cancelar.&#10;Status:&#10;- Ahora cada acción del personal que repercute en el trámite del egresado se registra en la tabla de historial del egresado.&#10;- Agregados los estados para todas las fases del trámite.&#10;- Ahora la lista de egresados en las interfaces de personal muestra el progreso del trámite y la acción requerida de estado del egresado.&#10;Router:&#10;- Se actualizó la versión de la librería react-router a la versión v6&#10;ANTD:&#10;- Se actualizó la versión de la librería ant design&#10;Menus de staff:&#10;- Ahora el menú para navegar entre las diferentes vistas se encuentra en la parte superior, debajo del header." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

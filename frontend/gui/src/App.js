@@ -1,13 +1,22 @@
 import React, { Component } from "react";
-
 import { BrowserRouter as Router } from "react-router-dom";
 import { connect } from "react-redux";
-import BaseRouter from "./routes";
 
 import NormalLayout from "./containers/Layout";
-import * as actions from "./store/actions/auth";
+import BaseRouter from "./routes/baseRouter";
+import { authCheckState } from "./store/actions/auth";
+
+import "antd/dist/antd.css";
 
 export class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loaded: false,
+    };
+  }
+
   componentDidMount() {
     this.props.onTryAutoSignup();
   }
@@ -15,27 +24,28 @@ export class App extends Component {
   render() {
     return (
       <div>
-        <Router>
-          <NormalLayout {...this.props}>
-            <BaseRouter />
-          </NormalLayout>
-        </Router>
+        <Router>{this.props.layout}</Router>
       </div>
     );
   }
 }
 
-function mapStateToProps(state, ownProps = {}) {
+const mergeProps = (ownProps, mapProps, dispatchProps) => {
   return {
-    isAuthenticated: state.auth.token !== null,
-    user_type: state.auth.user_type,
-  };
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onTryAutoSignup: () => dispatch(actions.authCheckState()),
+    layout: (
+      <NormalLayout {...ownProps}>
+        <BaseRouter {...ownProps} />
+      </NormalLayout>
+    ),
+    ...mapProps,
+    ...dispatchProps,
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onTryAutoSignup: () => dispatch(authCheckState()),
+  };
+};
+
+export default connect(null, mapDispatchToProps, mergeProps)(App);

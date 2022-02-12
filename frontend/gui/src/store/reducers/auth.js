@@ -1,14 +1,18 @@
-import * as actionTypes from "../actions/actionTypes";
-import { updateObject } from "../utility";
+import {
+  AUTH_START,
+  AUTH_SUCCESS,
+  AUTH_LOGOUT,
+  AUTH_FAIL,
+} from "../actionTypes";
+import { updateObject } from "../utils";
 
 const initialState = {
-  token: null,
-  user_type: null,
+  payload: null,
   error: null,
   loading: false,
 };
 
-const authStart = (state, action) => {
+const authStart = (state) => {
   return updateObject(state, {
     error: null,
     loading: true,
@@ -17,9 +21,7 @@ const authStart = (state, action) => {
 
 const authSuccess = (state, action) => {
   return updateObject(state, {
-    token: action.token,
-    user_type: action.user_type,
-    fullname: action.fullname,
+    payload: action.payload,
     error: null,
     loading: false,
   });
@@ -32,23 +34,22 @@ const authFail = (state, action) => {
   });
 };
 
-const authLogout = (state, action) => {
+const authLogout = (state) => {
   return updateObject(state, {
-    token: null,
-    user_type: null,
+    payload: null,
   });
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.AUTH_START:
-      return authStart(state, action);
-    case actionTypes.AUTH_SUCCESS:
+    case AUTH_START:
+      return authStart(state);
+    case AUTH_SUCCESS:
       return authSuccess(state, action);
-    case actionTypes.AUTH_FAIL:
+    case AUTH_FAIL:
       return authFail(state, action);
-    case actionTypes.AUTH_LOGOUT:
-      return authLogout(state, action);
+    case AUTH_LOGOUT:
+      return authLogout(state);
     default:
       return state;
   }

@@ -1,24 +1,28 @@
-import * as actionTypes from "./actionTypes";
+import {
+  AUTH_START,
+  AUTH_SUCCESS,
+  AUTH_LOGOUT,
+  AUTH_FAIL,
+} from "../actionTypes";
+
 import axios from "axios";
 
 export const authStart = () => {
   return {
-    type: actionTypes.AUTH_START,
+    type: AUTH_START,
   };
 };
 
-export const authSuccess = (token, user_type, fullname) => {
+export const authSuccess = (payload) => {
   return {
-    type: actionTypes.AUTH_SUCCESS,
-    token: token,
-    user_type: user_type,
-    fullname: fullname,
+    type: AUTH_SUCCESS,
+    payload: payload,
   };
 };
 
 export const authFail = (error) => {
   return {
-    type: actionTypes.AUTH_FAIL,
+    type: AUTH_FAIL,
     error: error,
   };
 };
@@ -26,11 +30,10 @@ export const authFail = (error) => {
 export const logout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("expirationDate");
-  localStorage.removeItem("all_name");
-  localStorage.removeItem("userID");
   localStorage.removeItem("user_type");
+  localStorage.removeItem("all_name");
   return {
-    type: actionTypes.AUTH_LOGOUT,
+    type: AUTH_LOGOUT,
   };
 };
 
@@ -46,87 +49,44 @@ export const authLogin = (email, password) => {
   return (dispatch) => {
     dispatch(authStart());
     axios
-      .post("http://127.0.0.1:8000/authenticate/", {
+      .post("http://127.0.0.1:8000/account/authenticate/", {
         email: email,
         password: password,
       })
+
       .then((res) => {
         const token = res.data.token;
-        const user_id = res.data.user_id;
         const user_type = res.data.user_type;
-        const fullname = res.data.fullname;
+        const all_name = res.data.fullname;
 
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-        /*console.log("login aceptado: ".concat(expirationDate));*/
+        console.log("login aceptado: ".concat(expirationDate));
         localStorage.setItem("token", token);
-        localStorage.setItem("userID", user_id);
-        localStorage.setItem("user_type", user_type);
-        localStorage.setItem("fullname", fullname);
         localStorage.setItem("expirationDate", expirationDate);
-        dispatch(authSuccess(token, user_type, fullname));
+        localStorage.setItem("user_type", user_type);
+        localStorage.setItem("all_name", all_name);
+        dispatch(
+          authSuccess({ token: token, usertype: user_type, name: all_name })
+        );
         dispatch(checkAuthTimeout(3600));
       })
       .catch((err) => {
-        console.log("error");
         dispatch(authFail(err));
       });
   };
 };
 
-export const authSignUp = (
-  email,
-  first_name,
-  last_name,
-  password1,
-  password2,
-  enrollment,
-  career,
-  gender
-) => {
-  return (dispatch) => {
-    dispatch(authStart());
-
-    axios.defaults.headers = {
-      "Content-Type": "application/json",
-    };
-    axios
-      .post("http://127.0.0.1:8000/rest-auth/registration/", {
-        email: email,
-        first_name: first_name,
-        last_name: last_name,
-        user_type: "USER_GRADUATE",
-        password1: password1,
-        password2: password2,
-        enrollment: enrollment,
-        career: career,
-        gender: gender,
-      })
-      .then((res) => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("expirationDate");
-        localStorage.removeItem("all_name");
-        localStorage.removeItem("userID");
-        localStorage.removeItem("user_type");
-        var user_type = "USER_GRADUATE";
-        const token = res.data.key;
-        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-        localStorage.setItem("token", token);
-        localStorage.setItem("expirationDate", expirationDate);
-        dispatch(authSuccess(token, user_type, "null"));
-        dispatch(checkAuthTimeout(3600));
-      })
-      .catch((error) => {
-        dispatch(authFail(error));
-      });
-  };
-};
+// sleep time expects milliseconds
+function sleep(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
 
 export const authCheckState = () => {
   return (dispatch) => {
+    dispatch(authStart());
     const token = localStorage.getItem("token");
     const user_type = localStorage.getItem("user_type");
-    const fullname = localStorage.getItem("fullname");
-    //console.log(token.concat("TESTT"));
+    const all_name = localStorage.getItem("all_name");
     if (token === undefined) {
       dispatch(logout());
     } else {
@@ -134,11 +94,53 @@ export const authCheckState = () => {
       if (expirationDate <= new Date()) {
         dispatch(logout());
       } else {
-        const expirationTime = expirationDate.getTime() - new Date().getTime();
-        const newDate = expirationTime / 1000;
-        dispatch(authSuccess(token, user_type, fullname));
-        dispatch(checkAuthTimeout(newDate));
+        // Usage!
+        sleep(500).then(() => {
+          const expirationTime =
+            expirationDate.getTime() - new Date().getTime();
+          const newDate = expirationTime / 1000;
+          dispatch(
+            authSuccess({ token: token, usertype: user_type, name: all_name })
+          );
+          dispatch(checkAuthTimeout(newDate));
+        });
       }
     }
+  };
+};
+
+export const authSignUp = (values) => {
+  console.log(values);
+  return (dispatch) => {
+    dispatch(authStart());
+
+    axios.defaults.headers = {
+      "Content-Type": "application/json",
+    };
+    axios
+      .post("http://127.0.0.1:8000/rest-auth/registration/", values)
+      .then((res) => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("expirationDate");
+        localStorage.removeItem("all_name");
+        localStorage.removeItem("userID");
+        localStorage.removeItem("user_type");
+        const token = res.data.key;
+        const user_type = res.data.user_type;
+        const all_name = res.data.all_name;
+
+        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+        localStorage.setItem("token", token);
+        localStorage.setItem("expirationDate", expirationDate);
+        localStorage.setItem("user_type", user_type);
+        localStorage.setItem("all_name", all_name);
+        dispatch(
+          authSuccess({ token: token, usertype: user_type, name: all_name })
+        );
+        dispatch(checkAuthTimeout(3600));
+      })
+      .catch((error) => {
+        dispatch(authFail(error));
+      });
   };
 };

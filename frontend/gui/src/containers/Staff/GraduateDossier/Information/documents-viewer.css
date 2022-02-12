@@ -1,0 +1,6 @@
+.sider-search {
+    overflow: hidden;
+}
+.sider-search:hover {
+  overflow-y: scroll;
+}
