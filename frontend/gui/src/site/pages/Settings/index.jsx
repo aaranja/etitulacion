@@ -7,7 +7,8 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import Signature from "../../../containers/Staff/Settings/Services/Signature";
-import AccountDetails from "../../../containers/Staff/Settings/Services/AccountDetails";
+import AccountDetails from "../../../containers/Staff/Settings/Services/InstituteDetails";
+import InstituteDetails from "../../../containers/Staff/Settings/Services/InstituteDetails";
 
 const { SubMenu } = Menu;
 const { Content } = Layout;
@@ -29,7 +30,7 @@ class SettingsPanel extends Component {
     const getCurrentView = () => {
       switch (this.state.currentView) {
         case 1:
-          return <AccountDetails />;
+          return <InstituteDetails />;
         case 2:
           return <Signature />;
         case 3:
@@ -55,7 +56,7 @@ class SettingsPanel extends Component {
               this.setNewCurrentView(1);
             }}
           >
-            Datos personales
+            Datos del Instituto
           </Menu.Item>
 
           <SubMenu key="sub1" icon={<SettingOutlined />} title="Configuración">

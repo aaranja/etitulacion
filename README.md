@@ -3,10 +3,12 @@
 ## Instalación
 ### Django backend
 #### Requisitos previos
-**Antes de empezar recuerda tener instalado mysql server: https://dev.mysql.com/downloads/**
+**Instalar mysql server: https://dev.mysql.com/downloads/**
 #### En el directorio /backend del proyecto, ejecutar los comandos:
 ```
 # Instalación de dependencías
+$ sudo apt-get install libmysqlclient-dev
+# Crear entorno virtual
 virtualenv env .
 env/bin/activate
 pip install -r required_apps

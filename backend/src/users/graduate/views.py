@@ -47,15 +47,16 @@ class ARPInfoView(views.APIView):
                 if date['arp_generated']:
                     arp_query = ARPData.objects.filter(graduate=profile['enrollment'])
                     arp_data = list(arp_query.values())[0]
-                    arp_staff = list(map(arp_data.get, ['president_id', 'secretary_id', 'vocal_id']))
                     staff_data = []
-                    for staff in arp_staff:
-                        if staff is not None:
-                            arp_query = ARPStaff.objects.filter(key=staff).values()
-                            staff_data.append(list(arp_query)[0])
+                    a_subset = {key: arp_data[key] for key in ['president_id', 'secretary_id', 'vocal_id']}
+                    for staff in a_subset:
+                        if a_subset[staff] is not None:
+                            arp_query = ARPStaff.objects.filter(key=a_subset[staff]).values()
+                            data = list(arp_query)[0]
+                            data['role'] = staff
+                            staff_data.append(data)
                         else:
                             print("vacio")
-
                     account.update({'staffData': staff_data})
                     account.update(arp_data)
                 else:

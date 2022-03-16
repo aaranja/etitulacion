@@ -1,4 +1,4 @@
-from django.utils import timezone
+from datetime import datetime
 from rest_framework import serializers
 from ..graduate.serializers import StatusSerializer
 from ..models import DateGroup, ARPStaff, ARPGroup, ARPData, GraduateProfile, Account, GraduateDocuments
@@ -15,7 +15,7 @@ class DocumentsSerializer(serializers.ModelSerializer):
             'fileName',
             'status',
             'url',
-            'lastModifiedDate',
+            # 'lastModifiedDate',
             'enrollment',
             'graduate_status',
         ]
@@ -29,25 +29,32 @@ class DocumentsSerializer(serializers.ModelSerializer):
         if keyName == "AEP" and not (status == "STATUS_13" or status == "STATUS_14"):
             raise serializers.ValidationError(
                 {'graduate_status': 'El egresado no cumple los requisitos para subir su carta de examen profesional.'})
+
+        print("datos", data)
         return data
 
     def update(self, instance, validated_data):
+        print("=== ACTUALIZANDO ===")
         validated_data.pop('graduate_status')
-
+        gen_date = datetime.now()
+        time = gen_date.strftime("%Y-%m-%dT%H:%M:%S")
         instance.fileName = validated_data['fileName']
         instance.status = validated_data['status']
-        instance.lastModifiedDate = validated_data['lastModifiedDate']
+        instance.lastModifiedDate = time
         instance.save()
         return instance
 
     def create(self, validated_data):
+        print("=== CREANDO ===")
+        gen_date = datetime.now()
+        time = gen_date.strftime("%Y-%m-%dT%H:%M:%S")
         document = GraduateDocuments(
             keyName=validated_data['keyName'],
             name=validated_data['name'],
             fileName=validated_data['fileName'],
             status=validated_data['status'],
             url=validated_data['url'],
-            lastModifiedDate=validated_data['lastModifiedDate'],
+            lastModifiedDate=gen_date,
             enrollment=validated_data['enrollment'],
         )
         document.save()
@@ -124,10 +131,10 @@ class ARPGroupSerializer(serializers.Serializer):
         ]
 
     def create(self, validated_data):
-        gen_date = timezone.now()
-        time = gen_date.strftime("%Y-%m-%d %H:%M:%S")
+        gen_date = datetime.now()
+        # time = gen_date.strftime("%Y-%m-%d %H:%M:%S")
         arp_group = ARPGroup(
-            gen_date=time,
+            gen_date=gen_date,
             confirmed=False,
             complete=validated_data['complete'],
             date=validated_data['date']

@@ -84,6 +84,10 @@ class ARPProtocol extends Component {
     });
   };
 
+  onSave = (data) =>{
+    console.log(data)
+  }
+
   render() {
     return (
       <>

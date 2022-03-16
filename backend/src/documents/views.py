@@ -16,11 +16,12 @@ class DocumentsView(views.APIView):
         obj_list = []
         documents = None
         if type == "graduate_process":
-            documents = DocumentsDetails.objects.exclude(clasification=0)
+            documents = DocumentsDetails.objects.exclude(clasification=0).exclude(keyName="CDNI")
         elif type == "services_documents":
             documents = DocumentsDetails.objects.exclude(clasification=2).exclude(clasification=0)
         elif type == "coordination_documents":
             documents = DocumentsDetails.objects.exclude(clasification=1)
+            print(documents)
 
         # get all documents details
         if documents is not None:

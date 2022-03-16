@@ -12,7 +12,6 @@ export const careerOptions = [
 ];
 
 export const staffStructureOptions = (data, option) => {
-  console.log(data);
   let options = [];
   for (let i in data) {
     options.push({ label: data[i][option], value: data[i].key });

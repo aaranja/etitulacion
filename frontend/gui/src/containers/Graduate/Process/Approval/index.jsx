@@ -188,7 +188,6 @@ class Approval extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state.account.payload);
   return {
     account: state.account,
     status: state.account.payload.status,

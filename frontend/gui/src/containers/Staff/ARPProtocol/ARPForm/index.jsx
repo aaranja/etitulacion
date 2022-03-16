@@ -143,9 +143,6 @@ class ARPForm extends Component {
   render() {
     let dataColumns = columns();
     let load = !this.props.loadingArp && this.props.visible;
-    if (load) {
-      console.log("confirmado ", this.props.arpGroup.date["confirmed"]);
-    }
     let footer = load
       ? [
           <Space
@@ -259,8 +256,6 @@ class ARPForm extends Component {
             Salir
           </Button>,
         ];
-
-    console.log(this.props.arpGroup);
 
     return (
       <Drawer

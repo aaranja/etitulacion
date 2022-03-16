@@ -62,15 +62,11 @@ const EditableCell = ({
   const form = useContext(EditableContext);
   useEffect(() => {
     if (editing) {
-      console.log("editando");
       inputRef.current.focus();
-    } else {
-      console.log("no editando");
     }
   }, [editing]);
 
   const toggleEdit = () => {
-    console.log(record[dataIndex]);
     setEditing(!editing);
     form.setFieldsValue({
       [dataIndex]: record[dataIndex],
@@ -82,7 +78,6 @@ const EditableCell = ({
       // console.log(form.values);
       const values = await form.validateFields().then((values) => {
         //
-        console.log("aqui");
         handleSave({ ...record, ...values });
         toggleEdit();
       });
@@ -348,7 +343,6 @@ class EditableTable extends React.Component {
     ];
 
     const isFilled = (field) => {
-      console.log(field);
       return field === undefined || field === "" || field === null;
     };
 
@@ -357,7 +351,6 @@ class EditableTable extends React.Component {
       data[i]["graduate"] = data[i].enrollment;
       for (let field in fields) {
         if (isFilled(data[i][fields[field]])) {
-          console.log("por aquí ========");
           complete = false;
           break;
         } else {
@@ -370,7 +363,6 @@ class EditableTable extends React.Component {
   };
 
   onSaved = (data) => {
-    console.log("hola");
     this.setState({
       hasChanges: false,
       valuesChanged: { update: [], delete: [] },
@@ -410,7 +402,6 @@ class EditableTable extends React.Component {
       if (col.inputType === "select") {
         options = getSelectOptions(col.dataIndex, col.options);
       }
-      console.log(options);
       return {
         ...col,
         onCell: (record) => ({

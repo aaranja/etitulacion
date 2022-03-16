@@ -70,7 +70,6 @@ class InaugurationDate extends Component {
 
   onDeleteGroup = (id) => {
     let dateGroups = this.state.dateGroups;
-    console.log(dateGroups);
     for (let i in dateGroups) {
       if (dateGroups[i].id === id) {
         dateGroups = dateGroups.splice(i, 1);

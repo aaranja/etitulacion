@@ -10,17 +10,14 @@ export default class MultiSelect extends Component {
     let options = {};
     options.id_card = staffStructureOptions(
       this.props.dataSource,
-      this.props.type,
       "id_card"
     );
     options.full_name = staffStructureOptions(
       this.props.dataSource,
-      this.props.type,
       "full_name"
     );
     options.career = staffStructureOptions(
       this.props.dataSource,
-      this.props.type,
       "profession"
     );
     this.state = {

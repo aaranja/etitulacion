@@ -111,15 +111,16 @@ class StaffRegisterView(views.APIView):
         user = self.request.user
         data = {'data': None}
         status_res = status.HTTP_401_UNAUTHORIZED
+
         if user.is_superuser:
             account = request.data['account']
             register_type = request.data['register_type']
             usertype = self.account_types[register_type]
             if usertype is not None:
                 # assign usertype to account
-                account['usertype'] = usertype
+                account['user_type'] = usertype
                 #     serialize account
-                serializer = self.serializer(user, account, partial=True)
+                serializer = self.serializer(None, account)
                 if serializer.is_valid():
                     # save the account
                     serializer.save(account)

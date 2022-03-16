@@ -225,12 +225,12 @@ class StaffRegisterSerializer(serializers.ModelSerializer):
     def save(self, request):
         # create and save account
         new_account = Account(
-            email=request.data['email'],
-            first_name=request.data['first_name'],
-            last_name=request.data['last_name'],
-            user_type=request.data['user_type'],
+            email=request['email'],
+            first_name=request['first_name'],
+            last_name=request['last_name'],
+            user_type=request['user_type'],
         )
         new_account.is_staff = True
-        new_account.set_password(request.data['password1'])
+        new_account.set_password(request['password1'])
         new_account.save()
         return new_account

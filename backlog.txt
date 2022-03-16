@@ -13,19 +13,17 @@
 	- proceso) selección de titulación
 	- carga de proyecto de titulación y solicitud del egresado
 	- sección de filtros y búsqueda en las tablas de egresado
-
-> módulos en proceso	
+	- sección de administrador del sistema
+	- asignación de fecha para la toma de protesta
+	- elaboración de certificado de acta de exámen profesional
 	- fase de aprobación del egresado por coordinación 
 	- estatus general del egresado [50%]
 	- generación de la constancia de no inconvenientes
 	- interfaz de coordinación de titulación
 	- visor de información y documentos en coordinación
 	- visor de información y documentos en coordinación
-
-> módulos en espera 
-	- notificación de errores generales en el sistema
-	- sección de administrador del sistema
-	- asignación de fecha para la toma de protesta
-	- elaboración de certificado de acta de exámen profesional
 	- elaborar título
+	
+> módulos en proceso	
+	- notificación de errores generales en el sistema
 	- comprobación de correo electrónico en el registro

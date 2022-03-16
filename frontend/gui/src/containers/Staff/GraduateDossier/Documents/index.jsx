@@ -43,6 +43,7 @@ class Documents extends Component {
     };
 
     const documents = this.props.metadata.map((record) => {
+      // console.log(record)
       return (
         <Card.Grid
           style={gridStyle}
@@ -94,6 +95,7 @@ class Documents extends Component {
 
 const mapStateToProps = (state) => {
   let viewDocument = null;
+  let graduateDocuments = []
   let currentState = state.staff;
   if (currentState.payload !== null) {
     if (currentState.payload.document !== undefined) {
@@ -105,6 +107,7 @@ const mapStateToProps = (state) => {
 
   return {
     viewDocument: viewDocument,
+    graduateDocuments: graduateDocuments,
   };
 };
 

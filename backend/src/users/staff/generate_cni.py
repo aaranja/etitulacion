@@ -95,6 +95,7 @@ class CDN_PDF:
         pdf.cell(0, 8, str(self.career).upper(), ln=0)
         pdf.set_font(style="")
         pdf.ln(20)
+
         pdf.multi_cell(0, 8,
                        'Me permito informarle de acuerdo a su solicitud, '
                        'que no existe inconveniente para que pueda UD. '
