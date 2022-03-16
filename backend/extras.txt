@@ -20,6 +20,58 @@ LC_ALL=es_MX.utf-8
 
 dpkg-reconfigure locales
 
+
+# server configuration
+# set server hostname
+hostnamectl set-hostname <Host name>
+# to verify
+hostname
+# map server hostname
+<ip address>    <host name>
+
+# config settings.py
+DEBUG = False
+ALLOWED_HOSTS = ['<ipAddress/domainName>']
+# Static handled differently in production.
+# third party storages or whitenoise requires additional settings
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
+
+# install mod_wsgi
+sudo apt install libapache2-mod-wsgi-py3
+
+# config nginx
+# edit /etc/nginx/sites-enabled/default and put
+server {
+
+  server_name 127.0.0.1 yourhost@example.com;
+  access_log /var/log/nginx/domain-access.log;
+
+  location / {
+    proxy_pass_header Server;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    proxy_set_header X-Forwarded-For  $remote_addr;
+    proxy_set_header X-Scheme $scheme;
+    proxy_connect_timeout 10;
+    proxy_read_timeout 10;
+
+    # This line is important as it tells nginx to channel all requests to port 8000.
+    # We will later run our wsgi application on this port using gunicorn.
+    proxy_pass http://127.0.0.1:8000/;
+  }
+
+}
+
+# install gunicorn
+pip install gunicorn
+
+# run gunicorn
+$ cd </path/to/djangoproject_subdirectory_with_wsgi.py>
+
+$ gunicorn wsgi -b 127.0.0.1:8000 --pid /tmp/gunicorn.pid --daemon
+
+
+
 # specific libraries =============================================
 # install gyp
 pip install git+https://chromium.googlesource.com/external/gyp
