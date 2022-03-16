@@ -1,0 +1,39 @@
+# install pre libraries for pygobjectS
+sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 pkg-config libcairo2-dev libjpeg-dev libgif-dev libcurl4-gnutls-dev librtmp-dev smbclient libsmbclient libsmbclient-dev python3-distutils-extra wheel libapt-pkg-dev dbus libdbus-1-dev libgirepository1.0-dev libcups2-dev
+
+
+# create superuser
+python manage.py createsuperuser
+
+# set admin usertype
+mysql -h localhost -u etisystem -p etitulacion_bd
+update users_account set user_type='USER_ADMIN' where is_superuser=1
+
+# put fonts on /.local/share/fonts
+
+# specific libraries =============================================
+# install gyp
+pip install git+https://chromium.googlesource.com/external/gyp
+
+# install pycurl
+sudo apt install libcurl4-gnutls-dev librtmp-dev
+
+# install pygobject
+sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 pkg-config libcairo2-dev libjpeg-dev libgif-dev
+pip install git+https://git.gnome.org/browse/pygobject
+
+# install smbclient for pysmbc
+sudo apt install python3-gpg python3-samba python3-tdb samba-common samba-common-bin samba-dsdb-modules
+sudo apt install build-essential pkg-config smbclient libsmbclient libsmbclient-dev python3-dev
+
+# distutilsextra
+apt-get source python3-distutils-extra
+cd python-distutils-extra-2.40
+python3.9 -m pip install wheel  # You'll need this to run setup.py
+python3.9 setup.py bdist_wheel  # Create the wheel
+python3.9 -m pip install dist/python_distutils_extra-2.39-py3-none-any.whl  # Install the wheel
+
+# download python-apt
+git clone https://salsa.debian.org/apt-team/python-apt
+
+# install reportbug
