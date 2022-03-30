@@ -14,33 +14,12 @@ const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 class NormalLayout extends React.Component {
   constructor(props) {
     super(props);
-    let windowWidth = "70%";
+    let windowWidth = "100%";
     if (window.innerWidth <= 1081) {
       windowWidth = "100%";
     }
-    this.state = { windowWidth: windowWidth, loaded: false };
+    this.state = { windowWidth: windowWidth, loaded: false, verificate: false };
   }
-
-  handleResize = (e) => {
-    const windowSize = window.innerWidth;
-
-    if (windowSize <= 1081) {
-      // let windowWidth = "100%";
-      if (this.state.windowWidth !== "100%") {
-        this.setState({
-          windowWidth: "100%",
-        });
-      }
-    } else {
-      if (this.state.windowWidth !== "70%") {
-        this.setState({
-          windowWidth: "70%",
-        });
-      }
-    }
-
-    // this.setState({ windowWidth: window.innerWidth });
-  };
 
   shouldComponentUpdate(nextProps, nextState, nextContext) {
     // if (nextState.loaded === this.state.loaded) {
@@ -70,6 +49,12 @@ class NormalLayout extends React.Component {
     window.removeEventListener("resize", this.handleResize);
   }
 
+  openVerification = (value) => {
+    this.setState({
+      verificate: value,
+    });
+  };
+
   render() {
     let usertype = null;
     if (this.props.auth !== null) {
@@ -80,6 +65,7 @@ class NormalLayout extends React.Component {
         style={{
           height: "100vh",
           backgroundColor: "white",
+
           // backgroundColor: "#F9F7F7",
         }}
       >
@@ -92,6 +78,8 @@ class NormalLayout extends React.Component {
               page_type={userTypes[usertype]}
               user_type={usertype}
               size={this.state.windowWidth}
+              verified={this.props["email_verified"]}
+              verificate={this.openVerification}
             />
           ) : (
             <Header
@@ -102,12 +90,13 @@ class NormalLayout extends React.Component {
           )}
           {this.state.loaded ? (
             <Content
+              className="content-page"
               style={{
-                width: this.state.windowWidth,
-                minWidth: 480,
                 margin: "auto",
                 marginTop: "65px",
                 zIndex: "50",
+                maxWidth: "1580px",
+                minWidth: "320px",
               }}
             >
               {React.cloneElement(this.props.children, {
@@ -125,6 +114,7 @@ class NormalLayout extends React.Component {
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: "10vh",
+                maxWidth: "1580px",
               }}
             >
               <Spin indicator={antIcon} />

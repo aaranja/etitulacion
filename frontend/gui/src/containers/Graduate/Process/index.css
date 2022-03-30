@@ -5,7 +5,6 @@
 
 .main,
 .sidebar {
-
   border: 3px solid black;
   padding: 15px;
   background-color: #a2f;
@@ -15,7 +14,6 @@
 }
 
 .main {
-  width: 60%;
 
 }
 
@@ -23,3 +21,18 @@
   width: 25%;
   height: 25vh;
 }
+.historyBox {
+    width: 70%;
+
+  }
+
+@media (max-width:767px){
+  .historyValidation {
+  flex-direction: column-reverse;
+}
+  .historyBox {
+    width: 100%;
+  }
+}
+
+

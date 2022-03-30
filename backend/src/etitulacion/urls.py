@@ -23,11 +23,11 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('rest-auth/', include('rest_auth.urls')),
-    path('rest-auth/registration/', include('users.auth.register_url')),
+    # path('rest-auth/registration/', include('users.auth.register_url')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('graduate/', include('users.graduate.urls')),
     path('staff/', include('users.staff.urls')),
-    path('account/', include('users.auth.urls')),
+    path('authenticate/', include('users.auth.urls')),
     path('api/', include('documents.urls')),
     path('api/', include('process.urls')),
 

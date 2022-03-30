@@ -1,5 +1,5 @@
 .sider-search {
-    overflow: hidden;
+  overflow: hidden;
 }
 .sider-search:hover {
   overflow-y: scroll;

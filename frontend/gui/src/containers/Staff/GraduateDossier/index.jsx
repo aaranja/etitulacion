@@ -117,19 +117,19 @@ const formatDataSource = (metadata, graduate_doc, clasification) => {
   for (const key in metadata) {
     if (metadata[key]["clasification"] !== clasification) {
       /* push in the list if clasification is required and document upload it by the graduate*/
-      if(dict[metadata[key].keyName] !== undefined){
+      if (dict[metadata[key].keyName] !== undefined) {
         list.push({
-        key: index++,
-        fullName: metadata[key].fullName,
-        download: metadata[key].keyName,
-      });
+          key: index++,
+          fullName: metadata[key].fullName,
+          download: metadata[key].keyName,
+        });
       }
-      if (metadata[key].keyName==="CDNI"){
+      if (metadata[key].keyName === "CDNI") {
         list.push({
-        key: index++,
-        fullName: metadata[key].fullName,
-        download: metadata[key].keyName,
-      });
+          key: index++,
+          fullName: metadata[key].fullName,
+          download: metadata[key].keyName,
+        });
       }
     }
   }

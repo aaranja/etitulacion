@@ -9,6 +9,7 @@ import {
   Tag,
   Button,
   Space,
+  Card,
 } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
 import {
@@ -67,238 +68,270 @@ class Information extends Component {
   goNext = () => {
     return !(this.state.hasChanges || this.props.loading);
   };
-
+  getStateValue = () => {
+    const { value } = this.state;
+    if (value) {
+      return value;
+    }
+  };
   render() {
     let lastIndex = 0;
     const updateIndex = () => {
       lastIndex++;
       return lastIndex;
     };
-    const formItemLayout = {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 10 },
+    const layout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      },
     };
     const tailFormItemLayout = {
       wrapperCol: {
-        span: 16,
-        offset: 8,
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 16,
+          offset: 8,
+        },
       },
     };
+    console.log(this.props.account.payload);
 
     return (
-      <div>
+      <div style={{}}>
         <Descriptions
           size="small"
           column={1}
-          style={{ marginLeft: 60, marginRight: 120 }}
+          style={{ marginLeft: 40 }}
+          layout="vertical"
         >
-          <Descriptions.Item label={<b>INSTRUCCIONES</b>}>
+          <Descriptions.Item label={<b>Instrucciones</b>}>
             Verifique que toda su información personal sea correcta, además
             seleccione el tipo de proyecto de titulación.
           </Descriptions.Item>
         </Descriptions>
-        <Divider orientation="center">Datos personales</Divider>
+
         {this.props.account.payload !== null || this.props.loading === false ? (
-          <Form
-            {...formItemLayout}
-            onChange={() => {
-              if (!this.state.hasChanges) {
-                this.setState({
-                  hasChanges: true,
-                });
-              }
+          <Card
+            style={{
+              margin: "10px",
             }}
-            onFinish={(values) => {
-              this.onSave(values);
+            bodyStyle={{
+              maxWidth: "640px",
+              margin: "auto",
+              display: "block",
             }}
-            name="information"
-            validateMessages={null}
-            scrollToFirstError
-            initialValues={this.props.account.payload}
           >
-            <Item
-              key={updateIndex()}
-              name="enrollment"
-              label="Matrícula"
-              hasFeedback
+            <Form
+              {...layout}
+              onChange={() => {
+                if (!this.state.hasChanges) {
+                  this.setState({
+                    hasChanges: true,
+                  });
+                }
+              }}
+              onFinish={(values) => {
+                this.onSave(values);
+              }}
+              name="information"
+              validateMessages={null}
+              scrollToFirstError
+              initialValues={this.props.account.payload}
             >
-              <Input maxLength="8" disabled bordered={false} />
-            </Item>
-            <Item
-              label="Nombre(s)"
-              key={updateIndex()}
-              name="first_name"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor introduce tu nombre!",
-                },
-              ]}
-              hasFeedback
-            >
-              <Input placeholder="Nombre(s)" size="large" />
-            </Item>
-            <Item
-              key={updateIndex()}
-              label="Apellidos"
-              name="last_name"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor introduce tus apellidos!",
-                },
-              ]}
-              hasFeedback
-            >
-              <Input placeholder="Apellidos" size="large" />
-            </Item>
-            <Item
-              key={updateIndex()}
-              label="Carrera"
-              name="career"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor seleccione su carrera!",
-                },
-              ]}
-              hasFeedback
-            >
-              <Select
-                size="large"
-                onChange={() => {
-                  if (!this.state.hasChanges) {
-                    this.setState({
-                      hasChanges: true,
-                      canNext: false,
-                    });
-                  }
-                }}
+              <Item
+                key={updateIndex()}
+                name="enrollment"
+                label="Matrícula"
+                hasFeedback
               >
-                <Select.Option value="electromecanica">
-                  Ing. Electromecánica
-                </Select.Option>
-                <Select.Option value="electronica">
-                  Ing. Electrónica
-                </Select.Option>
-                <Select.Option value="gestion">
-                  Ing. Gestión Empresarial
-                </Select.Option>
-                <Select.Option value="industrial">
-                  Ing. Industrial
-                </Select.Option>
-                <Select.Option value="mecatronica">
-                  Ing. Mecatrónica
-                </Select.Option>
-                <Select.Option value="sistemas">
-                  Ing. Sistemas Computacionales
-                </Select.Option>
-                <Select.Option value="administracion">
-                  Lic. Administración
-                </Select.Option>
-              </Select>
-            </Item>
-            <Item
-              name="cellphone"
-              label="No. Celular"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor introduce tu número de celular!",
-                },
-                {
-                  validator: (rule, value, callback) => {
-                    if (value !== undefined) {
-                      if (value.length !== 10) {
-                        return Promise.reject("Número no válido");
-                      } else {
-                        return Promise.resolve();
-                      }
-                    }
+                <Input maxLength="8" disabled bordered={false} />
+              </Item>
+              <Item
+                label="Nombre(s)"
+                key={updateIndex()}
+                name="first_name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor introduce tu nombre!",
                   },
-                },
-              ]}
-            >
-              <Input
-                size="large"
-                placeholder="6461234567"
-                onKeyPress={(event) => {
-                  if (!/[0-9]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-              />
-            </Item>
-            <Item
-              label="Género"
-              key={updateIndex()}
-              name="gender"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor seleccione una opcion!",
-                },
-              ]}
-              hasFeedback
-            >
-              <Select
-                size="large"
-                onChange={() => {
-                  if (!this.state.hasChanges) {
-                    this.setState({
-                      hasChanges: true,
-                      canNext: false,
-                    });
-                  }
-                }}
+                ]}
+                hasFeedback
               >
-                <Select.Option value="mas">Masculino</Select.Option>
-                <Select.Option value="fem">Femenino</Select.Option>
-                <Select.Option value="ind">Otro</Select.Option>
-              </Select>
-            </Item>
-            <Item
-              label="Tipo de titulación"
-              key={updateIndex()}
-              name="titulation_type"
-              rules={[
-                {
-                  required: true,
-                  message: "Seleccione el tipo de titulación!",
-                },
-              ]}
-              hasFeedback
-            >
-              <Select
-                size="large"
-                options={this.props.titulation_types}
-                onChange={() => {
-                  if (!this.state.hasChanges) {
-                    this.setState({
-                      hasChanges: true,
-                      canNext: false,
-                    });
-                  }
-                }}
-              />
-            </Item>
-            <Form.Item {...tailFormItemLayout}>
-              <Space>
-                <Button
-                  key={updateIndex()}
-                  disabled={!this.state.hasChanges}
-                  htmlType="submit"
-                  form="information"
-                  icon={<SaveOutlined />}
+                <Input placeholder="Nombre(s)" size="large" />
+              </Item>
+              <Item
+                key={updateIndex()}
+                label="Apellidos"
+                name="last_name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor introduce tus apellidos!",
+                  },
+                ]}
+                hasFeedback
+              >
+                <Input placeholder="Apellidos" size="large" />
+              </Item>
+              <Item
+                key={updateIndex()}
+                label="Carrera"
+                name="career"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor seleccione su carrera!",
+                  },
+                ]}
+                hasFeedback
+              >
+                <Select
+                  size="large"
+                  onChange={() => {
+                    if (!this.state.hasChanges) {
+                      this.setState({
+                        hasChanges: true,
+                        canNext: false,
+                      });
+                    }
+                  }}
                 >
-                  Guardar
-                </Button>
-                <Tag visible={this.state.hasChanges} key="3">
-                  Tienes cambios sin guardar
-                </Tag>
-              </Space>
-            </Form.Item>
-          </Form>
+                  <Select.Option value="electromecanica">
+                    Ing. Electromecánica
+                  </Select.Option>
+                  <Select.Option value="electronica">
+                    Ing. Electrónica
+                  </Select.Option>
+                  <Select.Option value="gestion">
+                    Ing. Gestión Empresarial
+                  </Select.Option>
+                  <Select.Option value="industrial">
+                    Ing. Industrial
+                  </Select.Option>
+                  <Select.Option value="mecatronica">
+                    Ing. Mecatrónica
+                  </Select.Option>
+                  <Select.Option value="sistemas">
+                    Ing. Sistemas Computacionales
+                  </Select.Option>
+                  <Select.Option value="administracion">
+                    Lic. Administración
+                  </Select.Option>
+                </Select>
+              </Item>
+              <Item
+                name="cellphone"
+                label="No. Celular"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor introduce tu número de celular!",
+                  },
+                  {
+                    validator: (rule, value, callback) => {
+                      if (value !== undefined) {
+                        if (value.length !== 10) {
+                          return Promise.reject("Número no válido");
+                        } else {
+                          return Promise.resolve();
+                        }
+                      }
+                    },
+                  },
+                ]}
+              >
+                <Input
+                  size="large"
+                  placeholder="6461234567"
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                />
+              </Item>
+              <Item
+                label="Género"
+                key={updateIndex()}
+                name="gender"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor seleccione una opcion!",
+                  },
+                ]}
+                hasFeedback
+              >
+                <Select
+                  size="large"
+                  value={this.getStateValue()}
+                  placeholder="select your gender"
+                  onChange={() => {
+                    if (!this.state.hasChanges) {
+                      this.setState({
+                        hasChanges: true,
+                        canNext: false,
+                      });
+                    }
+                  }}
+                >
+                  <Select.Option value="mas">Masculino</Select.Option>
+                  <Select.Option value="fem">Femenino</Select.Option>
+                  <Select.Option value="ind">Otro</Select.Option>
+                </Select>
+              </Item>
+              <Item
+                label="Tipo de titulación"
+                key={updateIndex()}
+                name="titulation_type"
+                rules={[
+                  {
+                    required: true,
+                    message: "Seleccione el tipo de titulación!",
+                  },
+                ]}
+                hasFeedback
+              >
+                <Select
+                  size="large"
+                  options={this.props.titulation_types}
+                  onChange={() => {
+                    if (!this.state.hasChanges) {
+                      this.setState({
+                        hasChanges: true,
+                        canNext: false,
+                      });
+                    }
+                  }}
+                />
+              </Item>
+              <Form.Item {...tailFormItemLayout}>
+                <Space>
+                  <Button
+                    key={updateIndex()}
+                    disabled={!this.state.hasChanges}
+                    htmlType="submit"
+                    form="information"
+                    icon={<SaveOutlined />}
+                  >
+                    Guardar
+                  </Button>
+                  <Tag visible={this.state.hasChanges} key="3">
+                    Tienes cambios sin guardar
+                  </Tag>
+                </Space>
+              </Form.Item>
+            </Form>
+          </Card>
         ) : (
           <p>Cargando</p>
         )}

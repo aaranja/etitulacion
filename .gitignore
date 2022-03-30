@@ -4,6 +4,7 @@
 /backend/src/secrets.json
 /backend/src/db.sqlite3
 /backend/src/database.json
+/backend/src/email.json
 /backend/src/storage/documents
 
 # frontend dependencies
@@ -24,9 +25,15 @@
 /frontend/gui/.env.test.local
 /frontend/gui/.env.production.local
 
+/frontend/gui/.eslintrc.json
+
 /frontend/gui/npm-debug.log*
 /frontend/gui/yarn-debug.log*
 /frontend/gui/yarn-error.log*
 
 # remove idea folder
 .idea
+/frontend/gui/.prettierignore
+/frontend/gui/.prettierrc.json
+/frontend/gui/package-lock.json
+/frontend/gui/.eslintrc

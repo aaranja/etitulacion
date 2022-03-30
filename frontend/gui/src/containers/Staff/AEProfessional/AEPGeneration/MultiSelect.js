@@ -8,18 +8,12 @@ export default class MultiSelect extends Component {
     super(props);
     console.log(this.props.type);
     let options = {};
-    options.id_card = staffStructureOptions(
-      this.props.dataSource,
-      "id_card"
-    );
+    options.id_card = staffStructureOptions(this.props.dataSource, "id_card");
     options.full_name = staffStructureOptions(
       this.props.dataSource,
       "full_name"
     );
-    options.career = staffStructureOptions(
-      this.props.dataSource,
-      "profession"
-    );
+    options.career = staffStructureOptions(this.props.dataSource, "profession");
     this.state = {
       value: this.props.value,
       options: options,

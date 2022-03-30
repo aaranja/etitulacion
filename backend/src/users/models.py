@@ -8,8 +8,10 @@ class Account(AbstractUser):
     """
     Account model to all users auth
     """
-    # remove username field
+    # remove username, first name and last name fields
     username = None
+    first_name = None
+    last_name = None
     # the email is required and unique
     email = models.EmailField(_('email address'), unique=True)
     USERNAME_FIELD = 'email'
@@ -42,6 +44,8 @@ class GraduateProfile(models.Model):
     Profile model with all data of graduate and documents information
     """
     enrollment = models.IntegerField(primary_key=True, unique=True, blank=False)
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
     career = models.CharField(max_length=30, blank=True)
     gender = models.CharField(max_length=10, blank=True)
     cellphone = models.CharField(blank=True, default=None, max_length=10)

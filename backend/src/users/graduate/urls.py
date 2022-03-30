@@ -1,20 +1,20 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
-from .views import GraduateProfileViewSet, UploadFileView, StatusView, TitulationTypeView, NotificationsView, \
-    InformationView, ProcedureHistoryView, DocumentsFileView, ARPInfoView
+from .views import Profile, UploadFile, Status, TitulationType, Notifications, \
+    Information, ProcedureHistory, DocumentsFile, ARPInfo
 
 router = DefaultRouter()
-router.register(r'account', GraduateProfileViewSet, basename='profile')
+router.register(r'account', Profile, basename='profile')
 
 urlpatterns = [
-    path('notifications/', NotificationsView.as_view()),
-    path('profile/', InformationView.as_view()),
-    path('profile/documents/<keyname>/', DocumentsFileView.as_view()),
-    path('profile/documents/', UploadFileView.as_view()),
-    path('profile/status/', StatusView.as_view()),
-    path('profile/titulation-type/', TitulationTypeView.as_view()),
-    path('profile/procedure/history/', ProcedureHistoryView.as_view()),
-    path('profile/arp-info/', ARPInfoView.as_view())
+    path('notifications/', Notifications.as_view()),
+    path('profile/', Information.as_view()),
+    path('profile/documents/<keyname>/', DocumentsFile.as_view()),
+    path('profile/documents/', UploadFile.as_view()),
+    path('profile/status/', Status.as_view()),
+    path('profile/titulation-type/', TitulationType.as_view()),
+    path('profile/procedure/history/', ProcedureHistory.as_view()),
+    path('profile/arp-info/', ARPInfo.as_view())
 ]
 
 urlpatterns += router.urls

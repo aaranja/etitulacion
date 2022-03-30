@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Alert, Button, Form, Input } from "antd";
-import ErrorList from "../../../components/ErrorList";
 
 export default class RegisterForm extends Component {
   constructor(props) {
@@ -21,14 +20,13 @@ export default class RegisterForm extends Component {
   render() {
     return (
       <>
-        {this.props.error !== null ? (
-          <Alert
-            message="Error al registrar la cuenta."
-            description={<ErrorList list={this.props.error} />}
-            type="error"
-            closable={true}
-          />
-        ) : null}
+        {/*{this.props.error !== null ? (*/}
+        {/*    <Alert*/}
+        {/*        message="Error al registrar la cuenta."*/}
+        {/*        type="error"*/}
+        {/*        closable={true}*/}
+        {/*    />*/}
+        {/*) : null}*/}
         <Form
           scrollToFirstError
           onFinish={(values) => this.props.onSubmit(values)}
@@ -154,7 +152,11 @@ export default class RegisterForm extends Component {
               },
             }}
           >
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={this.props.loading}
+            >
               Registrar
             </Button>
           </Form.Item>

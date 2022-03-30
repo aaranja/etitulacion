@@ -11,17 +11,18 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GraduateProfile
-        fields = ['enrollment', 'career', 'gender', 'cellphone', 'account', 'status', 'titulation_type',
+        fields = ['enrollment', 'first_name', 'last_name', 'career', 'gender', 'cellphone', 'status', 'titulation_type',
                   'accurate_docs',
                   'documents']
         extra_kwargs = {
             'accurate_docs': {'read_only': True},
             'enrollment': {'read_only': True},
-            'account': {'read_only': True}
         }
 
     def update(self, instance, validated_data):
         # instance.enrollment = validated_data.get('enrollment', instance.enrollment)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.career = validated_data.get('career', instance.career)
         instance.gender = validated_data.get('gender', instance.gender)
         instance.cellphone = validated_data.get('cellphone', instance.cellphone)

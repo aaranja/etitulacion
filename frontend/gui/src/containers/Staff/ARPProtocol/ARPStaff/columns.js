@@ -44,7 +44,7 @@ export const columns = (onEdit) => {
     //         disabled={editingKey !== ""}
     //         onClick={() => edit(record)}
     //       >
-    //         Edit
+    //         EditAccount
     //       </Typography.Link>
     //     );
     //   },

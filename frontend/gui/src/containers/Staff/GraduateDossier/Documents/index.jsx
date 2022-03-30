@@ -95,7 +95,7 @@ class Documents extends Component {
 
 const mapStateToProps = (state) => {
   let viewDocument = null;
-  let graduateDocuments = []
+  let graduateDocuments = [];
   let currentState = state.staff;
   if (currentState.payload !== null) {
     if (currentState.payload.document !== undefined) {

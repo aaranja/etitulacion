@@ -1,14 +1,70 @@
-from abc import ABC
 
 from allauth.account.adapter import get_adapter
 from allauth.utils import email_address_exists
-from rest_framework import serializers
+from django.utils import timezone
+from rest_framework import serializers, status
 from allauth.account import app_settings as allauth_settings
 from django.contrib.auth import authenticate
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.authtoken.models import Token
+from allauth.account.models import EmailAddress, EmailConfirmation
 
 from ..models import Account, GraduateProfile
+from .CustomValidation import CustomValidation
+
+
+class EmailConfirmationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmailConfirmation
+        fields = ['id', 'created', 'sent', 'key', 'email_address']
+
+    @staticmethod
+    def validate_email_address(email):
+        print("email: ", email.id)
+        return email.id
+
+    def create(self, validate_data):
+        now = timezone.now()
+        time = now.strftime("%Y-%m-%d %H:%M:%S")
+        email_confirmation = EmailConfirmation(
+            created=time,
+            sent=validate_data["sent"],
+            key=validate_data["key"],
+            email_address_id=validate_data['email_address']
+        )
+        email_confirmation.save()
+        return email_confirmation
+
+
+class EmailAddressSerializer(serializers.ModelSerializer):
+    """
+    Serializer to get and set emails is verified
+    """
+
+    class Meta:
+        model = EmailAddress
+        fields = ['id', 'email', 'verified', 'primary', 'user']
+
+    @staticmethod
+    def validate_user(user):
+        print("número de usuario: ", user.id)
+        return user.id
+
+    def create(self, validated_data):
+        email_address = EmailAddress(
+            email=validated_data['email'],
+            verified=validated_data['verified'],
+            user_id=validated_data['user']
+        )
+        email_address.save()
+        return email_address
+
+    def update(self, instance, validated_data):
+        # instance.email = validated_data.get('email', instance.email)
+        instance.verified = validated_data.get('verified', instance.verified)
+        # instance.user_id = validated_data.get('user', instance.user_id)
+        instance.save()
+        return instance
 
 
 class AuthTokenSerializer(serializers.Serializer):
@@ -42,6 +98,15 @@ class AuthTokenSerializer(serializers.Serializer):
     def authenticate(self, **kwargs):
         return authenticate(self.context['request'], **kwargs)
 
+    @staticmethod
+    def is_verified(user_id):
+        email = EmailAddress.objects.get(user_id=user_id)
+        if email:
+            return email.verified == 1
+        else:
+            msg = _("We can't locate your account.")
+            raise serializers.ValidationError(msg)
+
     def _validate_email(self, email, password):
         user = None
         if email and password:
@@ -60,6 +125,13 @@ class AuthTokenSerializer(serializers.Serializer):
             if not user:
                 msg = _('Unable to log in with provided credentials.')
                 raise serializers.ValidationError(msg, code='authorization')
+            elif user.user_type == "USER_GRADUATE":
+                if not self.is_verified(user.id):
+                    msg = _('Your account is not verified, please click the next link to verify it.')
+                    detail = {'non_field_errors': [msg]}
+                    res = CustomValidation(detail, code='permission_denied', status_code=status.HTTP_403_FORBIDDEN)
+                    print(res)
+                    raise res
         else:
             msg = _('Must include "email" and "password".')
             raise serializers.ValidationError(msg, code='authorization')
@@ -96,23 +168,16 @@ class RegisterSerializer(serializers.Serializer):
     """
     # account data
     email = serializers.EmailField(required=allauth_settings.EMAIL_REQUIRED)
-    first_name = serializers.CharField(required=True, write_only=True)
-    last_name = serializers.CharField(required=True, write_only=True)
     password1 = serializers.CharField(required=True, write_only=True)
     password2 = serializers.CharField(required=True, write_only=True)
     # profile data
     enrollment = serializers.CharField(required=True, write_only=True)
     cellphone = serializers.CharField(required=True, write_only=True)
-    career = serializers.CharField(required=True, write_only=True)
-    gender = serializers.CharField(required=True)
 
     def save(self, request):
         # create and save account
-        print(request.data)
         new_account = Account(
             email=request.data['email'],
-            first_name=request.data['first_name'],
-            last_name=request.data['last_name'],
             user_type="USER_GRADUATE",
         )
         new_account.set_password(request.data['password1'])
@@ -122,8 +187,6 @@ class RegisterSerializer(serializers.Serializer):
         new_profile = GraduateProfile(
             enrollment=request.data['enrollment'],
             cellphone=request.data['cellphone'],
-            career=request.data['career'],
-            gender=request.data['gender'],
             status="STATUS_00",
         )
 
@@ -134,7 +197,6 @@ class RegisterSerializer(serializers.Serializer):
         new_profile.documents = documents
         new_profile.account = new_account
         new_profile.save()
-        print(new_account)
         return new_account
 
     def validate_email(self, email):
@@ -154,17 +216,9 @@ class RegisterSerializer(serializers.Serializer):
 
         return enrollment
 
-    def validate_career(self, career):
-        # check if career is valid
-        return career
-
     def validate_cellphone(self, cellphone):
         # check if gender is valid
         return cellphone
-
-    def validate_gender(self, gender):
-        # check if gender is valid
-        return gender
 
     def validate_password1(self, password):
         return get_adapter().clean_password(password)
@@ -177,15 +231,11 @@ class RegisterSerializer(serializers.Serializer):
 
     def get_cleaned_data(self):
         return {
-            'first_name': self.validated_data.get('first_name', ''),
-            'last_name': self.validated_data.get('last_name', ''),
             'password1': self.validated_data.get('password1', ''),
             'email': self.validated_data.get('email', ''),
             'user_type': self.validated_data.get('user_type', ''),
             'enrollment': self.validated_data.get('enrollment', ''),
             'cellphone': self.validated_data.get('cellphone', ''),
-            'career': self.validated_data.get('career', ''),
-            'gender': self.validated_data.get('gender', ''),
         }
 
 
@@ -195,15 +245,13 @@ class StaffRegisterSerializer(serializers.ModelSerializer):
     """
     # account data
     email = serializers.EmailField(required=allauth_settings.EMAIL_REQUIRED)
-    first_name = serializers.CharField(required=True, write_only=True)
-    last_name = serializers.CharField(required=True, write_only=True)
     user_type = serializers.CharField(required=True, write_only=True)
     password1 = serializers.CharField(required=True, write_only=True)
     password2 = serializers.CharField(required=True, write_only=True)
 
     class Meta:
         model = Account
-        fields = ['id', 'email', 'first_name', 'last_name', 'user_type', 'password1', 'password2']
+        fields = ['id', 'email', 'user_type', 'password1', 'password2']
 
     def validate_email(self, email):
         email = get_adapter().clean_email(email)
@@ -226,8 +274,6 @@ class StaffRegisterSerializer(serializers.ModelSerializer):
         # create and save account
         new_account = Account(
             email=request['email'],
-            first_name=request['first_name'],
-            last_name=request['last_name'],
             user_type=request['user_type'],
         )
         new_account.is_staff = True

@@ -1,0 +1,5 @@
+from .CustomRegister import CustomRegister
+from .CustomObtainAuthToken import CustomObtainAuthToken
+from .StaffRegister import StaffRegister
+from .CustomEmailVerification import CustomEmailVerification
+from .AccountViewSet import AccountViewSet

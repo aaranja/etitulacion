@@ -5,7 +5,17 @@ import {
   ExclamationCircleOutlined,
   SyncOutlined,
 } from "@ant-design/icons";
-import { Upload, Button, message, Tag, Table } from "antd";
+import {
+  Upload,
+  Button,
+  message,
+  Tag,
+  Table,
+  Typography,
+  List,
+  Collapse,
+  Divider,
+} from "antd";
 
 class DocumentsTable extends Component {
   constructor(props) {
@@ -129,182 +139,253 @@ class DocumentsTable extends Component {
   }
 
   render() {
-    const datacolumns = [
-      {
-        title: "Documento",
-        dataIndex: "fullName",
-        width: "20%",
-      },
-      {
-        title: "Descripción",
-        dataIndex: "description",
-        width: "30%",
-        render: (text, record) => {
-          return text;
-        },
-      },
-      {
-        title: "Estatus",
-        dataIndex: "status",
-        width: "10%",
-        render: (text) => {
-          let icon = <ExclamationCircleOutlined />;
-          let color = "default";
-          let message = "Sin cargar";
+    const statusTag = (text) => {
+      let icon = <ExclamationCircleOutlined />;
+      let color = "default";
+      let message = "Sin cargar";
 
-          if (text === "uploaded") {
-            icon = <CheckCircleOutlined />;
-            color = "success";
-            message = "Cargado";
-          } else {
-            if (text === "loading") {
-              icon = <SyncOutlined spin />;
-              color = "processing";
-              message = "Subiendo";
+      if (text === "uploaded") {
+        icon = <CheckCircleOutlined />;
+        color = "success";
+        message = "Cargado";
+      } else {
+        if (text === "loading") {
+          icon = <SyncOutlined spin />;
+          color = "processing";
+          message = "Subiendo";
+        }
+      }
+      return (
+        <Tag icon={icon} color={color} style={{ width: 100, height: 25 }}>
+          {message}
+        </Tag>
+      );
+    };
+
+    const uploadFile = (text, record) => {
+      const uploadProps = {
+        onRemove: (info, key = record.key) => {
+          let fileList = this.state.fileList;
+          let dataTable = this.state.dataSource;
+          let files = this.state.files;
+
+          for (const index in fileList) {
+            const data = fileList[index];
+            if (data.key === key) {
+              /* remove metadata */
+              fileList[index].status = "removed";
+              fileList[index].name = "";
+              /* set new props in table to empty file */
+              dataTable[index].fileName = "";
+              dataTable[index].status = "removed";
+              /* remove file from files */
+              files[index] = null;
+              /* update state to reload table with new props */
+              this.setState({
+                dataSource: dataTable,
+                fileList: fileList,
+                files: files,
+              });
+              this.props.callBack(true, "removed");
+              break;
             }
           }
-          return (
-            <Tag icon={icon} color={color} style={{ width: "100%" }}>
-              {message}
-            </Tag>
-          );
         },
-      },
-      {
-        title: "Archivo",
-        dataIndex: "archivo",
-        width: 150,
-        render: (text, record) => {
-          const uploadProps = {
-            onRemove: (info, key = record.key) => {
-              let fileList = this.state.fileList;
-              let dataTable = this.state.dataSource;
-              let files = this.state.files;
+        maxCount: 1,
+        beforeUpload: (file) => {
+          if (file.type !== "application/pdf") {
+            message.error(`${file.name} no es un archivo PDF!`);
+          } else {
+          }
+          return false;
+        },
+        onChange: (info, key = record.key) => {
+          let fileList = this.state.fileList;
+          let newFile = info.fileList[0];
+          let dataTable = this.state.dataSource;
+          let files = this.state.files;
 
-              for (const index in fileList) {
-                const data = fileList[index];
+          /*set a new file*/
+          if (info.fileList.length === 1) {
+            /* only update fileList if the new document is a PDF*/
+            if (newFile.type === "application/pdf") {
+              /*get metadata file from fileList*/
+              for (const index in this.state.fileList) {
+                const data = this.state.fileList[index];
+                /*find current key file*/
                 if (data.key === key) {
-                  /* remove metadata */
-                  fileList[index].status = "removed";
-                  fileList[index].name = "";
-                  /* set new props in table to empty file */
-                  dataTable[index].fileName = "";
-                  dataTable[index].status = "removed";
-                  /* remove file from files */
-                  files[index] = null;
-                  /* update state to reload table with new props */
+                  /* set new metadata */
+                  fileList[index] = newFile;
+                  fileList[index].status = "processing";
+                  fileList[index].key = data.key;
+                  /* set new props in datasource */
+                  dataTable[index].fileName = newFile.name;
+                  dataTable[index].status = "unloaded";
+                  /* store new file into files */
+                  files[index] = info.file;
+                  /* change to state to reload table props */
                   this.setState({
                     dataSource: dataTable,
                     fileList: fileList,
                     files: files,
                   });
-                  this.props.callBack(true, "removed");
+                  /* set changes to save in parent component */
+                  this.props.callBack(true, "uploaded");
                   break;
                 }
               }
-            },
-            maxCount: 1,
-            beforeUpload: (file) => {
-              if (file.type !== "application/pdf") {
-                message.error(`${file.name} no es un archivo PDF!`);
-              } else {
-              }
-              return false;
-            },
-            onChange: (info, key = record.key) => {
-              let fileList = this.state.fileList;
-              let newFile = info.fileList[0];
-              let dataTable = this.state.dataSource;
-              let files = this.state.files;
-
-              /*set a new file*/
-              if (info.fileList.length === 1) {
-                /* only update fileList if the new document is a PDF*/
-                if (newFile.type === "application/pdf") {
-                  /*get metadata file from fileList*/
-                  for (const index in this.state.fileList) {
-                    const data = this.state.fileList[index];
-                    /*find current key file*/
-                    if (data.key === key) {
-                      /* set new metadata */
-                      fileList[index] = newFile;
-                      fileList[index].status = "processing";
-                      fileList[index].key = data.key;
-                      /* set new props in datasource */
-                      dataTable[index].fileName = newFile.name;
-                      dataTable[index].status = "unloaded";
-                      /* store new file into files */
-                      files[index] = info.file;
-                      /* change to state to reload table props */
-                      this.setState({
-                        dataSource: dataTable,
-                        fileList: fileList,
-                        files: files,
-                      });
-                      /* set changes to save in parent component */
-                      this.props.callBack(true, "uploaded");
-                      break;
-                    }
-                  }
-                }
-              }
-            },
-            multiple: false,
-            onPreview: async (file) => {
-              /* show the pdf file onto a modal */
-              // get the keyname
-              let keyName = null;
-              for (const index in this.state.dataSource) {
-                if (this.state.dataSource[index].key === file.key) {
-                  keyName = this.state.dataSource[index].keyName;
-                  break;
-                }
-              }
-              // call to parent to show into a modal
-              this.props.onPreviewDocument(true, file, keyName);
-            },
-          };
-
-          // show upload button
-          let uploadButton = (
-            <Button>
-              <UploadOutlined /> Elegir archivo
-            </Button>
-          );
-
-          // find current file in fileList
-          let file;
-          for (const key in this.state.fileList) {
-            const filedata = this.state.fileList[key];
-            if (filedata.key === record.key) {
-              file = filedata;
+            }
+          }
+        },
+        multiple: false,
+        onPreview: async (file) => {
+          /* show the pdf file onto a modal */
+          // get the keyname
+          let keyName = null;
+          for (const index in this.state.dataSource) {
+            if (this.state.dataSource[index].key === file.key) {
+              keyName = this.state.dataSource[index].keyName;
               break;
             }
           }
+          // call to parent to show into a modal
+          this.props.onPreviewDocument(true, file, keyName);
+        },
+      };
 
-          // check status file
-          let fileList;
-          if (file.status === "success" || file.status === "processing") {
-            // hide upload button if file is uploaded or uploading
-            uploadButton = null;
-            fileList = [file];
-          } else {
-            // show upload button and clean fileList
-            fileList = null;
+      // show upload button
+      let uploadButton = (
+        <Button>
+          <UploadOutlined /> Elegir archivo
+        </Button>
+      );
+
+      // find current file in fileList
+      let file;
+      for (const key in this.state.fileList) {
+        const filedata = this.state.fileList[key];
+        if (filedata.key === record.key) {
+          file = filedata;
+          break;
+        }
+      }
+
+      // check status file
+      let fileList;
+      if (file.status === "success" || file.status === "processing") {
+        // hide upload button if file is uploaded or uploading
+        uploadButton = null;
+        fileList = [file];
+      } else {
+        // show upload button and clean fileList
+        fileList = null;
+      }
+
+      // set upload props and filelist
+      return (
+        <Upload
+          {...uploadProps}
+          style={{ marginTop: 5 }}
+          fileList={fileList}
+          showUploadList={{
+            showRemoveIcon: this.props.canRemove,
+          }}
+        >
+          {uploadButton}
+        </Upload>
+      );
+    };
+
+    const descriptionDoc = (text) => {
+      const result = text.match(/<a>(.*?)<\/a>/g);
+      let link = null;
+      let description = text;
+      if (result !== null) {
+        link = result.map(function (val) {
+          description = description.replace(val, "");
+          return val.replace(/<\/?a>/g, "");
+        });
+      }
+      return (
+        <Typography.Paragraph>
+          {description}{" "}
+          {link !== null ? (
+            <ul>
+              <li>
+                <Typography.Link href={link} target="_blank">
+                  {link}
+                </Typography.Link>
+              </li>
+            </ul>
+          ) : null}
+        </Typography.Paragraph>
+      );
+    };
+
+    const datacolumns = [
+      {
+        title: "Documentos",
+        dataIndex: "fullName",
+        responsive: ["xs"],
+        render: (key, record) => {
+          const result = record.description.match(/<a>(.*?)<\/a>/g);
+          record.description.replace(result, "");
+          let link = null;
+          let description = record.description;
+          if (result !== null) {
+            link = result.map(function (val) {
+              description = description.replace(val, "");
+              return val.replace(/<\/?a>/g, "");
+            });
           }
 
-          // set upload props and filelist
           return (
-            <Upload
-              {...uploadProps}
-              fileList={fileList}
-              showUploadList={{
-                showRemoveIcon: this.props.canRemove,
-              }}
-            >
-              {uploadButton}
-            </Upload>
+            <>
+              <Collapse>
+                <Collapse.Panel
+                  style={{ margin: 0 }}
+                  key={"1"}
+                  header={<Typography.Text>{record.fullName}</Typography.Text>}
+                  extra={statusTag(record.status)}
+                >
+                  {descriptionDoc(record.description)}
+
+                  <Divider style={{ margin: 0, marginBottom: 10 }} />
+                  {uploadFile(record.archivo, record)}
+                </Collapse.Panel>
+              </Collapse>
+            </>
           );
+        },
+      },
+      {
+        title: "Documento",
+        dataIndex: "fullName",
+        width: "20%",
+        responsive: ["sm"],
+      },
+      {
+        title: "Descripción",
+        dataIndex: "description",
+        width: "30%",
+        render: (text, record) => descriptionDoc(text),
+        responsive: ["sm"],
+      },
+      {
+        title: "Estatus",
+        dataIndex: "status",
+        width: "10%",
+        render: (text) => statusTag(text),
+        responsive: ["sm"],
+      },
+      {
+        title: "Archivo",
+        dataIndex: "archivo",
+        width: "10%",
+        responsive: ["sm"],
+        render: (text, record) => {
+          console.log(text);
+          return uploadFile(text, record);
         },
       },
     ];
@@ -314,17 +395,15 @@ class DocumentsTable extends Component {
     });
 
     return (
-      <div>
-        <Table
-          pagination={false}
-          rowClassName={() => "editable-row"}
-          bordered
-          dataSource={this.state.dataSource}
-          columns={columns}
-          scroll={{ x: 500 }}
-          style={{ width: "auto", marginRight: "25px", marginBotton: "50px" }}
-        />
-      </div>
+      <Table
+        pagination={false}
+        rowClassName={() => "editable-row"}
+        dataSource={this.state.dataSource}
+        bordered={true}
+        columns={columns}
+        // scroll={{ x: 500 }}
+        style={{ marginBotton: "50px", margin: "auto" }}
+      />
     );
   }
 }

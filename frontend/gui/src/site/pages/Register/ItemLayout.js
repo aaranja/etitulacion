@@ -12,7 +12,7 @@ export const form = {
       span: 14,
     },
     sm: {
-      span: 16,
+      span: 14,
     },
   },
 };
@@ -20,11 +20,11 @@ export const tail = {
   wrapperCol: {
     xs: {
       span: 16,
-      offset: 10,
+      offset: 0,
     },
     sm: {
-      span: 20,
-      offset: 12,
+      span: 24,
+      offset: 0,
     },
   },
 };

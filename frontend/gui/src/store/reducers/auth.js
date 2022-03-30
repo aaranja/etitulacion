@@ -10,12 +10,14 @@ const initialState = {
   payload: null,
   error: null,
   loading: false,
+  status: null,
 };
 
 const authStart = (state) => {
   return updateObject(state, {
     error: null,
     loading: true,
+    status: "loading",
   });
 };
 
@@ -24,6 +26,7 @@ const authSuccess = (state, action) => {
     payload: action.payload,
     error: null,
     loading: false,
+    status: "success",
   });
 };
 
@@ -31,6 +34,7 @@ const authFail = (state, action) => {
   return updateObject(state, {
     error: action.error,
     loading: false,
+    status: "fail",
   });
 };
 

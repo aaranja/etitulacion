@@ -11,6 +11,7 @@ import {
   Tag,
   Layout,
   Typography,
+  Card,
 } from "antd";
 import DocumentsTable from "./DocumentsTable";
 import { CloseCircleOutlined, LoadingOutlined } from "@ant-design/icons";
@@ -243,11 +244,12 @@ class Dossier extends Component {
     return (
       <div>
         <Descriptions
-          size="middle"
+          size="small"
           column={1}
-          style={{ marginLeft: 60, marginRight: 120 }}
+          style={{ marginLeft: 40 }}
+          layout="vertical"
         >
-          <Descriptions.Item label={<b>INSTRUCCIONES</b>}>
+          <Descriptions.Item label={<b>Instrucciones</b>}>
             <Typography.Paragraph>
               Deberá subir en cada uno de los apartos correspondientes los
               documentos{" "}
@@ -260,11 +262,10 @@ class Dossier extends Component {
             </Typography.Paragraph>
           </Descriptions.Item>
         </Descriptions>
-        <Divider orientation="center">Subir documentación</Divider>
         {this.props.loading !== true ? (
-          <Content
+          <div
             style={{
-              margin: "auto",
+              margin: "10px",
             }}
           >
             <Space
@@ -304,7 +305,7 @@ class Dossier extends Component {
               canRemove={this.props.enableModify}
               onPreviewDocument={this.onShowPreview}
             />
-          </Content>
+          </div>
         ) : (
           <div
             style={{

@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import Process from "../../../containers/Graduate/Process";
 import Staff from "../../../containers/Staff";
 import * as userTypes from "../../collections/userTypes";
+import VerificateEmail from "../Register/VerificateEmail";
 
 class Home extends React.Component {
   // constructor(props) {
@@ -25,7 +26,7 @@ class Home extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (!this.props.loading) {
       //when isn't loading the logging
-      if (this.props.error != null) {
+      if (this.props["error"] != null) {
         console.log(this.props.error);
       } else {
       }
@@ -37,7 +38,11 @@ class Home extends React.Component {
       if (this.props.loading !== true && user_type !== null) {
         switch (user_type) {
           case userTypes.USER_GRADUATE:
-            return <Process />;
+            return (
+              <>
+                <Process />
+              </>
+            );
           case userTypes.USER_SERVICES:
           case userTypes.USER_COORDINAT:
             return (
@@ -52,7 +57,7 @@ class Home extends React.Component {
         }
       } else {
         /*if data is still loading*/
-        return <p> CARGANDO </p>;
+        return <p> CARGANDO</p>;
       }
     };
 
@@ -60,5 +65,17 @@ class Home extends React.Component {
     return userView(this.props.init.usertype);
   }
 }
+
+const mapStateToProps = (state) => {
+  let email_confirmed = null;
+
+  if (state.auth.payload !== undefined) {
+    email_confirmed = state.auth.payload["email_confirmed"];
+  }
+
+  return {
+    email_verified: email_confirmed,
+  };
+};
 
 export default connect(null, null)(Home);

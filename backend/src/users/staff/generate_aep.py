@@ -49,9 +49,9 @@ class AEPpdf:
         self.services_lead = arp_data['services_lead']
         self.director = arp_data['director']
         self.save_path = self.gen_path(arp_data['enrollment'], fs)
-        self.edu_path = fs.location + "/img/logo-educacion_2.svg"
-        self.line_path = fs.location + "/img/linea-vertical-separador-logos_2.svg"
-        self.tecnm_path = fs.location + "/img/logo-tecnm_2.svg"
+        self.edu_path = fs.location + "/img/logo-educacion.svg"
+        self.line_path = fs.location + "/img/separador-logos.svg"
+        self.tecnm_path = fs.location + "/img/logo-tecnm.svg"
 
     @staticmethod
     def gen_path(enrollment, fs):

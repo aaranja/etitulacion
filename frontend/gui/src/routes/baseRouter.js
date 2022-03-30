@@ -8,6 +8,7 @@ import Register from "../site/pages/Register";
 import AdminLogin from "../site/pages/AdminLogin";
 import AdminPanel from "../site/pages/AdminPanel";
 import SettingsPanel from "../site/pages/Settings";
+import Verification from "../site/pages/Verification";
 
 const BaseRouter = (props) => (
   <Routes>
@@ -23,6 +24,12 @@ const BaseRouter = (props) => (
       exact
       path="/signup/"
       element={<Register {...props} />}
+    />
+    <Route
+      restricted={false}
+      exact
+      path="/signup/validate-email/"
+      element={<Verification {...props} />}
     />
     <Route
       restricted={false}

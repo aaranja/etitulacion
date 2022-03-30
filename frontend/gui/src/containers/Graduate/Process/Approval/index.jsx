@@ -5,6 +5,7 @@ import { Fail, InProcess, Success, Wait } from "./ApprovalStatus";
 import { default as status } from "../../../../site/collections/statusTypes";
 import * as actions from "../../../../store/actions/account";
 import moment from "moment";
+import Expand from "react-expand-animated";
 
 const { Sider } = Layout;
 
@@ -106,9 +107,10 @@ class Approval extends Component {
         <Descriptions
           size="middle"
           column={1}
-          style={{ marginLeft: 60, marginRight: 120 }}
+          style={{ marginLeft: 40 }}
+          layout="vertical"
         >
-          <Descriptions.Item label={<b>INSTRUCCIONES</b>}>
+          <Descriptions.Item label={<b>Instrucciones</b>}>
             El trámite consta de dos secciones de evaluación de expediente
             realizados por el Departamento de Servicios Escolares y la
             Coordinación de Titulación.
@@ -117,28 +119,17 @@ class Approval extends Component {
 
         <div
           style={{
-            marginRight: "20px",
-            padding: 25,
+            marginLeft: "20px",
             display: "flex",
-
             alignItem: "center",
           }}
+          className={"historyValidation"}
         >
-          <Sider
-            style={{
-              scrollBehavior: "smooth",
-              maxWidth: 500,
-              backgroundColor: "#fafafa",
-            }}
-            width="50%"
-            collapsedWidth={0}
-            collapsed={!this.state.history_visible}
-          >
+          <Expand open={this.state.history_visible} className={"historyBox"}>
             <Card
               style={{
                 margin: 0,
                 backgroundColor: "#fafafa",
-                minWidth: 400,
               }}
               bordered={false}
             >
@@ -177,7 +168,8 @@ class Approval extends Component {
                 )}
               </Timeline>
             </Card>
-          </Sider>
+          </Expand>
+
           <Card bordered={false} style={{ width: "100%" }}>
             {approvalView(currentStatus)}
           </Card>

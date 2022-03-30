@@ -1,13 +1,16 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from .views import AccountViewSet, StaffRegisterView, CustomObtainAuthToken
+from . import views
 
 router = DefaultRouter()
-router.register(r'', AccountViewSet, basename='user')
+router.register(r'', views.AccountViewSet, basename='user')
 
 urlpatterns = [
-    path('staff-register/', StaffRegisterView.as_view()),
-    path('authenticate/', CustomObtainAuthToken.as_view()),
+    path('', views.CustomObtainAuthToken.as_view()),
+    path('registration/graduate/', views.CustomRegister.as_view()),
+    path('registration/staff/', views.StaffRegister.as_view()),
+    path('confirm-email/', views.CustomEmailVerification.as_view()),
+    # path('rest-auth/registration/account-confirm-email/', null_view, name='account_confirm_email'),
 ]
 urlpatterns += router.urls
