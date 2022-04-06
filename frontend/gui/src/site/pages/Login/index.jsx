@@ -48,6 +48,8 @@ class Login extends React.Component {
   componentDidUpdate(prevProps, prevState, context) {
     const { status } = this.props;
     const prevLoad = prevProps.status === "loading";
+    console.log("status: ", status)
+    console.log("actualizado")
 
     if (status === "success" && prevLoad) {
       this.props.navigate("/home");

@@ -14,6 +14,7 @@ const initialState = {
 };
 
 const authStart = (state) => {
+  console.log("comenzando")
   return updateObject(state, {
     error: null,
     loading: true,
@@ -22,6 +23,7 @@ const authStart = (state) => {
 };
 
 const authSuccess = (state, action) => {
+  console.log("regresando estado")
   return updateObject(state, {
     payload: action.payload,
     error: null,

@@ -21,26 +21,6 @@ class NormalLayout extends React.Component {
     this.state = { windowWidth: windowWidth, loaded: false, verificate: false };
   }
 
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    // if (nextState.loaded === this.state.loaded) {
-    //   console.log("diferente", this.state.loaded);
-    // } else {
-    //   console.log("no diferente");
-    // }
-
-    if (!this.state.loaded) {
-      if (!this.props.loading && !nextProps.loading) {
-        nextState.loaded = true;
-      } else {
-        if (this.props.loading && !nextProps.loading) {
-          nextState.loaded = true;
-        }
-      }
-    }
-
-    return true;
-  }
-
   componentDidMount() {
     window.addEventListener("resize", this.handleResize);
   }
@@ -88,7 +68,7 @@ class NormalLayout extends React.Component {
               size={this.state.windowWidth}
             />
           )}
-          {this.state.loaded ? (
+
             <Content
               className="content-page"
               style={{
@@ -107,19 +87,7 @@ class NormalLayout extends React.Component {
                 match: this.props.match,
               })}
             </Content>
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: "10vh",
-                maxWidth: "1580px",
-              }}
-            >
-              <Spin indicator={antIcon} />
-            </div>
-          )}
+
         </>
       </Layout>
     );
@@ -135,7 +103,6 @@ const mapStateToProps = (state) => {
   if (state.auth.payload !== null) {
     isAuth = state.auth.payload.token !== null;
   }
-
   return {
     auth: state.auth.payload,
     loading: state.auth.loading,
