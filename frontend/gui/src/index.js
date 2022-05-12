@@ -1,28 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import { createStore, /*compose,*/ applyMiddleware } from "redux";
-import { ConfigProvider } from "antd";
-import { Provider } from "react-redux";
-import thunk from "redux-thunk";
-import rootReducer from "./store/rootReducer";
-import es_ES from "antd/lib/locale/es_ES";
-import moment from "moment/moment";
+import React from 'react';
+import {createRoot} from 'react-dom/client';
+import {Provider} from 'react-redux';
+import store from "./store/store";
+import reportWebVitals from './reportWebVitals';
+import './index.css';
+import BaseRouter from "./routes/baseRouter";
 
-const store = createStore(rootReducer, applyMiddleware(thunk)); //, composeEnhances(applyMiddleware(thunk)));
+const container = document.getElementById('root');
+const root = createRoot(container);
 
-moment.locale("es");
-const app = (
-  <ConfigProvider locale={es_ES}>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </ConfigProvider>
-);
-
-ReactDOM.render(app, document.getElementById("root"));
+root.render(<Provider store={store}>
+    <BaseRouter/>
+</Provider>);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
