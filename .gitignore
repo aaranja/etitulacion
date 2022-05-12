@@ -8,6 +8,9 @@
 /backend/src/storage/documents
 /backend/src/secrets
 /backend/src_old/secrets.json
+/backend/src/secrets/email.json
+/backend/src/secrets/database.json
+/backend/src/secrets/django_key.json
 
 # frontend dependencies
 /frontend/gui/node_modules
