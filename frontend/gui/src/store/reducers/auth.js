@@ -1,64 +1,63 @@
 import {
-  AUTH_START,
-  AUTH_SUCCESS,
-  AUTH_LOGOUT,
-  AUTH_FAIL,
+    AUTH_START,
+    AUTH_SUCCESS,
+    AUTH_LOGOUT,
+    AUTH_FAIL,
 } from "../actionTypes";
-import { updateObject } from "../utils";
+import {updateObject} from "../utils";
 
 const initialState = {
-  payload: null,
-  error: null,
-  loading: false,
-  status: null,
+    payload: null,
+    error: null,
+    loading: false,
+    status: null,
 };
 
 const authStart = (state) => {
-  console.log("comenzando")
-  return updateObject(state, {
-    error: null,
-    loading: true,
-    status: "loading",
-  });
-};
+    return updateObject(state, {
+        error: null,
+        loading: true,
+        status: "loading",
+    });
+}
 
 const authSuccess = (state, action) => {
-  console.log("regresando estado")
-  return updateObject(state, {
-    payload: action.payload,
-    error: null,
-    loading: false,
-    status: "success",
-  });
+    return updateObject(state, {
+        payload: action.payload,
+        error: null,
+        loading: false,
+        status: "success",
+    });
 };
 
 const authFail = (state, action) => {
-  return updateObject(state, {
-    error: action.error,
-    loading: false,
-    status: "fail",
-  });
+    return updateObject(state, {
+        error: action.error,
+        loading: false,
+        status: "fail",
+    });
 };
 
 const authLogout = (state) => {
-  return updateObject(state, {
-    payload: null,
-  });
+    return updateObject(state, {
+        payload: null,
+        status: "session_expired",
+    });
 };
 
 const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case AUTH_START:
-      return authStart(state);
-    case AUTH_SUCCESS:
-      return authSuccess(state, action);
-    case AUTH_FAIL:
-      return authFail(state, action);
-    case AUTH_LOGOUT:
-      return authLogout(state);
-    default:
-      return state;
-  }
+    switch (action.type) {
+        case AUTH_START:
+            return authStart(state);
+        case AUTH_SUCCESS:
+            return authSuccess(state, action);
+        case AUTH_FAIL:
+            return authFail(state, action);
+        case AUTH_LOGOUT:
+            return authLogout(state);
+        default:
+            return state;
+    }
 };
 
 export default reducer;
