@@ -1,0 +1,156 @@
+[
+  {
+    "model": "documents.DocumentsDetails",
+    "pk": 1,
+    "fields": {
+      "keyName": "ACTA",
+      "fullName": "Acta de nacimiento",
+      "description": "Letra de molde clara, legible y a color. En caso de requerir, solicitarla en <a>https://www.gob.mx/ActaNacimiento/</a>",
+      "required": true,
+      "clasification": 1
+    }
+  },
+  {
+    "model": "documents.documentsdetails",
+    "pk": 2,
+    "fields": {
+      "keyName": "CLIC",
+      "fullName": "Cerficado de licenciatura",
+      "description": "",
+      "required": true,
+      "clasification": 1
+    }
+  },
+  {
+    "model": "documents.documentsdetails",
+    "pk": 3,
+    "fields": {
+      "keyName": "CBAC",
+      "fullName": "Certificado de bachillerato",
+      "description": "Si tu certificado no tiene periodo de ingreso y egreso, deberías socilitar una constancia de generación en preparatoria.",
+      "required": true,
+      "clasification": 1
+    }
+  },
+  {
+    "model": "documents.documentsdetails",
+    "pk": 4,
+    "fields": {
+      "keyName": "CPCT",
+      "fullName": "Cédula profesional de carrera técnica",
+      "description": "(Cuando corresponda)",
+      "required": false,
+      "clasification": 1
+    }
+  },
+  {
+    "model": "documents.documentsdetails",
+    "pk": 5,
+    "fields": {
+      "keyName": "CURP",
+      "fullName": "C.U.R.P.",
+      "description": "Formato QR. En caso de requerir, solicitarlo en <a> https://www.gob.com.mx/curp/</a>",
+      "required": true,
+      "clasification": 1
+    }
+  },
+  {
+    "model": "documents.documentsdetails",
+    "pk": 6,
+    "fields": {
+      "keyName": "CDSS",
+      "fullName": "Constancia de servicio social",
+      "description": "Si en tu certificado aparece el servicio social, no requieres la constancia.",
+      "required": true,
+      "clasification": 3
+    }
+  },
+  {
+    "model": "documents.documentsdetails",
+    "pk": 7,
+    "fields": {
+      "keyName": "CAIE",
+      "fullName": "Constancia de acreditación del idioma extranjero",
+      "description": "(Inglés)",
+      "required": true,
+      "clasification": 3
+    }
+  },
+  {
+    "model": "documents.documentsdetails",
+    "pk": 8,
+    "fields": {
+      "keyName": "EDCE",
+      "fullName": "Equivalencia y/o dictámen de convalidacíón de estudios",
+      "description": "(Cuando corresponda)",
+      "required": false,
+      "clasification": 1
+    }
+  },
+  {
+    "model": "documents.documentsdetails",
+    "pk": 9,
+    "fields": {
+      "keyName": "ARES",
+      "fullName": "Acuse del registro en el SAT",
+      "description": "De certificado de e.fima.",
+      "required": true,
+      "clasification": 1
+    }
+  },
+  {
+    "model": "documents.documentsdetails",
+    "pk": 10,
+    "fields": {
+      "keyName": "CDNA",
+      "fullName": "Comprobante de no adeudo",
+      "description": "Generar desde: <a>https://noadeudo.ensenada.tecnm.mx/ </a>",
+      "required": true,
+      "clasification": 1
+    }
+  },
+  {
+    "model": "documents.documentsdetails",
+    "pk": 11,
+    "fields": {
+      "keyName": "FDDB",
+      "fullName": "Ficha de depósito en BANAMEX",
+      "description": "Por la cantidad de $2,600.00 pesos, correspondiente al trámite y registro de titulación ante DGTNM. Generar desde el Sistema de Pago Electrónico SPE: <a>https://spe.ensenada.tecnm.mx/</a>",
+      "required": true,
+      "clasification": 1
+    }
+  },
+  {
+    "model": "documents.documentsdetails",
+    "pk": 12,
+    "fields": {
+      "keyName": "DRES",
+      "fullName": "Residencia profesional",
+      "description": "Con portada de titulación.",
+      "required": true,
+      "clasification": 2
+    }
+  },
+  {
+    "model": "documents.documentsdetails",
+    "pk": 13,
+    "fields": {
+      "keyName": "CDNI",
+      "fullName": "Constancia de no inconvenientes",
+      "description": "Firmado por servicios escolares.",
+      "required": true,
+      "clasification": 2
+    }
+  },
+  {
+    "model": "documents.documentsdetails",
+    "pk": 14,
+    "fields": {
+      "keyName": "SDES",
+      "fullName": "Solicitud del estudiante",
+      "description": "Llenarla con datos personales, convertirla en PDF y firmarla.",
+      "required": true,
+      "clasification": 2
+    }
+  }
+]
