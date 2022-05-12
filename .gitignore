@@ -6,6 +6,8 @@
 /backend/src/database.json
 /backend/src/email.json
 /backend/src/storage/documents
+/backend/src/secrets
+/backend/src_old/secrets.json
 
 # frontend dependencies
 /frontend/gui/node_modules
