@@ -5,8 +5,6 @@ import ReactCodeInput from "react-code-input";
 import { connect } from "react-redux";
 import { sendEmailVerification } from "../../../store/actions/services";
 import {
-  MailFilled,
-  MailOutlined,
   MailTwoTone,
   SmileTwoTone,
 } from "@ant-design/icons";
