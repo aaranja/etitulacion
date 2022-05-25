@@ -62,7 +62,7 @@ pycups==2.0.1
 pycurl==7.44.1
 pydotplus==2.0.2
 PyGObject==3.42.0
-PyJWT==2.3.0
+PyJWT==2.4.0
 pylint==2.11.1
 PyMySQL==1.0.2
 pyparsing==2.4.7
