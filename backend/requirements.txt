@@ -45,7 +45,7 @@ lxml==4.7.1
 Markdown==3.3.4
 mccabe==0.6.1
 mysqlclient==2.1.0
-numpy==1.21.5
+numpy==1.22.0
 oauthlib==3.1.1
 pep8==1.7.1
 Pillow==8.4.0
