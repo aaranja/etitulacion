@@ -41,7 +41,7 @@ httplib2==0.20.2
 idna==3.3
 isort==5.9.3
 lazy-object-proxy==1.7.1
-lxml==4.7.1
+lxml==4.9.1
 Markdown==3.3.4
 mccabe==0.6.1
 mysqlclient==2.1.0
