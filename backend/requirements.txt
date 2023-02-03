@@ -15,7 +15,7 @@ dbus-python==1.2.18
 defusedxml==0.7.1
 distlib==0.3.4
 distro==1.7.0
-Django==3.2.8
+Django==3.2.17
 django-allauth==0.45.0
 django-autotranslate==1.2.0
 django-cors-headers==3.10.0
